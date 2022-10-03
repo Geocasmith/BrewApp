@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">SENG440 Assignment 2</string>
+    <string name="navbar_review_label">Review</string>
+    <string name="navbar_search_label">Search</string>
+    <string name="navbar_scan_label">Scan</string>
+    <string name="navbar_profile_label">Profile</string>
 </resources>
