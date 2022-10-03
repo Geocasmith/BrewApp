@@ -3,41 +3,34 @@ package com.example.seng440assignment2
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import com.example.seng440assignment2.navigation.AnimatedNav
+import com.example.seng440assignment2.navigation.AnimatedNavBar
 import com.example.seng440assignment2.ui.theme.SENG440Assignment2Theme
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
+@OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             SENG440Assignment2Theme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                val navController = rememberAnimatedNavController()
+
+                // View Model
+                val owner = LocalViewModelStoreOwner.current
+
+                Scaffold(
+                    bottomBar = { AnimatedNavBar(navController = navController) }
                 ) {
-                    Greeting("Android")
+                    paddingValues -> owner?.let {
+                        AnimatedNav(navController = navController, padding = paddingValues)
+                    }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    SENG440Assignment2Theme {
-        Greeting("Android")
     }
 }
