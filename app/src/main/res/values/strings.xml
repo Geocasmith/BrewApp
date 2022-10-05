@@ -4,4 +4,7 @@
     <string name="navbar_search_label">Search</string>
     <string name="navbar_scan_label">Scan</string>
     <string name="navbar_profile_label">Profile</string>
+    <string name="no_review_text">No Reviews</string>
+    <string name="profile_edit">Edit</string>
+    <string name="profile_pref">Preferences</string>
 </resources>
