@@ -69,6 +69,16 @@ dependencies {
     // Icons
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
 
+    // CameraX
+    implementation "androidx.camera:camera-camera2:1.1.0"
+    implementation "androidx.camera:camera-lifecycle:1.1.0"
+    implementation "androidx.camera:camera-view:1.1.0"
+
+    // MLKit
+    implementation 'com.google.mlkit:barcode-scanning:17.0.2'
+    implementation 'com.google.android.gms:play-services-mlkit-text-recognition:18.0.2'
+
+
 
 
 
