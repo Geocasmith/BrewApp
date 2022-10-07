@@ -17,6 +17,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.seng440assignment2.PrefScreen
 import com.example.seng440assignment2.ProfileScreen
 import com.example.seng440assignment2.camera.ScanScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -83,6 +84,16 @@ fun AnimatedNav(navController: NavHostController, padding: PaddingValues) {
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None }
         ) { ProfileScreen(onNavigateToEdit = { navController.navigate("edit") }, onNavigateToPref = { navController.navigate("pref") }) }
+        composable(
+            route = "pref",
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
+        ) { PrefScreen(onBackButtonPress = { navController.navigate(Screen.Profile.route) }) }
+        composable(
+            route = "edit",
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
+        ) { PrefScreen(onBackButtonPress = { navController.navigate(Screen.Profile.route) }) }
     }
 
 }

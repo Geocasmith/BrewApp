@@ -6,6 +6,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material.icons.outlined.ArrowLeft
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -37,7 +39,10 @@ fun ProfileScreen(onNavigateToEdit: () -> Unit, onNavigateToPref: () -> Unit)
                 Spacer(Modifier.weight(1f))
 
                 // Options
-                Box(Modifier.fillMaxSize().wrapContentSize(Alignment.TopEnd)) {
+                Box(
+                    Modifier
+                        .fillMaxSize()
+                        .wrapContentSize(Alignment.TopEnd)) {
                     IconButton(onClick = { options = true }) {
                         Icon(Icons.Outlined.MoreVert, contentDescription = null )
                     }
@@ -92,8 +97,30 @@ fun ProfileScreen(onNavigateToEdit: () -> Unit, onNavigateToPref: () -> Unit)
 }
 
 @Composable
-fun ProfileSettings() {
+fun PrefScreen(onBackButtonPress: () -> Unit) {
 
+    var isDarkMode by remember { mutableStateOf(false) };
+
+
+    Column() {
+        TopAppBar(backgroundColor = Color.LightGray, elevation = 0.dp )
+        {
+            IconButton(onClick = { onBackButtonPress() }) {
+                Icon(Icons.Outlined.ArrowBack, contentDescription = null)
+            }
+            Text(modifier = Modifier.padding(horizontal = 5.dp), text = stringResource(id = R.string.profile_pref))
+        }
+        
+        Box(modifier = Modifier.fillMaxWidth())
+        {
+            Row() {
+                Text(text = stringResource(id = R.string.pref_darkmode))
+                Spacer(modifier = Modifier.weight(1f))
+                Switch(checked = isDarkMode, onCheckedChange = {  isDarkMode = !isDarkMode /* TODO: Set Global Mode */ })
+            }
+        }
+        
+    }
 
 
 }

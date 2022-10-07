@@ -144,7 +144,6 @@ fun ScanScreen() {
                     modifier = Modifier
                         .fillMaxSize()
                 )
-                Switch(checked = isBarcodeScanning, onCheckedChange = { isBarcodeScanning = it })
             }
         }
 
