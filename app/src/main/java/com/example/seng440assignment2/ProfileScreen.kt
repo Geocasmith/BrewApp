@@ -3,23 +3,26 @@ package com.example.seng440assignment2
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowBack
-import androidx.compose.material.icons.outlined.ArrowLeft
-import androidx.compose.material.icons.outlined.MoreVert
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 
@@ -90,18 +93,14 @@ fun ProfileScreen(onNavigateToEdit: () -> Unit, onNavigateToPref: () -> Unit)
                     }
                 }
             }
-
             // Add Reviews Here
         }
     )
 }
 
+
 @Composable
-fun PrefScreen(onBackButtonPress: () -> Unit) {
-
-    var isDarkMode by remember { mutableStateOf(false) };
-
-
+fun EditScreen(onBackButtonPress: () -> Unit) {
     Column() {
         TopAppBar(backgroundColor = Color.LightGray, elevation = 0.dp )
         {
@@ -110,21 +109,17 @@ fun PrefScreen(onBackButtonPress: () -> Unit) {
             }
             Text(modifier = Modifier.padding(horizontal = 5.dp), text = stringResource(id = R.string.profile_pref))
         }
-        
+
         Box(modifier = Modifier.fillMaxWidth())
         {
             Row() {
                 Text(text = stringResource(id = R.string.pref_darkmode))
                 Spacer(modifier = Modifier.weight(1f))
-                Switch(checked = isDarkMode, onCheckedChange = {  isDarkMode = !isDarkMode /* TODO: Set Global Mode */ })
             }
         }
-        
+
     }
-
-
 }
-
 
 
 @Composable
