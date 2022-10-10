@@ -29,7 +29,7 @@ fun PrefScreen(onBackButtonPress: () -> Unit) {
     var openDayDialog by remember { mutableStateOf(false) }
 
     val days = listOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
-    val selectedDays = mutableStateListOf<String>()
+    val selectedDays = arrayListOf<String>()
 
     if (openDayDialog) {
         Dialog(onDismissRequest = { openDayDialog = false }) {
