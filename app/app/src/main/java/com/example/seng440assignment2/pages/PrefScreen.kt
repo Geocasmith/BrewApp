@@ -1,4 +1,4 @@
-package com.example.seng440assignment2
+package com.example.seng440assignment2.pages
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import androidx.lifecycle.ViewModel
+import com.example.seng440assignment2.R
 
 
 @OptIn(ExperimentalMaterialApi::class)
