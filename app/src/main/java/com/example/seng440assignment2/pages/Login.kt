@@ -1,22 +1,14 @@
-package com.example.seng440assignment2.Pages
+package com.example.seng440assignment2.pages
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.R
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AccountCircle
-import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.key.Key.Companion.Tab
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.semantics.Role.Companion.Tab
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -27,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun Register() {
+fun Login() {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -39,13 +31,13 @@ fun Register() {
             modifier = Modifier
                 .width(width = 264.dp)
         ) {
-            SignUpTitleText()
+            TitleText()
             UsernameBox()
             SpacerDP(6)
             PasswordBox()
             SpacerDP(12)
-            SignUpNavigation()
-            SignUpButton()
+            LoginNavigation()
+            LoginButton()
         }
 
     }
@@ -53,7 +45,7 @@ fun Register() {
 }
 
 @Composable
-private fun SignUpButton() {
+private fun LoginButton() {
     Button(
         modifier = Modifier
             .width(width = 140.dp)
@@ -62,7 +54,7 @@ private fun SignUpButton() {
         shape = RoundedCornerShape(4.dp)
     ) {
         Text(
-            text = "Register",
+            text = "LOGIN",
             color = Color.White,
             textAlign = TextAlign.Center,
             lineHeight = 16.sp,
@@ -79,9 +71,9 @@ private fun SignUpButton() {
 
 
 @Composable
-private fun SignUpNavigation() {
+private fun LoginNavigation() {
     Text(
-        text = "Don't have an account? Sign up",
+        text = "Have an account? Log in",
         color = Color.Blue.copy(alpha = 0.54f),
         lineHeight = 24.sp,
         style = TextStyle(textDecoration = TextDecoration.Underline),
@@ -92,9 +84,9 @@ private fun SignUpNavigation() {
 }
 
 @Composable
-private fun SignUpTitleText() {
+private fun TitleText() {
     Text(
-        text = "Sign Up!",
+        text = "Let’s get started!",
         color = Color.Black.copy(alpha = 0.87f),
         lineHeight = 40.sp,
         style = MaterialTheme.typography.headlineLarge,
@@ -104,7 +96,7 @@ private fun SignUpTitleText() {
     )
     SpacerDP(12)
     Text(
-        text = "Create an account to get started.",
+        text = "Login to access your reviews and profile.",
         color = Color.Black.copy(alpha = 0.54f),
         lineHeight = 24.sp,
         style = MaterialTheme.typography.bodyMedium,
@@ -122,3 +114,26 @@ private fun SpacerDP(DPSpacer: Int) {
     )
 }
 
+@Composable
+fun UsernameBox() {
+    var text by remember { mutableStateOf<String>("") }
+
+    OutlinedTextField(
+        value = text,
+        onValueChange = { text = it },
+        label = { Text("Username", color = Color.Black.copy(alpha = 0.6f)) }
+    )
+}
+
+@Composable
+fun PasswordBox() {
+    var text by remember { mutableStateOf<String>("") }
+
+    OutlinedTextField(
+        value = text,
+        onValueChange = { text = it },
+        label = { Text("Password", color = Color.Black.copy(alpha = 0.6f)) },
+        visualTransformation = PasswordVisualTransformation(),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+    )
+}

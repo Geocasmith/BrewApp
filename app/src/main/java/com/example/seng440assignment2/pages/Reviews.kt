@@ -1,4 +1,4 @@
-package com.example.seng440assignment2.Pages
+package com.example.seng440assignment2.pages
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
@@ -7,7 +7,7 @@ import androidx.compose.material3.*
 import androidx.compose.ui.graphics.Color
 
 import androidx.compose.runtime.Composable
-import com.example.seng440assignment2.Components.BeerCard
+import com.example.seng440assignment2.components.BeerCard
 
 /**
  * This is the reviews page

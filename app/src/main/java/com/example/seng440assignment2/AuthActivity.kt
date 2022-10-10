@@ -10,11 +10,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.seng440assignment2.Pages.Login
-import com.example.seng440assignment2.Pages.Reviews
+import com.example.seng440assignment2.pages.Reviews
 
 import com.example.seng440assignment2.ui.theme.SENG440Assignment2Theme
-import com.example.seng440assignment2.Pages.Register
 
 class AuthActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
