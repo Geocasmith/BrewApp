@@ -33,7 +33,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                         paddingValues -> owner?.let {
 
-                    val viewModel: MainViewModelFactory.MainViewModel = viewModel(
+                    val viewModel: MainViewModel = viewModel(
                         it,
                         "MainViewModel",
                         MainViewModelFactory()
