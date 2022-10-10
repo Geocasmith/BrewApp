@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id 'com.google.protobuf' version '0.8.12'
+    id 'org.jetbrains.kotlin.plugin.serialization'
 }
 
 android {
@@ -86,26 +86,6 @@ dependencies {
 
     // Datastore
     implementation 'androidx.datastore:datastore:1.0.0'
-    implementation 'androidx.datastore:datastore-rxjava2:1.0.0'
-    implementation 'androidx.datastore:datastore-rxjava3:1.0.0'
-    implementation 'com.google.protobuf:protobuf-javalite:3.14.0'
-}
-
-protobuf {
-    protoc {
-        artifact = "com.google.protobuf:protoc:3.14.0"
-    }
-
-    // Generates the java Protobuf-lite code for the Protobufs in this project. See
-    // https://github.com/google/protobuf-gradle-plugin#customizing-protobuf-compilation
-    // for more information.
-    generateProtoTasks {
-        all().each { task ->
-            task.builtins {
-                java {
-                    option 'lite'
-                }
-            }
-        }
-    }
+    implementation 'org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5'
+    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0'
 }
