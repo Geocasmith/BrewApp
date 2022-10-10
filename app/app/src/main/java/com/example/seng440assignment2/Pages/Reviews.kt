@@ -1,4 +1,4 @@
-package com.example.seng440assignment2.Pages
+package com.example.seng440assignment2.pages
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
-import com.example.seng440assignment2.Components.BeerCard
+import com.example.seng440assignment2.components.BeerCard
 import kotlinx.coroutines.launch
 
 /**
