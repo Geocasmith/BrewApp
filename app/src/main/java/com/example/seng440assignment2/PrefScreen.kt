@@ -24,7 +24,7 @@ import androidx.lifecycle.ViewModel
 @Composable
 fun PrefScreen(onBackButtonPress: () -> Unit) {
 
-    var isDarkMode by remember { mutableStateOf(false) };
+    var isDarkMode by remember { mutableStateOf(false) }
     var allowNotification by remember { mutableStateOf(false) }
     var openDayDialog by remember { mutableStateOf(false) }
 
