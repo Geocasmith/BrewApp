@@ -1,4 +1,4 @@
-package com.example.seng440assignment2.Components
+package com.example.seng440assignment2.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
