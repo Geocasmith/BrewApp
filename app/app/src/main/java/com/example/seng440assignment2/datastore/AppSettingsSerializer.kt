@@ -1,7 +1,6 @@
 package com.example.seng440assignment2.datastore
 
 import androidx.datastore.core.Serializer
-import com.example.seng440assignment2.AppSettings
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import java.io.InputStream

@@ -13,10 +13,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.seng440assignment2.MainViewModel
 import com.example.seng440assignment2.pages.PrefScreen
 import com.example.seng440assignment2.ProfileScreen
 import com.example.seng440assignment2.camera.ScanScreen
@@ -58,7 +61,7 @@ fun AnimatedNavBar(navController: NavHostController)
 // Animation Navigation https://google.github.io/accompanist/navigation-animation/
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun AnimatedNav(navController: NavHostController, padding: PaddingValues) {
+fun AnimatedNav(navController: NavHostController, mainViewModel: ViewModel, padding: PaddingValues) {
     AnimatedNavHost(
         navController = navController,
         startDestination = Screen.Review.route,
@@ -88,12 +91,12 @@ fun AnimatedNav(navController: NavHostController, padding: PaddingValues) {
             route = "pref",
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None }
-        ) { PrefScreen(onBackButtonPress = { navController.navigate(Screen.Profile.route) }) }
+        ) { PrefScreen(mainViewModel as MainViewModel, onBackButtonPress = { navController.navigate(Screen.Profile.route) }) }
         composable(
             route = "edit",
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None }
-        ) { PrefScreen(onBackButtonPress = { navController.navigate(Screen.Profile.route) }) }
+        ) { PrefScreen(mainViewModel as MainViewModel, onBackButtonPress = { navController.navigate(Screen.Profile.route) }) }
     }
 
 }
