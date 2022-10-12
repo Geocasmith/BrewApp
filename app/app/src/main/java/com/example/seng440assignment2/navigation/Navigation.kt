@@ -23,6 +23,7 @@ import com.example.seng440assignment2.MainViewModel
 import com.example.seng440assignment2.pages.PrefScreen
 import com.example.seng440assignment2.ProfileScreen
 import com.example.seng440assignment2.camera.ScanScreen
+import com.example.seng440assignment2.pages.Reviews
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 
@@ -71,7 +72,7 @@ fun AnimatedNav(navController: NavHostController, mainViewModel: ViewModel, padd
             route = Screen.Review.route,
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None }
-            ) { /* TODO: Review Page */ }
+            ) { Reviews() }
         composable(
             route = Screen.Search.route,
             enterTransition = { EnterTransition.None },

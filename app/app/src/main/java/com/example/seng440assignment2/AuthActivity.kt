@@ -30,16 +30,3 @@ class AuthActivity : ComponentActivity() {
         }
     }
 }
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    SENG440Assignment2Theme {
-        Greeting("Android")
-    }
-}
