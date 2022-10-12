@@ -1,5 +1,7 @@
 package com.example.seng440assignment2
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -13,6 +15,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.seng440assignment2.datastore.AppSettingsSerializer
 import com.example.seng440assignment2.navigation.AnimatedNav
 import com.example.seng440assignment2.navigation.AnimatedNavBar
+import com.example.seng440assignment2.notifications.ReminderNotificationService
 import com.example.seng440assignment2.ui.theme.SENG440Assignment2Theme
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
@@ -21,11 +24,11 @@ val Context.settingsDataStore by dataStore(
     serializer = AppSettingsSerializer
 )
 
-
 @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             // View Model
             val owner = LocalViewModelStoreOwner.current
@@ -51,4 +54,8 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+
+
+
 }

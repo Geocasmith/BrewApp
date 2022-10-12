@@ -4,7 +4,7 @@ enum class BeerType {
     ALE, LARGER, PORTER, STOUT, IPA, PILSNER, SOUR
 }
 
-data class Beers(
+data class Beer(
     val id: Long,
     val name: String,
     val barcode: Long,
