@@ -23,6 +23,7 @@ import com.example.seng440assignment2.MainViewModel
 import com.example.seng440assignment2.pages.PrefScreen
 import com.example.seng440assignment2.ProfileScreen
 import com.example.seng440assignment2.camera.ScanScreen
+import com.example.seng440assignment2.pages.EditScreen
 import com.example.seng440assignment2.pages.Reviews
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
@@ -62,7 +63,7 @@ fun AnimatedNavBar(navController: NavHostController)
 // Animation Navigation https://google.github.io/accompanist/navigation-animation/
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun AnimatedNav(navController: NavHostController, mainViewModel: ViewModel, padding: PaddingValues) {
+fun AnimatedNav(navController: NavHostController, mainViewModel: MainViewModel, padding: PaddingValues) {
     AnimatedNavHost(
         navController = navController,
         startDestination = Screen.Review.route,
@@ -92,12 +93,12 @@ fun AnimatedNav(navController: NavHostController, mainViewModel: ViewModel, padd
             route = "pref",
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None }
-        ) { PrefScreen(mainViewModel as MainViewModel, onBackButtonPress = { navController.navigate(Screen.Profile.route) }) }
+        ) { PrefScreen(mainViewModel, onBackButtonPress = { navController.navigate(Screen.Profile.route) }) }
         composable(
             route = "edit",
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None }
-        ) { PrefScreen(mainViewModel as MainViewModel, onBackButtonPress = { navController.navigate(Screen.Profile.route) }) }
+        ) { EditScreen(mainViewModel, onBackButtonPress = { navController.navigate(Screen.Profile.route) }) }
     }
 
 }
