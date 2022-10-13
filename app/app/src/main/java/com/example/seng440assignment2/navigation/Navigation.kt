@@ -14,7 +14,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -23,6 +22,7 @@ import com.example.seng440assignment2.MainViewModel
 import com.example.seng440assignment2.pages.PrefScreen
 import com.example.seng440assignment2.ProfileScreen
 import com.example.seng440assignment2.camera.ScanScreen
+import com.example.seng440assignment2.pages.BeerPage
 import com.example.seng440assignment2.pages.Reviews
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
@@ -72,7 +72,8 @@ fun AnimatedNav(navController: NavHostController, mainViewModel: ViewModel, padd
             route = Screen.Review.route,
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None }
-            ) { Reviews() }
+            ) { Reviews(onNavigateToBeerPage = {beerName:String -> navController.navigate("beer/{$beerName}") })}
+
         composable(
             route = Screen.Search.route,
             enterTransition = { EnterTransition.None },
@@ -87,7 +88,10 @@ fun AnimatedNav(navController: NavHostController, mainViewModel: ViewModel, padd
             route = Screen.Profile.route,
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None }
-        ) { ProfileScreen(onNavigateToEdit = { navController.navigate("edit") }, onNavigateToPref = { navController.navigate("pref") }) }
+        ) { ProfileScreen(onNavigateToEdit = { navController.navigate("edit") }, onNavigateToPref = { navController.navigate("pref") },
+        // lambda function with parameter name
+
+            ) }
         composable(
             route = "pref",
             enterTransition = { EnterTransition.None },
@@ -98,6 +102,17 @@ fun AnimatedNav(navController: NavHostController, mainViewModel: ViewModel, padd
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None }
         ) { PrefScreen(mainViewModel as MainViewModel, onBackButtonPress = { navController.navigate(Screen.Profile.route) }) }
+        composable(
+            route = "beer/{beerName}",
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
+        ) { backStackEntry -> BeerPage(mainViewModel as MainViewModel, backStackEntry.arguments?.getString("beerName")) {
+            navController.navigate(
+                "review"
+            )
+        }
+        }
+
     }
 
 }

@@ -17,18 +17,19 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 
 /**
  * A card that displays a beer review. Inputs are the beer name, description, reviewer name, rating, and image link.
  */
 @Composable
-fun BeerCard(title:String, description:String, name:String,rating:Int, imageLink:String,onClick: () -> Unit = {}) {
+fun BeerCard(title:String, description:String, name:String, rating:Int, imageLink:String, onClick: () -> Unit = {},onNavigateToBeerPage: (String) -> Unit) {
     val padding=16.dp
     Card(
         elevation = 4.dp, modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = onClick)
+            .clickable(onClick = { onNavigateToBeerPage(title) })
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             //box with image aligned center horizontally and height of 90 and width of 50 dp
@@ -38,7 +39,7 @@ fun BeerCard(title:String, description:String, name:String,rating:Int, imageLink
                     .width(90.dp),
                 contentAlignment = Alignment.Center
             ) {
-                //image
+                //image if its a showimage
                 AsyncImage(
                     model = imageLink,
                     contentDescription = "Beer!",
@@ -85,13 +86,7 @@ fun BeerCard(title:String, description:String, name:String,rating:Int, imageLink
                     )
                     Row {
                         //filled star for rating and unfilled for remaining out of 5
-                        for (i in 1..5) {
-                            if (i <= rating) {
-                                Icon(Icons.Outlined.Star, contentDescription = "Filled Star")
-                            } else {
-                                Icon(Icons.Outlined.Grade, contentDescription = "Unfilled Star")
-                            }
-                        }
+                        RatingStars(rating)
                     }
                 }
 

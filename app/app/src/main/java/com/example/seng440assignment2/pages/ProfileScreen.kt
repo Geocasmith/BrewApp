@@ -98,7 +98,7 @@ fun ProfileScreen(onNavigateToEdit: () -> Unit, onNavigateToPref: () -> Unit)
                 }
             } else {
                 items(reviews, key = { it.id }) {
-                    BeerCard(title = it.title, description = it.description, name = it.reviewer.name, rating = it.rating, imageLink = it.beer.photoURL)
+//                    BeerCard(title = it.title, description = it.description, name = it.reviewer.name, rating = it.rating, imageLink = it.beer.photoURL)
                 }
             }
             // Add Reviews Here
