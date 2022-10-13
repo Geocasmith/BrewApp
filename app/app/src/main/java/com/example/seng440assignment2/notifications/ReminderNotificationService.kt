@@ -7,10 +7,15 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
+import android.os.SystemClock
 import androidx.core.app.NotificationCompat
 import com.example.seng440assignment2.MainActivity
 import com.example.seng440assignment2.R
 import okhttp3.internal.notify
+import java.time.LocalTime
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 class ReminderNotificationService(private val context: Context): ContextWrapper(context) {
 
@@ -20,8 +25,14 @@ class ReminderNotificationService(private val context: Context): ContextWrapper(
     }
 
     private val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    private val alarmManager = context.getSystemService(ALARM_SERVICE) as AlarmManager
+    private var pendingReminderIntent: PendingIntent
+
 
     init {
+        val reminderIntent = Intent(context, NotificationReceiver::class.java)
+        pendingReminderIntent = PendingIntent.getBroadcast(context, 0, reminderIntent, PendingIntent.FLAG_IMMUTABLE)
+
         createNotificationChannel()
     }
 
@@ -37,16 +48,18 @@ class ReminderNotificationService(private val context: Context): ContextWrapper(
         notificationManager.createNotificationChannel(channel)
     }
 
-    fun setReminder() {
-        val reminderIntent = Intent(context, NotificationReceiver::class.java)
-        val pendingReminderIntent = PendingIntent.getBroadcast(context, 0, reminderIntent, 0)
-        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+    fun setReminder(timeStr: String) {
+        val calendar = Calendar.getInstance()
+        val time = LocalTime.parse(timeStr)
+        calendar.add(Calendar.SECOND, 0)
+        calendar.add(Calendar.MINUTE, time.minute)
+        calendar.add(Calendar.HOUR, time.hour)
 
-        alarmManager.setRepeating(AlarmManager.RTC, AlarmManager.INTERVAL_DAY, )
+        alarmManager.setRepeating(AlarmManager.RTC, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingReminderIntent)
     }
 
     fun removeReminder() {
-
+        alarmManager.cancel(pendingReminderIntent)
     }
 
     fun showNotification() {
