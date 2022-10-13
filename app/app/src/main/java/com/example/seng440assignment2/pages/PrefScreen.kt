@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.seng440assignment2.MainViewModel
 import com.example.seng440assignment2.R
+import com.example.seng440assignment2.notifications.ReminderNotificationService
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -29,6 +30,10 @@ fun PrefScreen(mainViewModel: MainViewModel, onBackButtonPress: () -> Unit) {
 
     val appSettings = mainViewModel.getAppSettings()
     val scope = rememberCoroutineScope()
+
+    // Notifications
+    val context = LocalContext.current
+    val reminderNotificationService = ReminderNotificationService(context)
 
     // Time Picker Content
     val mCalendar = Calendar.getInstance()
@@ -51,7 +56,11 @@ fun PrefScreen(mainViewModel: MainViewModel, onBackButtonPress: () -> Unit) {
                 if (mHour < 10) {
                     strHour = "0$strHour"
                 }
-                mainViewModel.updateNotificationTime("$strHour:$strMin")
+
+                val timeString = "$strHour:$strMin"
+                mainViewModel.updateNotificationTime(timeString)
+                // Update Reminder Time
+                reminderNotificationService.setReminder(timeString)
             }
         }, hour, minute, false
     )
@@ -116,7 +125,13 @@ fun PrefScreen(mainViewModel: MainViewModel, onBackButtonPress: () -> Unit) {
                         Switch(modifier = Modifier.size(50.dp), checked = appSettings.allowNotifications,
                             onCheckedChange = {
                                 scope.launch {
-                                    mainViewModel.setAllowNotifications(!appSettings.allowNotifications)
+                                    mainViewModel.setAllowNotifications(it)
+                                    if (it) {
+                                        reminderNotificationService.setReminder(appSettings.notificationTime)
+                                    } else {
+                                        reminderNotificationService.removeReminder()
+                                    }
+
                                 }
                             }
                         )

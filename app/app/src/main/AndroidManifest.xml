@@ -28,6 +28,9 @@
             </intent-filter>
         </activity>
 
+        <receiver android:name=".notifications.NotificationReceiver"/>
+
+
         <meta-data
             android:name="com.google.mlkit.vision.DEPENDENCIES"
             android:value="ocr" />

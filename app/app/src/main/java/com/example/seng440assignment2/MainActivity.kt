@@ -21,15 +21,14 @@ val Context.settingsDataStore by dataStore(
     serializer = AppSettingsSerializer
 )
 
-
 @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             // View Model
             val owner = LocalViewModelStoreOwner.current
-
             val viewModel: MainViewModel = owner?.let {
                 viewModel(
                     it,
@@ -51,4 +50,8 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+
+
+
 }
