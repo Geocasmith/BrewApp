@@ -1,7 +1,5 @@
 package com.example.seng440assignment2
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -15,7 +13,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.seng440assignment2.datastore.AppSettingsSerializer
 import com.example.seng440assignment2.navigation.AnimatedNav
 import com.example.seng440assignment2.navigation.AnimatedNavBar
-import com.example.seng440assignment2.notifications.ReminderNotificationService
 import com.example.seng440assignment2.ui.theme.SENG440Assignment2Theme
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
@@ -32,7 +29,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             // View Model
             val owner = LocalViewModelStoreOwner.current
-
             val viewModel: MainViewModel = owner?.let {
                 viewModel(
                     it,

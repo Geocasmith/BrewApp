@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.os.SystemClock
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.example.seng440assignment2.MainActivity
 import com.example.seng440assignment2.R
@@ -49,13 +50,15 @@ class ReminderNotificationService(private val context: Context): ContextWrapper(
     }
 
     fun setReminder(timeStr: String) {
+        Log.d("Notify", "Setting Reminder for: $timeStr")
+
         val calendar = Calendar.getInstance()
         val time = LocalTime.parse(timeStr)
-        calendar.add(Calendar.SECOND, 0)
-        calendar.add(Calendar.MINUTE, time.minute)
-        calendar.add(Calendar.HOUR, time.hour)
 
-        alarmManager.setRepeating(AlarmManager.RTC, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingReminderIntent)
+        calendar.add(Calendar.MINUTE, time.minute)
+        calendar.add(Calendar.HOUR_OF_DAY, time.hour)
+
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingReminderIntent)
     }
 
     fun removeReminder() {
@@ -76,6 +79,7 @@ class ReminderNotificationService(private val context: Context): ContextWrapper(
             .setContentTitle(context.getString(R.string.reminder_notification_title))
             .setContentText(context.getString(R.string.reminder_notification_text))
             .setContentIntent(activityPendingIntent)
+            .setAutoCancel(true)
             .build()
 
         notificationManager.notify(1, notification)
