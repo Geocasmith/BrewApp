@@ -1,5 +1,6 @@
 package com.example.seng440assignment2.notifications
 
+import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -9,6 +10,7 @@ import android.content.Intent
 import androidx.core.app.NotificationCompat
 import com.example.seng440assignment2.MainActivity
 import com.example.seng440assignment2.R
+import okhttp3.internal.notify
 
 class ReminderNotificationService(private val context: Context): ContextWrapper(context) {
 
@@ -36,7 +38,15 @@ class ReminderNotificationService(private val context: Context): ContextWrapper(
     }
 
     fun setReminder() {
-        var intent = Intent(context, )
+        val reminderIntent = Intent(context, NotificationReceiver::class.java)
+        val pendingReminderIntent = PendingIntent.getBroadcast(context, 0, reminderIntent, 0)
+        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+
+        alarmManager.setRepeating(AlarmManager.RTC, AlarmManager.INTERVAL_DAY, )
+    }
+
+    fun removeReminder() {
+
     }
 
     fun showNotification() {
@@ -55,14 +65,6 @@ class ReminderNotificationService(private val context: Context): ContextWrapper(
             .setContentIntent(activityPendingIntent)
             .build()
 
-        notificationManager.n
+        notificationManager.notify(1, notification)
     }
-
-
-
-
-    override fun onHandleIntent(p0: Intent?) {
-        TODO("Not yet implemented")
-    }
-
 }

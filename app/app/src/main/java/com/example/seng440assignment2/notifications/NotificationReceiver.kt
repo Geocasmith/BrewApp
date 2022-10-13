@@ -8,8 +8,7 @@ import androidx.core.app.NotificationCompat
 class NotificationReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
-        val reminderNotificationService = ReminderNotificationService(context)
-        val notificationBuilder = reminderNotificationService.setReminder()
+        ReminderNotificationService(context).showNotification()
     }
 
 }
