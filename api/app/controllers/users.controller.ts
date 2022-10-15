@@ -60,3 +60,15 @@ exports.logout = async function (req: { authenticatedUserId: any; }, res: Respon
         res.status(500).send();
     }
 };
+
+exports.findById = async function (req: { params: { id: any; }; authenticatedUserId: any; }, res: Response) {
+    const id = req.params.id;
+    const userData = await usersModel.findById(id);
+    if (userData == null) {
+        res.statusMessage = 'Not Found';
+        res.status(404).send();
+    } else {
+        res.statusMessage = 'OK';
+        res.status(200).json(userData);
+    }
+};

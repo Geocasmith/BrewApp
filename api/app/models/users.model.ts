@@ -59,3 +59,24 @@ exports.findByUsername = async function (username: string) {
         return null;
     }
 }
+
+exports.findById = async function (id: number) {
+    const viewSQL = 'SELECT * FROM `user` WHERE `id` = ?';
+
+    try {
+        const pool = await db.getPool();
+        const rows = await pool.query(viewSQL, id);
+        if (rows.length < 1) {
+            return null;
+        } else {
+            const foundUser = rows[0];
+            return {
+                firstName: foundUser.name,
+                lastName: foundUser.username,
+            };
+        }
+    } catch (err) {
+        errorService.logSqlError(err);
+        return null;
+    }
+};

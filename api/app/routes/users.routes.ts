@@ -10,4 +10,7 @@ module.exports = function (app: any) {
 
     app.route(baseUrl + '/logout')
         .post(authentication.loginRequired, usersController.logout);
+
+    app.route(baseUrl + '/:id')
+        .get(authentication.loginRequired, usersController.findById)
 }
