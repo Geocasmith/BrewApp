@@ -154,7 +154,7 @@ fun PrefScreen(mainViewModel: MainViewModel, onBackButtonPress: () -> Unit) {
                                     text = stringResource(id = R.string.pref_notification_time),
                                     fontSize = 20.sp)
                                 Text(modifier = Modifier.padding(horizontal = 2.dp),
-                                    text = stringResource(id = R.string.pref_notification_time_curr) + ": $notifyTime",
+                                    text = stringResource(id = R.string.curr_string) + ": $notifyTime",
                                     fontSize = 15.sp,
                                     color = Color.Gray)
                             }
