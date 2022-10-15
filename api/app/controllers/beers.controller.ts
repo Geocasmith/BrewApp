@@ -34,3 +34,13 @@ exports.get = async function (req:Request, res:Response) {
         res.status(500).send();
     }
 }
+
+exports.getRandom = async function (req:Request, res:Response) {
+    try {
+        const beer = await beerModel.getRandom();
+        res.statusMessage = "OK";
+        res.status(200).json(beer);
+    } catch (e) {
+        res.status(500).send();
+    }
+}

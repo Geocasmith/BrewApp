@@ -29,3 +29,15 @@ exports.get = async function (amount: number, page: number) {
         throw e;
     }
 }
+
+exports.getRandom = async function () {
+    const sql = 'SELECT * FROM `Beer` ORDER BY RAND() LIMIT 1';
+    try {
+        const pool = db.getPool();
+        const result = await pool.query(sql);
+        return result[0];
+    } catch (e) {
+        errorService.logSqlError(e);
+        throw e;
+    }
+}
