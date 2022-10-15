@@ -21,3 +21,16 @@ exports.create = async function (req: Request, res: Response) {
         }
     }
 };
+
+exports.get = async function (req:Request, res:Response) {
+    const page = req.query.page || 0;
+    const size = req.query.size || 25;
+
+    try {
+        const beers = await beerModel.get(size, page);
+        res.statusMessage = "OK"
+        res.status(200).json(beers);
+    } catch (e) {
+        res.status(500).send();
+    }
+}

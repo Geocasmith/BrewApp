@@ -1,4 +1,5 @@
 import {BeerCreate} from "../../@types/app/models/beer.model";
+
 const db = require('../../config/db');
 const errorService = require('../services/errors.service');
 
@@ -13,5 +14,18 @@ exports.create = async function (beer: BeerCreate) {
         return result.insertId;
     } catch (e) {
         errorService.logSqlError(e);
+    }
+}
+
+exports.get = async function (amount: number, page: number) {
+    const sql = 'SELECT * FROM `Beer` LIMIT ? OFFSET ?';
+    const data = [amount, amount * page]
+
+    try {
+        const pool = await db.getPool();
+        return await pool.query(sql, data);
+    } catch (e) {
+        errorService.logSqlError(e);
+        throw e;
     }
 }
