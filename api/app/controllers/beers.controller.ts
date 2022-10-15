@@ -35,6 +35,20 @@ exports.get = async function (req:Request, res:Response) {
     }
 }
 
+exports.getByBarcode = async function (req:Request, res:Response) {
+    const barcode = req.params.code;
+    try {
+        const beer = await beerModel.getByBarcode(barcode);
+        if (beer == null) {
+            res.status(404).send();
+        } else {
+            res.status(200).json(beer);
+        }
+    } catch (e) {
+        res.status(500).send();
+    }
+}
+
 exports.getRandom = async function (req:Request, res:Response) {
     try {
         const beer = await beerModel.getRandom();

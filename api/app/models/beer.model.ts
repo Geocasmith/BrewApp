@@ -30,6 +30,18 @@ exports.get = async function (amount: number, page: number) {
     }
 }
 
+exports.getByBarcode = async function (barcode: number) {
+    const sql = 'SELECT * FROM `Beer` WHERE barcode = ?';
+    try {
+        const pool = await db.getPool();
+        const result = await pool.query(sql, [barcode]);
+        return result[0] || null;
+    } catch (e) {
+        errorService.logSqlError(e);
+        throw e;
+    }
+}
+
 exports.getRandom = async function () {
     const sql = 'SELECT * FROM `Beer` ORDER BY RAND() LIMIT 1';
     try {
