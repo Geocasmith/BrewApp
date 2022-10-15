@@ -14,24 +14,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.seng440assignment2.components.BeerCard
+import com.example.seng440assignment2.model.Review
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ProfileScreen(onNavigateToEdit: () -> Unit, onNavigateToPref: () -> Unit)
 {
         /* TODO: Add Reviews */
-        var reviews = null
+        var reviews = listOf<Review>()
         var options by remember { mutableStateOf(false) }
 
 
@@ -62,6 +60,12 @@ fun ProfileScreen(onNavigateToEdit: () -> Unit, onNavigateToPref: () -> Unit)
                         }) {
                             Text(text = stringResource(id = R.string.profile_pref))
                         }
+                        DropdownMenuItem(onClick = {
+                            options = false
+                            /* TODO: Logout */
+                        }) {
+                            Text(text = stringResource(id = R.string.profile_logout))
+                        }
                     }
                 }
 
@@ -91,6 +95,10 @@ fun ProfileScreen(onNavigateToEdit: () -> Unit, onNavigateToPref: () -> Unit)
                             color = Color.LightGray
                         )
                     }
+                }
+            } else {
+                items(reviews, key = { it.id }) {
+                    BeerCard(title = it.title, description = it.description, name = it.reviewer.name, rating = it.rating, imageLink = it.beer.photoURL)
                 }
             }
             // Add Reviews Here

@@ -7,7 +7,12 @@
     <string name="no_review_text">No Reviews</string>
     <string name="profile_edit">Edit</string>
     <string name="profile_pref">Preferences</string>
+    <string name="profile_logout">Logout</string>
     <string name="pref_darkmode">Dark Mode</string>
-    <string name="pref_allow_notifications">Allow Notifications</string>
-    <string name="pref_notification_days">Days</string>
+    <string name="pref_allow_notifications">Enable Reminders</string>
+    <string name="pref_notification_time">Time</string>
+    <string name="pref_notification_time_btn">Set</string>
+    <string name="pref_notification_time_curr">Current</string>
+    <string name="reminder_notification_title">Review Some Beer</string>
+    <string name="reminder_notification_text">Have you reviewed a craft beer today</string>
 </resources>
