@@ -1,6 +1,8 @@
 import {Request, Response} from "express";
 
 const usersModel = require('../models/users.model')
+const errorService = require('../services/errors.service');
+const passwordService = require('../services/passwords.service');
 
 exports.create = async function (req: Request, res: Response) {
     // TODO: Validate body
@@ -18,5 +20,43 @@ exports.create = async function (req: Request, res: Response) {
             }
             res.status(500).send();
         }
+    }
+};
+
+exports.login = async function (req: Request, res: Response) {
+        try {
+            const foundUser = await usersModel.findByUsername(req.body.username);
+            if (foundUser == null) {
+                // Either no user found or password check failed
+                res.statusMessage = 'Bad Request: invalid username/password supplied';
+                res.status(400).send();
+            } else {
+                const passwordCorrect = await passwordService.compare(req.body.password, foundUser.password);
+                if (passwordCorrect) {
+                    const loginResult = await usersModel.login(foundUser.id);
+                    res.statusMessage = 'OK';
+                    res.status(200).json(loginResult);
+                } else {
+                    res.statusMessage = 'Bad Request: invalid username/password supplied';
+                    res.status(400).send();
+                }
+            }
+        } catch (err) {
+            // Something went wrong with either password hashing or logging in
+            res.statusMessage = 'Internal Server Error';
+            res.status(500).send();
+        }
+};
+
+exports.logout = async function (req: { authenticatedUserId: any; }, res: Response) {
+    const id = req.authenticatedUserId;
+
+    try {
+        await usersModel.logout(id);
+        res.statusMessage = 'OK';
+        res.status(200).send();
+    } catch (err) {
+        res.statusMessage = 'Internal Server Error';
+        res.status(500).send();
     }
 };
