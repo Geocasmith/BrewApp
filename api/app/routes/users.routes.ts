@@ -1,4 +1,5 @@
 const usersController = require('../controllers/users.controller');
+// @ts-ignore
 const authentication = require('../middleware/authentication.middleware')
 
 module.exports = function (app: any) {

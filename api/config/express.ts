@@ -15,5 +15,6 @@ module.exports = function () {
         res.send('Welcome to our amazingly awesome API for our SENG440 Assignment 2 App');
     });
     require('../app/routes/users.routes')(app);
+    require('../app/routes/beers.routes')(app);
     return app;
 }
