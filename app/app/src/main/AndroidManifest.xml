@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.seng440assignment2">
     <uses-permission android:name="android.permission.INTERNET"/>
-
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.sensor.accelerometer" android:required="true"/>
 
     <application
         android:allowBackup="true"
@@ -29,7 +29,6 @@
         </activity>
 
         <receiver android:name=".notifications.NotificationReceiver"/>
-
 
         <meta-data
             android:name="com.google.mlkit.vision.DEPENDENCIES"
