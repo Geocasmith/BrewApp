@@ -36,3 +36,14 @@ exports.getByBeerId = async function (req:Request, res:Response) {
         res.status(500).send();
     }
 }
+
+exports.getMyReviews = async function (req: { authenticatedUserId: any; }, res:Response) {
+    const userId = req.authenticatedUserId;
+    try {
+        const reviews = await reviewModel.getMyReviews(userId);
+        res.statusMessage = "OK"
+        res.status(200).json(reviews);
+    } catch (e) {
+        res.status(500).send();
+    }
+}
