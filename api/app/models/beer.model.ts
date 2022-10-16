@@ -18,7 +18,7 @@ exports.create = async function (beer: BeerCreate) {
 }
 
 exports.get = async function (amount: number, page: number) {
-    const sql = 'SELECT * FROM `Beer` LIMIT ? OFFSET ?';
+    const sql = 'SELECT *, (SELECT AVG(rating) from Review where beer = Beer.id) as rating FROM `Beer` LIMIT ? OFFSET ?';
     const data = [amount, amount * page]
 
     try {
@@ -31,7 +31,7 @@ exports.get = async function (amount: number, page: number) {
 }
 
 exports.getByBarcode = async function (barcode: number) {
-    const sql = 'SELECT * FROM `Beer` WHERE barcode = ?';
+    const sql = 'SELECT *, (SELECT AVG(rating) from Review where beer = Beer.id) as rating FROM `Beer` WHERE barcode = ?';
     try {
         const pool = await db.getPool();
         const result = await pool.query(sql, [barcode]);
@@ -43,7 +43,7 @@ exports.getByBarcode = async function (barcode: number) {
 }
 
 exports.getRandom = async function () {
-    const sql = 'SELECT * FROM `Beer` ORDER BY RAND() LIMIT 1';
+    const sql = 'SELECT *, (SELECT AVG(rating) from Review where beer = Beer.id) as rating FROM `Beer` ORDER BY RAND() LIMIT 1';
     try {
         const pool = await db.getPool();
         const result = await pool.query(sql);

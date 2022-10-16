@@ -16,5 +16,6 @@ module.exports = function () {
     });
     require('../app/routes/users.routes')(app);
     require('../app/routes/beers.routes')(app);
+    require('../app/routes/reviews.routes')(app);
     return app;
 }
