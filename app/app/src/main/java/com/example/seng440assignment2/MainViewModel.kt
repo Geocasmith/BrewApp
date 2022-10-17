@@ -60,10 +60,6 @@ class MainViewModel(private var settingsDataStore: DataStore<AppSettings>, priva
         return userData.id
     }
 
-    private fun getAuthToken(): String {
-        return userData.authToken
-    }
-
     suspend fun clearUserData() {
         userDataStore.updateData { UserData() }
     }
@@ -104,11 +100,10 @@ class MainViewModel(private var settingsDataStore: DataStore<AppSettings>, priva
         }
 
         val request : JsonObjectRequest = object : JsonObjectRequest(requestType, url, body, responseHandler, eHandler) {
-            val authToken = getAuthToken()
             @Throws(AuthFailureError::class)
             override fun getHeaders(): Map<String, String> {
                 val params: MutableMap<String, String> = HashMap()
-                params["X-Authorization"] = authToken
+                params["X-Authorization"] = userData.authToken
                 return params
             }
         }
