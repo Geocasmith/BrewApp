@@ -61,7 +61,7 @@ exports.findByUsername = async function (username: string) {
 }
 
 exports.findById = async function (id: number) {
-    const viewSQL = 'SELECT * FROM `user` WHERE `id` = ?';
+    const viewSQL = 'SELECT * FROM `User` WHERE `id` = ?';
 
     try {
         const pool = await db.getPool();
@@ -70,10 +70,8 @@ exports.findById = async function (id: number) {
             return null;
         } else {
             const foundUser = rows[0];
-            return {
-                firstName: foundUser.name,
-                lastName: foundUser.username,
-            };
+            delete foundUser.password;
+            return foundUser;
         }
     } catch (err) {
         errorService.logSqlError(err);
