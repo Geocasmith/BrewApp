@@ -5,11 +5,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
@@ -20,10 +24,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.seng440assignment2.AuthViewModel
 import com.example.seng440assignment2.R
 
+
 @Composable
-fun Login(onLogin: () -> Unit, onRegisterLinkClicked: () -> Unit) {
+fun Login(viewModel: AuthViewModel, onLogin: () -> Unit, onRegisterLinkClicked: () -> Unit) {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -36,16 +45,14 @@ fun Login(onLogin: () -> Unit, onRegisterLinkClicked: () -> Unit) {
                 .width(width = 264.dp)
         ) {
             TitleText()
-            UsernameBox()
+            UsernameBox(viewModel)
             SpacerDP(6)
-            PasswordBox()
+            PasswordBox(viewModel)
             SpacerDP(12)
             RegisterNavigation(onRegisterLinkClicked)
-            LoginButton(onLogin)
+            LoginButton { viewModel.login(context, scope, onLogin) }
         }
-
     }
-
 }
 
 @Composable
@@ -118,23 +125,20 @@ private fun SpacerDP(DPSpacer: Int) {
 }
 
 @Composable
-fun UsernameBox() {
-    var text by remember { mutableStateOf<String>("") }
-
+fun UsernameBox(viewModel: AuthViewModel) {
     OutlinedTextField(
-        value = text,
-        onValueChange = { text = it },
+        value = viewModel.userName,
+        onValueChange = { viewModel.userName = it },
         label = { Text(stringResource(id = R.string.login_username_placeholder), color = Color.Black.copy(alpha = 0.6f)) }
     )
 }
 
 @Composable
-fun PasswordBox() {
-    var text by remember { mutableStateOf<String>("") }
+fun PasswordBox(viewModel: AuthViewModel) {
 
     OutlinedTextField(
-        value = text,
-        onValueChange = { text = it },
+        value = viewModel.userPassword,
+        onValueChange = { viewModel.userPassword = it },
         label = { Text(stringResource(id = R.string.login_password_placeholder), color = Color.Black.copy(alpha = 0.6f)) },
         visualTransformation = PasswordVisualTransformation(),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)

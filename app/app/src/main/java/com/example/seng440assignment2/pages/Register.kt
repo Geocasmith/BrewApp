@@ -17,9 +17,11 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.seng440assignment2.R
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.seng440assignment2.AuthViewModel
 
 @Composable
-fun Register(onLoginLinkClicked: () -> Unit) {
+fun Register(viewModel: AuthViewModel, onLoginLinkClicked: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -32,16 +34,14 @@ fun Register(onLoginLinkClicked: () -> Unit) {
                 .width(width = 264.dp)
         ) {
             SignUpTitleText()
-            UsernameBox()
+            UsernameBox(viewModel)
             SpacerDP(6)
-            PasswordBox()
+            PasswordBox(viewModel)
             SpacerDP(12)
             LoginNavigation(onLoginLinkClicked)
             SignUpButton()
         }
-
     }
-
 }
 
 @Composable

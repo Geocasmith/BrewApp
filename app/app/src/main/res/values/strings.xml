@@ -5,6 +5,8 @@
     <string name="login_description">Login to access your reviews and profile</string>
     <string name="login_username_placeholder">Username</string>
     <string name="login_password_placeholder">Password</string>
+    <string name="login_400_error">Invalid Username or Password</string>
+    <string name="generic_500_error">Server Error</string>
     <string name="login_btn_text">LOGIN</string>
     <string name="signup_link">Don\'t have an account? Sign Up</string>
     <string name="signup_title">Sign Up!</string>
