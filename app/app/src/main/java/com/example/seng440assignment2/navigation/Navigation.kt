@@ -78,7 +78,8 @@
                 enterTransition = { EnterTransition.None },
                 exitTransition = { ExitTransition.None }
             ) { /* TODO: Search Page */
-            NewBeer(barcode = "123456789")
+//            NewBeer(barcode = "123456789")
+                SearchBarPage()
             }
             composable(
                 route = Screen.Scan.route,
