@@ -69,7 +69,7 @@ fun Categories(onNavigateToBeerListPage: (String) -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BeerListPage(mainViewModel: MainViewModel, string: Any?,onNavigateToBeerPage: (String) -> Unit){
+fun BeerListPage(mainViewModel: MainViewModel, string: Any?, onNavigateToBeerPage: (String) -> Unit){
     val beerTypeOptions = BeerType.values().map { it.name }
     val scaffoldState = rememberScaffoldState()
     //convert string to all uppercase
@@ -108,24 +108,23 @@ fun BeerListPage(mainViewModel: MainViewModel, string: Any?,onNavigateToBeerPage
                 backgroundColor = Color.White)
 
         },
-        content = {
-            //lazy column for both beer cards
-            LazyColumn {
-                beerList.map { beerListItem ->
-                    item {
-                        BeerCard(
-                            beerName = beerListItem.title,
-                            imageLink = beerListItem.photoURL,
-                            rating = beerListItem.averageRating,
-                            onNavigateToBeerPage = { onNavigateToBeerPage(beerListItem.barcode) }
-                        )
-                    }
-                    }
+    ) {
+        //lazy column for both beer cards
+        LazyColumn {
+            beerList.map { beerListItem ->
+                item {
+                    BeerCard(
+                        beerName = beerListItem.title,
+                        imageLink = beerListItem.photoURL,
+                        rating = beerListItem.averageRating,
+                        onNavigateToBeerPage = { onNavigateToBeerPage(beerListItem.barcode) }
+                    )
                 }
-                //put two categorycards in a row
+            }
+        }
+        //put two categorycards in a row
 
-            },
-    )
+    }
 }
 
 @Composable

@@ -129,7 +129,7 @@ fun AnimatedNav(
             BeerListPage(
                 mainViewModel,
                 backStackEntry.arguments?.getString("type")
-            ) { navController.navigate("beerList") }
+            ) { barcode:String -> navController.navigate("beer/$barcode") }
         }
         composable(
             route = "beer/{barcode}",
