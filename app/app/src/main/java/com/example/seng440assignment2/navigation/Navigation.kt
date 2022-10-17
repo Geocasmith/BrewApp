@@ -74,12 +74,13 @@ fun AnimatedNav(
             route = Screen.Review.route,
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None }
-        ) { Reviews(mainViewModel, onNavigateToBeerPage = { beerName: String -> navController.navigate("beer/$beerName") }) }
+        ) { Reviews(onNavigateToBeerPage = { beerName: String -> navController.navigate("beer/$beerName") }) }
+
         composable(
             route = Screen.Search.route,
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None }
-        ) { /* TODO: Beer Catalogue */ }
+        ) { Categories(onNavigateToBeerListPage = { beerType: String -> navController.navigate("beerList/$beerType") }) }
         composable(
             route = Screen.Scan.route,
             enterTransition = { EnterTransition.None },
@@ -119,6 +120,15 @@ fun AnimatedNav(
             EditScreen(
                 mainViewModel = mainViewModel,
                 onBackButtonPress = { navController.navigate(Screen.Profile.route) })
+        }
+        composable(
+            route = "beerList/{type}",
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
+        ) { backStackEntry ->
+            BeerListPage(
+                backStackEntry.arguments?.getString("type")
+            ) { navController.navigate("beerList") }
         }
         composable(
             route = "beer/{barcode}",
