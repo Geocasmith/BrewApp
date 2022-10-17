@@ -13,16 +13,17 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.seng440assignment2.datastore.AppSettings
+import com.example.seng440assignment2.datastore.UserData
 import org.json.JSONObject
 
 
-class MainViewModelFactory(private val settingsDataStore: DataStore<AppSettings>, private val context: Context) : ViewModelProvider.Factory {
+class MainViewModelFactory(private val settingsDataStore: DataStore<AppSettings>, private val userDataStore: DataStore<UserData>, private val context: Context) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return MainViewModel(settingsDataStore, context) as T
+        return MainViewModel(settingsDataStore, userDataStore, context) as T
     }
 }
 
-class MainViewModel(private var settingsDataStore: DataStore<AppSettings>, context: Context) : ViewModel() {
+class MainViewModel(private var settingsDataStore: DataStore<AppSettings>, private var userDataStore: DataStore<UserData>, context: Context) : ViewModel() {
 
     private val queue = Volley.newRequestQueue(context);
 
@@ -49,18 +50,36 @@ class MainViewModel(private var settingsDataStore: DataStore<AppSettings>, conte
         return settingsDataStore.data.collectAsState(initial = AppSettings()).value
     }
 
+
+    @Composable
+    fun getUserId(): Long {
+        return userDataStore.data.collectAsState(initial = UserData()).value.id
+    }
+
+    @Composable
+    private fun getAuthToken(): String {
+        return userDataStore.data.collectAsState(initial = UserData()).value.authToken
+    }
+
+    suspend fun clearUserData() {
+        userDataStore.updateData { UserData() }
+    }
+
     fun addRequestToQueue(request: JsonObjectRequest) {
         queue.add(request);
     }
 
+    @Composable
     fun getRequest(context: Context, endpoint: String, responseHandler: Response.Listener<JSONObject>, errorHandler: Response.ErrorListener? = null): JsonObjectRequest {
         return request(context, endpoint, Request.Method.GET, responseHandler, errorHandler)
     }
 
+    @Composable
     fun postRequest(context: Context, endpoint: String, body: JSONObject?, responseHandler: Response.Listener<JSONObject>, errorHandler: Response.ErrorListener? = null): JsonObjectRequest {
         return request(context, endpoint, Request.Method.POST, responseHandler, errorHandler, body)
     }
 
+    @Composable
     private fun request(context: Context, endpoint: String, requestType: Int, responseHandler: Response.Listener<JSONObject>, errorHandler: Response.ErrorListener? = null, body: JSONObject? = null): JsonObjectRequest {
         var url = "https://seng440-api-6ieosyuwfq-ts.a.run.app/api"
         if (endpoint.startsWith("https")) {
@@ -85,14 +104,14 @@ class MainViewModel(private var settingsDataStore: DataStore<AppSettings>, conte
         }
 
         val request : JsonObjectRequest = object : JsonObjectRequest(requestType, url, body, responseHandler, eHandler) {
+            val authToken = getAuthToken()
             @Throws(AuthFailureError::class)
             override fun getHeaders(): Map<String, String> {
                 val params: MutableMap<String, String> = HashMap()
-                params["X-Authorization"] = "Ze3bbq5viq7eW2hy7JyZ4a4xEgXwNxRN";
+                params["X-Authorization"] = authToken
                 return params
             }
         }
-
         return request
     }
 
