@@ -26,8 +26,6 @@ import com.example.seng440assignment2.components.SpacerDP
 
 class EditUserViewModel: ViewModel() {
 
-    val beerTypes = BeerType.values()
-
     var expanded:Boolean by mutableStateOf(false)
     var userName:String by mutableStateOf("")
     var userBeerTypes:MutableList<BeerType> by mutableStateOf(mutableListOf())
@@ -46,9 +44,7 @@ fun EditScreen(editUserViewModel: EditUserViewModel = viewModel(), mainViewModel
 
     var selectedBeerTypes = remember { mutableStateListOf<BeerType>() }
 
-    //cycle through editUserViewModel.userBeerTypes
-    //if the beer type is in the list, add it to selectedBeerTypes
-    //if not, remove it from selectedBeerTypes
+    //Updates selectedBeerTypes to match the viewmodel
     for (beerType in beerTypes) {
         if (beerType in editUserViewModel.userBeerTypes) {
             if (beerType !in selectedBeerTypes) {
@@ -60,7 +56,6 @@ fun EditScreen(editUserViewModel: EditUserViewModel = viewModel(), mainViewModel
             }
         }
     }
-    //    selectedBeerTypes.add(beer)
 
     Column(Modifier.fillMaxWidth()) {
         TopAppBar(backgroundColor = Color.Transparent, elevation = 1.dp)
