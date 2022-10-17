@@ -5,8 +5,8 @@ const errorService = require('../services/errors.service');
 
 
 exports.create = async function (beer: BeerCreate) {
-    const sql = "INSERT INTO `Beer` (`name`, `barcode`, `type`) VALUES (?, ?, ?)";
-    const data = [beer.name, beer.barcode, beer.type];
+    const sql = "INSERT INTO `Beer` (`name`, `barcode`, `type`, `photo_path`) VALUES (?, ?, ?, ?)";
+    const data = [beer.name, beer.barcode, beer.type, beer.photoUrl || null];
 
     try {
         const pool = await db.getPool();
