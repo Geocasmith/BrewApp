@@ -8,3 +8,11 @@ data class Review(
     val beer: Beer,
     val reviewer: User,
 )
+
+data class ReviewCard(
+    val barcode: Long,
+    val title: String,
+    val description: String,
+    val rating: Int,
+    val reviewerName: String,
+)

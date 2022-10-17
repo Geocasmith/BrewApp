@@ -15,24 +15,45 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.seng440assignment2.MainViewModel
 
 import com.example.seng440assignment2.components.BeerCard
+import com.example.seng440assignment2.model.BeerType
+import com.example.seng440assignment2.model.ReviewCard
 import kotlinx.coroutines.launch
 
+class ReviewsViewModel: ViewModel() {
+
+    var reviews = mutableStateListOf<ReviewCard>()
+
+
+
+    fun save() {
+        /* TODO: call database */
+    }
+}
 /**
  * This is the reviews page
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Reviews(
-    onNavigateToBeerPage: (String) -> Unit
+    reviewsViewModel: ReviewsViewModel = viewModel(), mainViewModel: MainViewModel, onNavigateToBeerPage: (String) -> Unit
 ) {
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     val sortBy = remember { mutableStateOf("Default") } //default,top rated ASC, top rated DESC, most recent ASC, most recent DESC
+    val ctx = LocalContext.current
+    mainViewModel.getRequest(ctx, "reviews", responseHandler = { response ->
+        //get the reviews from the response
+        val reviews = response.getJSONArray("reviews")
+        println(reviews)
+    })
 
     Scaffold(
         scaffoldState = scaffoldState,
