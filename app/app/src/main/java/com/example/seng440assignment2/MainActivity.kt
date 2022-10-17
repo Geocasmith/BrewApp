@@ -16,6 +16,7 @@ import androidx.datastore.dataStore
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.seng440assignment2.datastore.AppSettingsSerializer
+import com.example.seng440assignment2.datastore.UserDataSerializer
 import com.example.seng440assignment2.navigation.AnimatedNav
 import com.example.seng440assignment2.navigation.AnimatedNavBar
 import com.example.seng440assignment2.sensors.OnShakeListener
