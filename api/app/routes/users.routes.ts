@@ -4,6 +4,9 @@ const authentication = require('../middleware/authentication.middleware')
 
 module.exports = function (app: any) {
     const baseUrl = app.rootUrl + '/users';
+    app.route(baseUrl)
+        .patch(authentication.loginRequired, usersController.edit)
+
     app.route(baseUrl + '/register').post(usersController.create)
 
     app.route(baseUrl + '/login')
