@@ -42,13 +42,18 @@ fun BeerPage(mainViewModel: MainViewModel, barcode: String?) {
     var beerRating by remember { mutableStateOf(0L)}
     var beerImageUrl by remember { mutableStateOf(context.getString(R.string.generic_loading)) }
 
-
-    mainViewModel.getObjectRequest(context, "beer/$barcode", { jsonResponse ->
+    val request = mainViewModel.getObjectRequest(context, "beer/$barcode", { jsonResponse ->
         beerName = jsonResponse["name"].toString()
         beerType = jsonResponse["type"].toString()
-        beerRating = jsonResponse["rating"].toString().toLong()
+
+        if (jsonResponse["rating"].toString() != "null") {
+            beerRating = jsonResponse["rating"].toString().toLong()
+        }
+
         beerImageUrl = jsonResponse["photo_path"].toString()
     })
+    mainViewModel.addRequestToQueue(request)
+
 
 
     androidx.compose.material3.Scaffold(

@@ -33,13 +33,13 @@ fun RatingStarsLong(rating: Long) {
         if (i <= rating) {
             androidx.compose.material3.Icon(
                 Icons.Outlined.Star,
-                contentDescription = "Filled Star"
+                contentDescription = null
             )
             //rating not a full number
-        }else if((rating / 3).toInt().compareTo(rating / 3) == 0 && !halfStarUsed){
+        } else if ((rating / 3).toInt().compareTo(rating / 3) == 0 && !halfStarUsed && rating != 0L){
             androidx.compose.material3.Icon(
                 Icons.Outlined.StarHalf,
-                contentDescription = "Half Star"
+                contentDescription = null
             )
             halfStarUsed = true
         }
