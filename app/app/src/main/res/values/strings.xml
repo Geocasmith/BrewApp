@@ -1,5 +1,15 @@
 <resources>
     <string name="app_name">SENG440 Assignment 2</string>
+    <string name="login_link">Don\'t have an account? Sign up</string>
+    <string name="login_title">Let\'s get started!</string>
+    <string name="login_description">Login to access your reviews and profile</string>
+    <string name="login_username_placeholder">Username</string>
+    <string name="login_password_placeholder">Password</string>
+    <string name="login_btn_text">LOGIN</string>
+    <string name="signup_link">Don\'t have an account? Sign Up</string>
+    <string name="signup_title">Sign Up!</string>
+    <string name="signup_description">Create an account to get started</string>
+    <string name="signup_btn_text">REGISTER</string>
     <string name="navbar_review_label">Review</string>
     <string name="navbar_search_label">Search</string>
     <string name="navbar_scan_label">Scan</string>
