@@ -32,7 +32,7 @@ import kotlinx.coroutines.launch
 fun ProfileScreen(mainViewModel: MainViewModel, onNavigateToEdit: () -> Unit, onNavigateToPref: () -> Unit, onLogout: () -> Unit)
 {
     /* TODO: Add Reviews */
-    var reviews = remember { mutableStateListOf<ReviewCard>()}
+    val reviews = remember { mutableStateListOf<ReviewCard>()}
     var options by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
 
@@ -55,7 +55,7 @@ fun ProfileScreen(mainViewModel: MainViewModel, onNavigateToEdit: () -> Unit, on
                 item["title"].toString(),
                 item["description"].toString(),
                 item["rating"].toString().toInt(),
-                reviewerName = name,
+                item["reviewerName"].toString(),
                 item["photo_path"].toString()
             )
             reviews.add(review)
@@ -120,7 +120,7 @@ fun ProfileScreen(mainViewModel: MainViewModel, onNavigateToEdit: () -> Unit, on
                 }
             }
 
-            if (reviews == null) {
+            if (reviews.isEmpty()) {
                 item {
                     Box(modifier = Modifier.padding(10.dp))
                     {

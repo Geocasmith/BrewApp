@@ -1,7 +1,9 @@
 package com.example.seng440assignment2.pages
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
@@ -15,9 +17,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.seng440assignment2.MainViewModel
+import com.example.seng440assignment2.R
 
 import com.example.seng440assignment2.components.BeerReviewCard
+import com.example.seng440assignment2.model.ReviewCard
 import kotlinx.coroutines.launch
 
 /**
@@ -26,11 +34,33 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Reviews(
+    mainViewModel: MainViewModel,
     onNavigateToBeerPage: (String) -> Unit
 ) {
+    val reviews = remember { mutableStateListOf<ReviewCard>()}
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     val sortBy = remember { mutableStateOf("Default") } //default,top rated ASC, top rated DESC, most recent ASC, most recent DESC
+
+    val reviewRequest = mainViewModel.getArrayRequest(LocalContext.current, "review/mine", { response ->
+        reviews.clear()
+        for (i in 0 until response.length()) {
+            val item = response.getJSONObject(i)
+            val review = ReviewCard(
+                item["id"].toString().toLong(),
+                item["name"].toString(),
+                item["barcode"].toString().toLong(),
+                item["title"].toString(),
+                item["description"].toString(),
+                item["rating"].toString().toInt(),
+                item["reviewerName"].toString(),
+                item["photo_path"].toString()
+            )
+            reviews.add(review)
+        }
+    })
+
+    mainViewModel.addRequestToQueue(reviewRequest)
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -54,16 +84,22 @@ fun Reviews(
         content = {
                   //lazy column for both beer cards
                     LazyColumn {
-                        item {
-                            BeerReviewCard("LOST AND GROUNDED", "A crisp and clean beer that will quench your thirst any time","Mike",4,"https://cdn.shopify.com/s/files/1/0178/4982/products/O_zapftis__Render_Web.png?v=1664829695",
-                                //pass in onnavigatetobeerpage
-                           onNavigateToBeerPage = {
-                               onNavigateToBeerPage(it)
-                           })
+                        if (reviews.isEmpty()) {
+                            item {
+                                Box(modifier = Modifier.padding(10.dp))
+                                {
+                                    androidx.compose.material.Text(
+                                        text = LocalContext.current.getString(R.string.no_review_text),
+                                        fontSize = 20.sp,
+                                        color = Color.LightGray
+                                    )
+                                }
+                            }
+                        } else {
+                            items(reviews, key = { it.id }) {
+                                BeerReviewCard(beerName = it.beerName, reviewContent = it.title, reviewerName = it.reviewerName, rating = it.rating, imageLink = it.beerPhotoUrl)
+                            }
                         }
-
-//                        item {BeerCard(title = "HAZY IPA", description = "This hazy was amazing! 5/5", name = "Sally", rating = 5, imageLink = "https://www.newworld.co.nz/-/media/Project/Sitecore/Brands/Brand-New-World/Beer-and-Cider/Beer-and-cider-awards-2022/Top-30-tiles/9500-Beer-Baroness-Sunshine-and-Spaceships.jpg?h=auto&w=300&hash=F2A766F47BCE573A74E90AFD41011D34%27")
-//                        }
                   }},
     )
 }

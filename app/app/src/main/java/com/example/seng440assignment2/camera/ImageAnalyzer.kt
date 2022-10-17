@@ -104,7 +104,7 @@ fun ScanScreen(viewModel: MainViewModel, onFoundBarcode: (String) -> Unit, onNot
                                     val barcode = result[0].rawValue
                                     if (!barcode.isNullOrEmpty()) {
                                         gettingBeer = true
-                                        val request = viewModel.getRequest(context, "beer/${barcode}", {
+                                        val request = viewModel.getObjectRequest(context, "beer/${barcode}", {
                                             //onFoundBarcode()
                                                 JsonResponse -> Toast.makeText(context, JsonResponse["name"].toString(), Toast.LENGTH_SHORT).show()
                                             gettingBeer = false

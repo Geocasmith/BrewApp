@@ -74,7 +74,7 @@ fun AnimatedNav(
             route = Screen.Review.route,
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None }
-        ) { Reviews(onNavigateToBeerPage = { beerName: String -> navController.navigate("beer/$beerName") }) }
+        ) { Reviews(mainViewModel, onNavigateToBeerPage = { beerName: String -> navController.navigate("beer/$beerName") }) }
         composable(
             route = Screen.Search.route,
             enterTransition = { EnterTransition.None },
