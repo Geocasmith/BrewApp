@@ -41,7 +41,7 @@ class ShakeDetector: SensorEventListener  {
                 mShakeTimestamp = now
                 mShakeCount++
 
-                mListener.onShake(mShakeCount)
+                mListener.onShake()
             }
 
 

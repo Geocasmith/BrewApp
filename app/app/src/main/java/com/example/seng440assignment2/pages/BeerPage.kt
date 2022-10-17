@@ -15,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -24,9 +23,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.seng440assignment2.MainViewModel
 import com.example.seng440assignment2.R
-import com.example.seng440assignment2.components.RatingStars
-import com.example.seng440assignment2.components.RatingStarsLong
-import com.google.mlkit.vision.barcode.common.Barcode
+import com.example.seng440assignment2.components.RatingStarsFloat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -39,7 +36,7 @@ fun BeerPage(mainViewModel: MainViewModel, barcode: String?) {
 
     var beerName by remember { mutableStateOf(context.getString(R.string.generic_loading)) }
     var beerType by remember { mutableStateOf(context.getString(R.string.generic_loading)) }
-    var beerRating by remember { mutableStateOf(0L)}
+    var beerRating by remember { mutableStateOf(0f)}
     var beerImageUrl by remember { mutableStateOf(context.getString(R.string.generic_loading)) }
 
     val request = mainViewModel.getObjectRequest(context, "beer/$barcode", { jsonResponse ->
@@ -47,7 +44,7 @@ fun BeerPage(mainViewModel: MainViewModel, barcode: String?) {
         beerType = jsonResponse["type"].toString()
 
         if (jsonResponse["rating"].toString() != "null") {
-            beerRating = jsonResponse["rating"].toString().toLong()
+            beerRating = jsonResponse["rating"].toString().toFloat()
         }
 
         beerImageUrl = jsonResponse["photo_path"].toString()
@@ -103,7 +100,7 @@ fun BeerPage(mainViewModel: MainViewModel, barcode: String?) {
                 )
                 Row {
                     //filled star for rating and unfilled for remaining out of 5
-                    RatingStarsLong(beerRating)
+                    RatingStarsFloat(beerRating)
                 }
                 ReviewButton(scaffoldState = scaffoldState,scope = scope)
             }

@@ -27,7 +27,7 @@ fun RatingStars(rating: Int) {
  * Allows for half stars and long numbers
  */
 @Composable
-fun RatingStarsLong(rating: Long) {
+fun RatingStarsFloat(rating: Float) {
     var halfStarUsed = false
     for (i in 1..5) {
         if (i <= rating) {
@@ -36,7 +36,7 @@ fun RatingStarsLong(rating: Long) {
                 contentDescription = null
             )
             //rating not a full number
-        } else if ((rating / 3).toInt().compareTo(rating / 3) == 0 && !halfStarUsed && rating != 0L){
+        } else if ((rating / 3).toInt().compareTo(rating / 3) == 0 && !halfStarUsed && rating != 0f){
             androidx.compose.material3.Icon(
                 Icons.Outlined.StarHalf,
                 contentDescription = null
