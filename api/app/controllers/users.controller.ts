@@ -72,3 +72,15 @@ exports.findById = async function (req: { params: { id: any; }; authenticatedUse
         res.status(200).json(userData);
     }
 };
+
+exports.edit = async function (req: { authenticatedUserId: any; body: any; }, res: Response) {
+    const id = req.authenticatedUserId;
+    try {
+        await usersModel.edit(req.body, id)
+        res.statusMessage = 'OK';
+        res.status(200).send();
+    } catch (err) {
+        res.statusMessage = 'Internal Server Error';
+        res.status(500).send();
+    }
+}
