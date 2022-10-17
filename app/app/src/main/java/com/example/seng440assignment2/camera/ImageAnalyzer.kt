@@ -3,7 +3,6 @@ package com.example.seng440assignment2.camera
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -24,13 +23,10 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import com.example.seng440assignment2.MainViewModel
+import com.example.seng440assignment2.R
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
-import com.google.mlkit.vision.text.Text
-import com.google.mlkit.vision.text.TextRecognition
-import com.google.mlkit.vision.text.latin.TextRecognizerOptions
-import com.example.seng440assignment2.R
 
 class BarcodeAnalyzer(private val onBarcodeScanned: (List<Barcode>?) -> Unit ): ImageAnalysis.Analyzer {
     private val scanner = BarcodeScanning.getClient()
@@ -105,8 +101,7 @@ fun ScanScreen(viewModel: MainViewModel, onFoundBarcode: (String) -> Unit, onNot
                                     if (!barcode.isNullOrEmpty()) {
                                         gettingBeer = true
                                         val request = viewModel.getObjectRequest(context, "beer/${barcode}", {
-                                            //onFoundBarcode()
-                                                JsonResponse -> Toast.makeText(context, JsonResponse["name"].toString(), Toast.LENGTH_SHORT).show()
+                                            onFoundBarcode(barcode.toString())
                                             gettingBeer = false
                                         }, { error ->
                                             when (error.networkResponse.statusCode) {

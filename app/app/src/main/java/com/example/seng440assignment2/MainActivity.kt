@@ -65,22 +65,19 @@ class MainActivity : ComponentActivity() {
             }!!
             viewModel.setUserData()
 
+            val navController = rememberAnimatedNavController()
+
             // Shake Detection
             mShakeDetector.setOnShakeListener(object : OnShakeListener {
-                override fun onShake(count: Int) {
+                override fun onShake() {
                     val randomBeerRequest: JsonObjectRequest = viewModel.getObjectRequest(context, "beer/random", { response ->
-                        // TODO: Route to beer page and display the returned beer
-                        val toastText = "Responded with beer '${response["name"]}' (${response["barcode"]})"
-                        Toast.makeText(context, toastText, Toast.LENGTH_LONG).show()
+                        navController.navigate("beer/${response["barcode"]}")
                     })
                     viewModel.addRequestToQueue(randomBeerRequest);
                 }
             })
 
             SENG440Assignment2Theme(darkTheme = viewModel.getAppSettings().isDarkMode) {
-
-                val navController = rememberAnimatedNavController()
-
                 Scaffold(
                     bottomBar = { AnimatedNavBar(navController = navController) }
                 ) {

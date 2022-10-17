@@ -43,7 +43,7 @@ fun Reviews(
     val scope = rememberCoroutineScope()
     val sortBy = remember { mutableStateOf("Default") } //default,top rated ASC, top rated DESC, most recent ASC, most recent DESC
 
-    val reviewRequest = mainViewModel.getArrayRequest(LocalContext.current, "review/mine", { response ->
+    val reviewRequest = mainViewModel.getArrayRequest(LocalContext.current, "review", { response ->
         reviews.clear()
         for (i in 0 until response.length()) {
             val item = response.getJSONObject(i)

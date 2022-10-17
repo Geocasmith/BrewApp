@@ -88,7 +88,7 @@ fun AnimatedNav(
         ) {
             ScanScreen(
                 mainViewModel,
-                {},
+                { barcode: String -> navController.navigate("beer/$barcode") },
                 { barcode: String -> navController.navigate("new/$barcode") })
         }
         composable(
