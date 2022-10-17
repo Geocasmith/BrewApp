@@ -23,6 +23,7 @@ import com.example.seng440assignment2.MainViewModel
 import com.example.seng440assignment2.pages.PrefScreen
 import com.example.seng440assignment2.ProfileScreen
 import com.example.seng440assignment2.camera.ScanScreen
+import com.example.seng440assignment2.pages.BeerPage
 import com.example.seng440assignment2.pages.EditScreen
 import com.example.seng440assignment2.pages.Reviews
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -73,7 +74,8 @@ fun AnimatedNav(navController: NavHostController, mainViewModel: MainViewModel, 
             route = Screen.Review.route,
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None }
-            ) { Reviews() }
+            ) { Reviews(onNavigateToBeerPage = {beerName:String -> navController.navigate("beer/{$beerName}") })}
+
         composable(
             route = Screen.Search.route,
             enterTransition = { EnterTransition.None },
@@ -88,7 +90,10 @@ fun AnimatedNav(navController: NavHostController, mainViewModel: MainViewModel, 
             route = Screen.Profile.route,
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None }
-        ) { ProfileScreen(onNavigateToEdit = { navController.navigate("edit") }, onNavigateToPref = { navController.navigate("pref") }) }
+        ) { ProfileScreen(onNavigateToEdit = { navController.navigate("edit") }, onNavigateToPref = { navController.navigate("pref") },
+        // lambda function with parameter name
+
+            ) }
         composable(
             route = "pref",
             enterTransition = { EnterTransition.None },
@@ -99,6 +104,17 @@ fun AnimatedNav(navController: NavHostController, mainViewModel: MainViewModel, 
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None }
         ) { EditScreen(mainViewModel, onBackButtonPress = { navController.navigate(Screen.Profile.route) }) }
+        composable(
+            route = "beer/{beerName}",
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
+        ) { backStackEntry -> BeerPage(mainViewModel as MainViewModel, backStackEntry.arguments?.getString("beerName")) {
+            navController.navigate(
+                "review"
+            )
+        }
+        }
+
     }
 
 }

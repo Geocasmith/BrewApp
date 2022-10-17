@@ -16,6 +16,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import com.example.seng440assignment2.MainViewModel
 
 import com.example.seng440assignment2.components.BeerCard
 import kotlinx.coroutines.launch
@@ -25,7 +27,9 @@ import kotlinx.coroutines.launch
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Reviews() {
+fun Reviews(
+    onNavigateToBeerPage: (String) -> Unit
+) {
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     val sortBy = remember { mutableStateOf("Default") } //default,top rated ASC, top rated DESC, most recent ASC, most recent DESC
@@ -53,10 +57,14 @@ fun Reviews() {
                   //lazy column for both beer cards
                     LazyColumn {
                         item {
-                            BeerCard("LOST AND GROUNDED", "A crisp and clean beer that will quench your thirst any time","Mike",4,"https://cdn.shopify.com/s/files/1/0178/4982/products/O_zapftis__Render_Web.png?v=1664829695")
+                            BeerCard("LOST AND GROUNDED", "A crisp and clean beer that will quench your thirst any time","Mike",4,"https://cdn.shopify.com/s/files/1/0178/4982/products/O_zapftis__Render_Web.png?v=1664829695",
+                                //pass in onnavigatetobeerpage
+                           onNavigateToBeerPage = { onNavigateToBeerPage(it) }
+                            )
                         }
-                        item {BeerCard(title = "HAZY IPA", description = "This hazy was amazing! 5/5", name = "Sally", rating = 5, imageLink = "https://www.newworld.co.nz/-/media/Project/Sitecore/Brands/Brand-New-World/Beer-and-Cider/Beer-and-cider-awards-2022/Top-30-tiles/9500-Beer-Baroness-Sunshine-and-Spaceships.jpg?h=auto&w=300&hash=F2A766F47BCE573A74E90AFD41011D34%27")
-                        }
+
+//                        item {BeerCard(title = "HAZY IPA", description = "This hazy was amazing! 5/5", name = "Sally", rating = 5, imageLink = "https://www.newworld.co.nz/-/media/Project/Sitecore/Brands/Brand-New-World/Beer-and-Cider/Beer-and-cider-awards-2022/Top-30-tiles/9500-Beer-Baroness-Sunshine-and-Spaceships.jpg?h=auto&w=300&hash=F2A766F47BCE573A74E90AFD41011D34%27")
+//                        }
                   }},
     )
 }
@@ -64,12 +72,18 @@ fun Reviews() {
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 private fun Filter(scaffoldState: ScaffoldState) {
+    val scope = rememberCoroutineScope()
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
                 title = { Text("Filter") },
-
+                navigationIcon = {
+                    IconButton(onClick = {
+                        scope.launch { scaffoldState.drawerState.close() }}) {
+                        Icon(Icons.Outlined.Close, contentDescription = "Close")
+                    }
+                },
 
                 backgroundColor = Color.White
             )
