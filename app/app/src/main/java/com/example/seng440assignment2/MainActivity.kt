@@ -15,19 +15,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.datastore.dataStore
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.android.volley.AuthFailureError
-import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
 import com.example.seng440assignment2.datastore.AppSettingsSerializer
-import com.example.seng440assignment2.datastore.UserDataSerializer
 import com.example.seng440assignment2.navigation.AnimatedNav
 import com.example.seng440assignment2.navigation.AnimatedNavBar
 import com.example.seng440assignment2.sensors.OnShakeListener
 import com.example.seng440assignment2.sensors.ShakeDetector
 import com.example.seng440assignment2.ui.theme.SENG440Assignment2Theme
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import java.nio.charset.Charset
 
 
 val Context.settingsDataStore by dataStore(
@@ -73,7 +68,7 @@ class MainActivity : ComponentActivity() {
             // Shake Detection
             mShakeDetector.setOnShakeListener(object : OnShakeListener {
                 override fun onShake(count: Int) {
-                    val randomBeerRequest: JsonObjectRequest = viewModel.getRequest(context, "beer/random", { response ->
+                    val randomBeerRequest: JsonObjectRequest = viewModel.getObjectRequest(context, "beer/random", { response ->
                         // TODO: Route to beer page and display the returned beer
                         val toastText = "Responded with beer '${response["name"]}' (${response["barcode"]})"
                         Toast.makeText(context, toastText, Toast.LENGTH_LONG).show()

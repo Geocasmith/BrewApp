@@ -16,10 +16,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import com.example.seng440assignment2.MainViewModel
 
-import com.example.seng440assignment2.components.BeerCard
+import com.example.seng440assignment2.components.BeerReviewCard
 import kotlinx.coroutines.launch
 
 /**
@@ -57,7 +55,7 @@ fun Reviews(
                   //lazy column for both beer cards
                     LazyColumn {
                         item {
-                            BeerCard("LOST AND GROUNDED", "A crisp and clean beer that will quench your thirst any time","Mike",4,"https://cdn.shopify.com/s/files/1/0178/4982/products/O_zapftis__Render_Web.png?v=1664829695",
+                            BeerReviewCard("LOST AND GROUNDED", "A crisp and clean beer that will quench your thirst any time","Mike",4,"https://cdn.shopify.com/s/files/1/0178/4982/products/O_zapftis__Render_Web.png?v=1664829695",
                                 //pass in onnavigatetobeerpage
                            onNavigateToBeerPage = { onNavigateToBeerPage(it) }
                             )

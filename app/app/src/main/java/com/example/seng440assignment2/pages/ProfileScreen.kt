@@ -1,5 +1,6 @@
 package com.example.seng440assignment2
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -9,6 +10,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -21,18 +23,46 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.seng440assignment2.components.BeerCard
-import com.example.seng440assignment2.model.Review
+import com.example.seng440assignment2.components.BeerReviewCard
+import com.example.seng440assignment2.model.ReviewCard
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ProfileScreen(mainViewModel: MainViewModel, onNavigateToEdit: () -> Unit, onNavigateToPref: () -> Unit, onLogout: () -> Unit)
 {
-        /* TODO: Add Reviews */
-        var reviews = listOf<Review>()
-        var options by remember { mutableStateOf(false) }
-        val scope = rememberCoroutineScope()
+    /* TODO: Add Reviews */
+    var reviews = remember { mutableStateListOf<ReviewCard>()}
+    var options by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+
+    var name by remember { mutableStateOf("Loading...") }
+    var bio by remember { mutableStateOf("Loading...") }
+
+    val userRequest = mainViewModel.getObjectRequest(LocalContext.current, "users/" + mainViewModel.getUserId(), { response ->
+        name = response["name"].toString()
+        bio = response["bio"].toString()
+    });
+
+    val reviewRequest = mainViewModel.getArrayRequest(LocalContext.current, "review/mine", { response ->
+        reviews.clear()
+        for (i in 0 until response.length()) {
+            val item = response.getJSONObject(i)
+            val review = ReviewCard(
+                item["id"].toString().toLong(),
+                item["name"].toString(),
+                item["barcode"].toString().toLong(),
+                item["title"].toString(),
+                item["description"].toString(),
+                item["rating"].toString().toInt(),
+                reviewerName = name,
+                item["photo_path"].toString()
+            )
+            reviews.add(review)
+        }
+    })
+    mainViewModel.addRequestToQueue(userRequest)
+    mainViewModel.addRequestToQueue(reviewRequest)
 
 
     LazyColumn(
@@ -80,11 +110,11 @@ fun ProfileScreen(mainViewModel: MainViewModel, onNavigateToEdit: () -> Unit, on
                         .align(Alignment.CenterHorizontally)
                         .padding(10.dp))
 
-                    Box(modifier = Modifier.align(Alignment.CenterHorizontally))
+                    Box(modifier = Modifier.align(Alignment.CenterHorizontally).padding(bottom = 10.dp))
                     {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text(text = "Placeholder Name", fontSize = 20.sp)
-                            Text(text = "Placeholder Bio with Information", color = Color.LightGray)
+                            Text(text = name, fontSize = 20.sp)
+                            Text(text = bio, color = Color.LightGray)
                         }
                     }
                 }
@@ -103,7 +133,7 @@ fun ProfileScreen(mainViewModel: MainViewModel, onNavigateToEdit: () -> Unit, on
                 }
             } else {
                 items(reviews, key = { it.id }) {
-//                    BeerCard(title = it.title, description = it.description, name = it.reviewer.name, rating = it.rating, imageLink = it.beer.photoURL)
+                    BeerReviewCard(beerName = it.beerName, reviewContent = it.title, reviewerName = it.reviewerName, rating = it.rating, imageLink = it.beerPhotoUrl)
                 }
             }
             // Add Reviews Here
