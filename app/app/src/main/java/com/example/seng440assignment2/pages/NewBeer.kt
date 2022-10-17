@@ -1,9 +1,8 @@
 package com.example.seng440assignment2.pages
 
-import androidx.compose.foundation.ExperimentalFoundationApi
+import android.widget.Toast
 import androidx.compose.material.*
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -21,7 +21,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.seng440assignment2.MainViewModel
+import com.example.seng440assignment2.R
 import com.example.seng440assignment2.model.BeerType
+import org.json.JSONObject
 
 
 class EditBeerViewModel : ViewModel() {
@@ -32,18 +35,16 @@ class EditBeerViewModel : ViewModel() {
     var beerImageURL: String by mutableStateOf("")
 
 
-    fun save() {
-        /* TODO: call database */
+    fun canSave(): Boolean {
+        return beerBarcode.isNotEmpty() && beerName.isNotEmpty() && beerBarcode.isNotEmpty()
     }
+
 }
 
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun NewBeer(viewModel: EditBeerViewModel = viewModel(), barcode: String?) {
-    var imageURL by remember { mutableStateOf<String>("") }
-    var beerName by remember { mutableStateOf<String>("") }
-    var barcodeInput by remember { mutableStateOf<String>("") }
+fun NewBeer(editBeerViewModel: EditBeerViewModel = viewModel(), viewModel: MainViewModel, barcode: String?, onBeerSaved: () -> Unit) {
+    editBeerViewModel.beerBarcode = barcode.orEmpty()
 
     Column(
         modifier = Modifier
@@ -57,19 +58,15 @@ fun NewBeer(viewModel: EditBeerViewModel = viewModel(), barcode: String?) {
                 .width(width = 264.dp)
         ) {
             item { HeaderText() }
-            item { ImageUrlBox(viewModel) }
+            item { ImageUrlBox(editBeerViewModel) }
             item { SpacerDP(6) }
-            item { BeerNameBox(viewModel) }
+            item { BeerNameBox(editBeerViewModel) }
             item { SpacerDP(6) }
-            item { BeerTypeDropDown(viewModel) }
+            item { BeerTypeDropDown(editBeerViewModel) }
             item { SpacerDP(6) }
-            if (barcode != null) {
-                item { BarcodeBox(barcode) }
-            } else {
-                item { BarcodeBoxWithInput(viewModel) }
-            }
+            item { BarcodeBox(editBeerViewModel, !barcode.isNullOrBlank()) }
             item { SpacerDP(12) }
-            item { AddButton() }
+            item { AddButton(viewModel, editBeerViewModel, onBeerSaved) }
         }
 
     }
@@ -77,12 +74,27 @@ fun NewBeer(viewModel: EditBeerViewModel = viewModel(), barcode: String?) {
 }
 
 @Composable
-private fun AddButton() {
+private fun AddButton(viewModel: MainViewModel, editBeerViewModel: EditBeerViewModel, onBeerSaved: () -> Unit) {
+    val context = LocalContext.current
     Button(
         modifier = Modifier
             .width(width = 140.dp)
             .height(height = 48.dp),
-        onClick = { /* Do something! */ },
+        onClick = {
+            if (editBeerViewModel.canSave()) {
+                val jsonRequest = JSONObject()
+                jsonRequest.put("name", editBeerViewModel.beerName)
+                jsonRequest.put("barcode", editBeerViewModel.beerBarcode)
+                jsonRequest.put("type", editBeerViewModel.beerType)
+                jsonRequest.put("photoUrl", editBeerViewModel.beerImageURL)
+
+                val request = viewModel.postRequest(context, "/beer", jsonRequest, {})
+                viewModel.addRequestToQueue(request)
+                onBeerSaved()
+            } else {
+                Toast.makeText(context, context.getText(R.string.new_beer_cant_save), Toast.LENGTH_SHORT).show()
+            }
+        },
         shape = RoundedCornerShape(4.dp)
     ) {
         Text(
@@ -147,7 +159,7 @@ fun BeerNameBox(viewModel: EditBeerViewModel) {
     OutlinedTextField(
         value = viewModel.beerName,
         onValueChange = { viewModel.beerName = it },
-        label = { Text("Beer Name", color = Color.Black.copy(alpha = 0.6f)) }
+        label = { Text("Beer Name*", color = Color.Black.copy(alpha = 0.6f)) }
     )
 }
 
@@ -167,7 +179,7 @@ fun BeerTypeDropDown(viewModel: EditBeerViewModel) {
             readOnly = true,
             value = viewModel.beerType,
             onValueChange = { },
-            label = { Text("Beer Type") },
+            label = { Text("Beer Type*") },
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(
                     expanded = expanded
@@ -196,26 +208,12 @@ fun BeerTypeDropDown(viewModel: EditBeerViewModel) {
 }
 
 @Composable
-fun BarcodeBox(barcode: String) {
-    var text by remember { mutableStateOf<String>(barcode) }
-
-    OutlinedTextField(
-        value = text,
-        onValueChange = { text = it },
-        readOnly = true,
-        label = { Text("Barcode", color = Color.Black.copy(alpha = 0.6f)) }
-    )
-}
-
-@Composable
-        /**
-         * Barcodebox when no barcode is passed in from the navigation, lets the user input
-         */
-fun BarcodeBoxWithInput(viewModel: EditBeerViewModel) {
-
+fun BarcodeBox(viewModel: EditBeerViewModel, isDisabled: Boolean) {
     OutlinedTextField(
         value = viewModel.beerBarcode,
         onValueChange = { viewModel.beerBarcode = it },
-        label = { Text("Barcode", color = Color.Black.copy(alpha = 0.6f)) }
+        enabled = isDisabled,
+        label = { Text("Barcode*", color = Color.Black.copy(alpha = 0.6f)) }
     )
 }
+

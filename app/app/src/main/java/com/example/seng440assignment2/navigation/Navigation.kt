@@ -134,7 +134,7 @@ fun AnimatedNav(
             route = "new/{barcode}",
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None }
-        ) { backStackEntry -> NewBeer(barcode = backStackEntry.arguments?.getString("barcode")) }
+        ) { backStackEntry -> NewBeer(viewModel = mainViewModel , barcode = backStackEntry.arguments?.getString("barcode"), onBeerSaved = { navController.navigate(Screen.Scan.route) }) }
     }
 }
 
