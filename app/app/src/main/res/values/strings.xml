@@ -5,6 +5,7 @@
     <string name="login_description">Login to access your reviews and profile</string>
     <string name="login_username_placeholder">Username</string>
     <string name="login_password_placeholder">Password</string>
+    <string name="login_400_error">Invalid Username or Password</string>
     <string name="login_btn_text">LOGIN</string>
     <string name="signup_link">Don\'t have an account? Sign Up</string>
     <string name="signup_title">Sign Up!</string>
@@ -29,6 +30,7 @@
     <string name="curr_string">Current</string>
     <string name="reminder_notification_title">Review Some Beer</string>
     <string name="reminder_notification_text">Have you reviewed a craft beer today?</string>
+    <string name="submitToast">Review submitted</string>
     <string name="generic_400_error">Bad Request</string>
     <string name="generic_401_error">Unauthorized</string>
     <string name="generic_404_error">Not Found</string>

@@ -19,6 +19,7 @@ import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.seng440assignment2.datastore.AppSettingsSerializer
+import com.example.seng440assignment2.datastore.UserDataSerializer
 import com.example.seng440assignment2.navigation.AnimatedNav
 import com.example.seng440assignment2.navigation.AnimatedNavBar
 import com.example.seng440assignment2.sensors.OnShakeListener

@@ -3,10 +3,6 @@ package com.example.seng440assignment2.components
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Grade
-import androidx.compose.material.icons.outlined.Star
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,12 +19,12 @@ import coil.compose.AsyncImage
  * A card that displays a beer review. Inputs are the beer name, description, reviewer name, rating, and image link.
  */
 @Composable
-fun BeerCard(title:String, description:String, name:String,rating:Int, imageLink:String,onClick: () -> Unit = {}) {
+fun BeerCard(beerName:String, reviewContent:String, reviewerName:String, rating:Int, imageLink:String, onClick: () -> Unit = {}, onNavigateToBeerPage: (String) -> Unit) {
     val padding=16.dp
     Card(
         elevation = 4.dp, modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = onClick)
+            .clickable(onClick = { onNavigateToBeerPage(beerName) })
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             //box with image aligned center horizontally and height of 90 and width of 50 dp
@@ -38,7 +34,7 @@ fun BeerCard(title:String, description:String, name:String,rating:Int, imageLink
                     .width(90.dp),
                 contentAlignment = Alignment.Center
             ) {
-                //image
+                //image if its a showimage
                 AsyncImage(
                     model = imageLink,
                     contentDescription = "Beer!",
@@ -52,7 +48,7 @@ fun BeerCard(title:String, description:String, name:String,rating:Int, imageLink
                 modifier = androidx.compose.ui.Modifier.padding(padding)
             ) {
                 Text(
-                    text = title,
+                    text = beerName,
                     color = Color.Black.copy(alpha = 0.87f),
                     lineHeight = 16.sp,
                     style = TextStyle(
@@ -63,7 +59,7 @@ fun BeerCard(title:String, description:String, name:String,rating:Int, imageLink
                 )
                 Spacer(modifier = androidx.compose.ui.Modifier.height(4.dp))
                 Text(
-                    text = description,
+                    text = reviewContent,
                     color = Color.Black.copy(alpha = 0.87f),
                     lineHeight = 24.sp,
                     style = TextStyle(
@@ -78,20 +74,14 @@ fun BeerCard(title:String, description:String, name:String,rating:Int, imageLink
                 ) {
 //                    TODO:Make the name clickable to go to the user's profile
                     Text(
-                        text = name,
+                        text = reviewerName,
                         color = Color.Black.copy(alpha = 0.6f),
                         lineHeight = 16.sp,
                         style = MaterialTheme.typography.bodyMedium
                     )
                     Row {
                         //filled star for rating and unfilled for remaining out of 5
-                        for (i in 1..5) {
-                            if (i <= rating) {
-                                Icon(Icons.Outlined.Star, contentDescription = "Filled Star")
-                            } else {
-                                Icon(Icons.Outlined.Grade, contentDescription = "Unfilled Star")
-                            }
-                        }
+                        RatingStars(rating)
                     }
                 }
 
