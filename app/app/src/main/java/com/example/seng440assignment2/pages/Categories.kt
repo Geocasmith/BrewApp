@@ -12,10 +12,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.example.seng440assignment2.MainViewModel
 import com.example.seng440assignment2.components.BeerCard
+import com.example.seng440assignment2.model.BeerListItem
 
 import com.example.seng440assignment2.model.BeerType
+import com.example.seng440assignment2.model.ReviewCard
 import kotlin.random.Random
 
 /**
@@ -26,6 +30,7 @@ import kotlin.random.Random
 fun Categories(onNavigateToBeerListPage: (String) -> Unit) {
     val beerTypeOptions = BeerType.values().map { it.name }
     val scaffoldState = rememberScaffoldState()
+
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -64,10 +69,28 @@ fun Categories(onNavigateToBeerListPage: (String) -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BeerListPage(string: Any?,onNavigateToBeerPage: (String) -> Unit){
+fun BeerListPage(mainViewModel: MainViewModel, string: Any?,onNavigateToBeerPage: (String) -> Unit){
     val beerTypeOptions = BeerType.values().map { it.name }
     val scaffoldState = rememberScaffoldState()
+    //convert string to all uppercase
+    val beerType = string.toString().uppercase()
 
+    val beerList = remember { mutableStateListOf<BeerListItem>()}
+    val reviewRequest = mainViewModel.getArrayRequest(LocalContext.current,
+        "beer/type/$beerType", { response ->
+        beerList.clear()
+        for (i in 0 until response.length()) {
+            val item = response.getJSONObject(i)
+            val review = BeerListItem(
+                item["name"].toString(),
+                item["barcode"].toString(),
+                item["photo_path"].toString(),
+                item["rating"].toString().toLong()
+            )
+            beerList.add(review)
+        }
+    })
+    mainViewModel.addRequestToQueue(reviewRequest)
     var appBarTitle:String = "Beers"
     if(string is String){
         appBarTitle = string
@@ -84,11 +107,13 @@ fun BeerListPage(string: Any?,onNavigateToBeerPage: (String) -> Unit){
         content = {
             //lazy column for both beer cards
             LazyColumn {
-                //put two categorycards in a row
-                item{
-                    BeerCard(beerName = "HAZY IPA", rating=3.7.toLong(), imageLink = "https://www.newworld.co.nz/-/media/Project/Sitecore/Brands/Brand-New-World/Beer-and-Cider/Beer-and-cider-awards-2022/Top-30-tiles/9500-Beer-Baroness-Sunshine-and-Spaceships.jpg?h=auto&w=300&hash=F2A766F47BCE573A74E90AFD41011D34%27", onNavigateToBeerPage = {onNavigateToBeerPage(it)})
+                beerList.map { beerListItem ->
+                    item {Text(beerListItem.title)}
+                    }
                 }
-            }},
+                //put two categorycards in a row
+
+            },
     )
 }
 

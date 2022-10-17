@@ -74,7 +74,7 @@ fun AnimatedNav(
             route = Screen.Review.route,
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None }
-        ) { Reviews(onNavigateToBeerPage = { beerName: String -> navController.navigate("beer/$beerName") }) }
+        ) { Reviews(mainViewModel = mainViewModel, onNavigateToBeerPage = { beerName: String -> navController.navigate("beer/$beerName") }) }
 
         composable(
             route = Screen.Search.route,
@@ -127,6 +127,7 @@ fun AnimatedNav(
             exitTransition = { ExitTransition.None }
         ) { backStackEntry ->
             BeerListPage(
+                mainViewModel,
                 backStackEntry.arguments?.getString("type")
             ) { navController.navigate("beerList") }
         }
