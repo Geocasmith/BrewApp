@@ -1,7 +1,7 @@
 package com.example.seng440assignment2.model
 
 enum class BeerType {
-    ALE, LARGER, PORTER, STOUT, IPA, PILSNER, SOUR
+    ALE, LAGER, PORTER, STOUT, IPA, PILSNER, SOUR, DRY
 }
 
 data class Beer(
@@ -11,4 +11,11 @@ data class Beer(
     val type: BeerType,
     val photoURL: String,
     val averageRating: Int
+)
+
+data class BeerListItem(
+    val title: String,
+    val barcode: String,
+    val photoURL: String,
+    val averageRating: Long
 )
