@@ -57,9 +57,10 @@ class MainActivity : ComponentActivity() {
                 viewModel(
                     it,
                     "MainViewModel",
-                    MainViewModelFactory(settingsDataStore, context)
+                    MainViewModelFactory(settingsDataStore, userDataStore, context)
                 )
             }!!
+            viewModel.setUserData()
 
             // Shake Detection
             mShakeDetector.setOnShakeListener(object : OnShakeListener {

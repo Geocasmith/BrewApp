@@ -26,6 +26,7 @@ class MainViewModelFactory(private val settingsDataStore: DataStore<AppSettings>
 class MainViewModel(private var settingsDataStore: DataStore<AppSettings>, private var userDataStore: DataStore<UserData>, context: Context) : ViewModel() {
 
     private val queue = Volley.newRequestQueue(context);
+    private lateinit var userData: UserData
 
     suspend fun setIsDarkMode(darkMode: Boolean) {
         settingsDataStore.updateData {
@@ -50,15 +51,17 @@ class MainViewModel(private var settingsDataStore: DataStore<AppSettings>, priva
         return settingsDataStore.data.collectAsState(initial = AppSettings()).value
     }
 
-
     @Composable
-    fun getUserId(): Long {
-        return userDataStore.data.collectAsState(initial = UserData()).value.id
+    fun setUserData() {
+        userData = userDataStore.data.collectAsState(initial = UserData()).value
     }
 
-    @Composable
+    fun getUserId(): Long {
+        return userData.id
+    }
+
     private fun getAuthToken(): String {
-        return userDataStore.data.collectAsState(initial = UserData()).value.authToken
+        return userData.authToken
     }
 
     suspend fun clearUserData() {
@@ -69,17 +72,14 @@ class MainViewModel(private var settingsDataStore: DataStore<AppSettings>, priva
         queue.add(request);
     }
 
-    @Composable
     fun getRequest(context: Context, endpoint: String, responseHandler: Response.Listener<JSONObject>, errorHandler: Response.ErrorListener? = null): JsonObjectRequest {
         return request(context, endpoint, Request.Method.GET, responseHandler, errorHandler)
     }
 
-    @Composable
     fun postRequest(context: Context, endpoint: String, body: JSONObject?, responseHandler: Response.Listener<JSONObject>, errorHandler: Response.ErrorListener? = null): JsonObjectRequest {
         return request(context, endpoint, Request.Method.POST, responseHandler, errorHandler, body)
     }
 
-    @Composable
     private fun request(context: Context, endpoint: String, requestType: Int, responseHandler: Response.Listener<JSONObject>, errorHandler: Response.ErrorListener? = null, body: JSONObject? = null): JsonObjectRequest {
         var url = "https://seng440-api-6ieosyuwfq-ts.a.run.app/api"
         if (endpoint.startsWith("https")) {
