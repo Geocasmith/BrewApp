@@ -93,13 +93,13 @@ fun BeerReviewCard(beerName:String, reviewContent:String, reviewerName:String, r
 }
 
 @Composable
-fun BeerCard(beerName:String, imageLink:String, rating:Long, onNavigateToBeerPage: (String) -> Unit) {
+fun BeerCard(beerName:String, imageLink:String, rating:Float, onNavigateToBeerPage: () -> Unit) {
     val padding=4.dp
     Card(
         elevation = 4.dp, modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
-            .clickable(onClick = { onNavigateToBeerPage(beerName) })
+            .clickable(onClick = onNavigateToBeerPage)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             //box with image aligned center horizontally and height of 90 and width of 50 dp
@@ -147,7 +147,7 @@ fun BeerCard(beerName:String, imageLink:String, rating:Long, onNavigateToBeerPag
                     )
                     Row {
                         //filled star for rating and unfilled for remaining out of 5
-                        RatingStarsLong(rating)
+                        RatingStarsFloat(rating)
                     }
                 }
 
