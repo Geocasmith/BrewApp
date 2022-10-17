@@ -3,7 +3,6 @@ package com.example.seng440assignment2.components
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Grade
 import androidx.compose.material.icons.outlined.Star
-import androidx.compose.material.icons.outlined.StarHalf
 import androidx.compose.runtime.Composable
 
 @Composable
