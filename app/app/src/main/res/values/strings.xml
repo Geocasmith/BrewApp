@@ -29,4 +29,8 @@
     <string name="curr_string">Current</string>
     <string name="reminder_notification_title">Review Some Beer</string>
     <string name="reminder_notification_text">Have you reviewed a craft beer today?</string>
+    <string name="generic_400_error">Bad Request</string>
+    <string name="generic_401_error">Unauthorized</string>
+    <string name="generic_404_error">Not Found</string>
+    <string name="generic_500_error">Server Error</string>
 </resources>

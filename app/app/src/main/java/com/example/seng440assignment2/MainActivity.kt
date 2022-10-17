@@ -1,6 +1,5 @@
 package com.example.seng440assignment2
 
-import android.app.Application
 import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorManager
@@ -15,6 +14,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.datastore.dataStore
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.android.volley.AuthFailureError
+import com.android.volley.Request
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.example.seng440assignment2.datastore.AppSettingsSerializer
 import com.example.seng440assignment2.navigation.AnimatedNav
 import com.example.seng440assignment2.navigation.AnimatedNavBar
@@ -22,6 +25,8 @@ import com.example.seng440assignment2.sensors.OnShakeListener
 import com.example.seng440assignment2.sensors.ShakeDetector
 import com.example.seng440assignment2.ui.theme.SENG440Assignment2Theme
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import java.nio.charset.Charset
+
 
 val Context.settingsDataStore by dataStore(
     fileName = "app_settings.json",
@@ -43,16 +48,7 @@ class MainActivity : ComponentActivity() {
         mShakeDetector = ShakeDetector()
 
         setContent {
-            // Shake Detection
             val context = LocalContext.current
-
-            mShakeDetector.setOnShakeListener(object : OnShakeListener {
-                override fun onShake(count: Int) {
-
-                    /* TODO: Show Random Beer Screen  */
-                    Toast.makeText(context, "Shake Event Detected", Toast.LENGTH_SHORT).show()
-                }
-            })
 
             // View Model
             val owner = LocalViewModelStoreOwner.current
@@ -60,9 +56,21 @@ class MainActivity : ComponentActivity() {
                 viewModel(
                     it,
                     "MainViewModel",
-                    MainViewModelFactory(settingsDataStore)
+                    MainViewModelFactory(settingsDataStore, context)
                 )
             }!!
+
+            // Shake Detection
+            mShakeDetector.setOnShakeListener(object : OnShakeListener {
+                override fun onShake(count: Int) {
+                    val randomBeerRequest: JsonObjectRequest = viewModel.getRequest(context, "beer/random", { response ->
+                        // TODO: Route to beer page and display the returned beer
+                        val toastText = "Responded with beer '${response["name"]}' (${response["barcode"]})"
+                        Toast.makeText(context, toastText, Toast.LENGTH_LONG).show()
+                    })
+                    viewModel.addRequestToQueue(randomBeerRequest);
+                }
+            })
 
             SENG440Assignment2Theme(darkTheme = viewModel.getAppSettings().isDarkMode) {
 
