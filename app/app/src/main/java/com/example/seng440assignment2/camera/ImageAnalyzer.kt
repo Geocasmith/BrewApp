@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.CameraSelector
@@ -15,7 +16,6 @@ import androidx.camera.view.PreviewView
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Switch
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,33 +23,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
+import com.example.seng440assignment2.MainViewModel
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
-
-
-class TextAnalyzer(private val onImageScanned: (Text) -> Unit ): ImageAnalysis.Analyzer {
-
-    private val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
-
-    @SuppressLint("UnsafeOptInUsageError")
-    override fun analyze(imageProxy: ImageProxy) {
-        val mediaImage = imageProxy.image
-        if (mediaImage != null) {
-            val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
-
-            recognizer.process(image)
-                .addOnSuccessListener { onImageScanned(it) }
-                .addOnCompleteListener { imageProxy.close() }
-
-        }
-    }
-
-}
-
+import com.example.seng440assignment2.R
 
 class BarcodeAnalyzer(private val onBarcodeScanned: (List<Barcode>?) -> Unit ): ImageAnalysis.Analyzer {
     private val scanner = BarcodeScanning.getClient()
@@ -67,15 +48,10 @@ class BarcodeAnalyzer(private val onBarcodeScanned: (List<Barcode>?) -> Unit ): 
     }
 }
 
-
-
-
-
 @Composable
-fun ScanScreen() {
+fun ScanScreen(viewModel: MainViewModel, onFoundBarcode: (String) -> Unit, onNotFoundBarcode: (String) -> Unit) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
-    var isBarcodeScanning by remember { mutableStateOf(true) }
 
     val cameraProviderFuture = remember {
         ProcessCameraProvider.getInstance(context)
@@ -114,6 +90,7 @@ fun ScanScreen() {
                     factory = { context ->
                         val previewView = PreviewView(context)
                         val preview = Preview.Builder().build()
+                        var gettingBeer = false
 
                         val selector = CameraSelector.Builder()
                             .requireLensFacing(CameraSelector.LENS_FACING_BACK)
@@ -123,10 +100,25 @@ fun ScanScreen() {
                         imageAnalysis.setAnalyzer(
                             ContextCompat.getMainExecutor(context),
                             BarcodeAnalyzer { result ->
-                                /* TODO: Use Barcodes to do something -> Access Database? */
-
-                                result?.forEach {
-                                    Log.i("TAG", "ScanScreen: " + it.rawValue)
+                                if (!gettingBeer && !result.isNullOrEmpty()) {
+                                    val barcode = result[0].rawValue
+                                    if (!barcode.isNullOrEmpty()) {
+                                        gettingBeer = true
+                                        val request = viewModel.getRequest(context, "beer/${barcode}", {
+                                            //onFoundBarcode()
+                                                JsonResponse -> Toast.makeText(context, JsonResponse["name"].toString(), Toast.LENGTH_SHORT).show()
+                                            gettingBeer = false
+                                        }, { error ->
+                                            when (error.networkResponse.statusCode) {
+                                                404 -> {
+                                                    onNotFoundBarcode(barcode.toString())
+                                                    gettingBeer = false
+                                                }
+                                                else -> Toast.makeText(context, context.resources.getText(R.string.generic_500_error), Toast.LENGTH_SHORT).show()
+                                            }
+                                        })
+                                        viewModel.addRequestToQueue(request)
+                                    }
                                 }
                             })
                         try {
