@@ -39,3 +39,15 @@ exports.getMyReviews = async function (userId: number) {
         throw e;
     }
 }
+
+exports.get = async function () {
+    const sql = 'SELECT R.id as id, rating, title, description, B.id as beer, name, photo_path, type, barcode, (SELECT AVG(rating) from Review where beer = B.id) as averageRating FROM Review R JOIN Beer B on B.id = R.beer';
+
+    try {
+        const pool = await db.getPool();
+        return await pool.query(sql);
+    } catch (e) {
+        errorService.logSqlError(e);
+        throw e;
+    }
+}

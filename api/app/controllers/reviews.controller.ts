@@ -47,3 +47,13 @@ exports.getMyReviews = async function (req: { authenticatedUserId: any; }, res:R
         res.status(500).send();
     }
 }
+
+exports.get = async function (req:Request, res:Response) {
+    try {
+        const reviews = await reviewModel.get();
+        res.statusMessage = "OK"
+        res.status(200).json(reviews);
+    } catch (e) {
+        res.status(500).send();
+    }
+}
