@@ -28,7 +28,6 @@
     <string name="pref_notification_time_btn">Set</string>
     <string name="curr_string">Current</string>
     <string name="reminder_notification_title">Review Some Beer</string>
-    <string name="reminder_notification_text">Have you reviewed a craft beer today</string>
     <string name="submitToast">Review submitted</string>
     <string name="reminder_notification_text">Have you reviewed a craft beer today?</string>
 </resources>
