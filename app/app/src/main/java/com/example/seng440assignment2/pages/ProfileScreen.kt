@@ -23,14 +23,16 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.seng440assignment2.components.BeerCard
 import com.example.seng440assignment2.model.Review
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ProfileScreen(onNavigateToEdit: () -> Unit, onNavigateToPref: () -> Unit)
+fun ProfileScreen(mainViewModel: MainViewModel, onNavigateToEdit: () -> Unit, onNavigateToPref: () -> Unit, onLogout: () -> Unit)
 {
         /* TODO: Add Reviews */
         var reviews = listOf<Review>()
         var options by remember { mutableStateOf(false) }
+        val scope = rememberCoroutineScope()
 
 
     LazyColumn(
@@ -62,7 +64,10 @@ fun ProfileScreen(onNavigateToEdit: () -> Unit, onNavigateToPref: () -> Unit)
                         }
                         DropdownMenuItem(onClick = {
                             options = false
-                            /* TODO: Logout */
+                            scope.launch {
+                                mainViewModel.clearUserData()
+                                onLogout()
+                            }
                         }) {
                             Text(text = stringResource(id = R.string.profile_logout))
                         }
@@ -104,29 +109,6 @@ fun ProfileScreen(onNavigateToEdit: () -> Unit, onNavigateToPref: () -> Unit)
             // Add Reviews Here
         }
     )
-}
-
-
-@Composable
-fun EditScreen(onBackButtonPress: () -> Unit) {
-    Column() {
-        TopAppBar(backgroundColor = Color.LightGray, elevation = 0.dp )
-        {
-            IconButton(onClick = { onBackButtonPress() }) {
-                Icon(Icons.Outlined.ArrowBack, contentDescription = null)
-            }
-            Text(modifier = Modifier.padding(horizontal = 5.dp), text = stringResource(id = R.string.profile_pref))
-        }
-
-        Box(modifier = Modifier.fillMaxWidth())
-        {
-            Row() {
-                Text(text = stringResource(id = R.string.pref_darkmode))
-                Spacer(modifier = Modifier.weight(1f))
-            }
-        }
-
-    }
 }
 
 

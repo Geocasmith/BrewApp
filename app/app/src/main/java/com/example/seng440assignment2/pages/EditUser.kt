@@ -28,7 +28,7 @@ class EditUserViewModel: ViewModel() {
 
     var expanded:Boolean by mutableStateOf(false)
     var userName:String by mutableStateOf("")
-    var userBeerTypes:MutableList<BeerType> by mutableStateOf(mutableListOf())
+    var userBeerTypes = mutableStateListOf<BeerType>()
     
 
 

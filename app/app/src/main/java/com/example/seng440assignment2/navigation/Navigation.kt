@@ -26,7 +26,6 @@
     import com.google.accompanist.navigation.animation.AnimatedNavHost
     import com.google.accompanist.navigation.animation.composable
 
-
     @Composable
     fun AnimatedNavBar(navController: NavHostController)
     {
@@ -61,7 +60,7 @@
     // Animation Navigation https://google.github.io/accompanist/navigation-animation/
     @OptIn(ExperimentalAnimationApi::class)
     @Composable
-    fun AnimatedNav(navController: NavHostController, mainViewModel: MainViewModel, padding: PaddingValues) {
+    fun AnimatedNav(navController: NavHostController, mainViewModel: MainViewModel, padding: PaddingValues, onLogout: () -> Unit) {
         AnimatedNavHost(
             navController = navController,
             startDestination = Screen.Review.route,
@@ -89,10 +88,11 @@
                 route = Screen.Profile.route,
                 enterTransition = { EnterTransition.None },
                 exitTransition = { ExitTransition.None }
-            ) { ProfileScreen(onNavigateToEdit = { navController.navigate("edit") }, onNavigateToPref = { navController.navigate("pref") },
-            // lambda function with parameter name
-
-                ) }
+            ) { ProfileScreen(mainViewModel,
+                onNavigateToEdit = { navController.navigate("edit") },
+                onNavigateToPref = { navController.navigate("pref") },
+                onLogout = onLogout)
+            }
             composable(
                 route = "pref",
                 enterTransition = { EnterTransition.None },
@@ -107,7 +107,7 @@
                 route = "beer/{beerName}",
                 enterTransition = { EnterTransition.None },
                 exitTransition = { ExitTransition.None }
-            ) { backStackEntry -> BeerPage(mainViewModel as MainViewModel, backStackEntry.arguments?.getString("beerName")) {
+            ) { backStackEntry -> BeerPage(mainViewModel, backStackEntry.arguments?.getString("beerName")) {
                 navController.navigate(
                     "review"
                 )

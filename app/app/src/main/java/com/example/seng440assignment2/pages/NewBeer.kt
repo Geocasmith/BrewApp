@@ -60,7 +60,7 @@
                 item {HeaderText()}
                 item {ImageUrlBox(viewModel)}
                 item {SpacerDP(6)}
-                item {NameBox(viewModel)}
+                item {BeerNameBox(viewModel)}
                 item {SpacerDP(6)}
                 item {BeerTypeDropDown(viewModel)}
                 item {SpacerDP(6)}
@@ -144,7 +144,7 @@
     }
 
     @Composable
-    fun NameBox(viewModel: EditBeerViewModel) {
+    fun BeerNameBox(viewModel: EditBeerViewModel) {
         OutlinedTextField(
             value = viewModel.beerName,
             onValueChange = { viewModel.beerName = it },

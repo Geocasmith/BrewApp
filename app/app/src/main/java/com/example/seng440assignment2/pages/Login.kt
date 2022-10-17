@@ -135,7 +135,6 @@ fun UsernameBox(viewModel: AuthViewModel) {
 
 @Composable
 fun PasswordBox(viewModel: AuthViewModel) {
-
     OutlinedTextField(
         value = viewModel.userPassword,
         onValueChange = { viewModel.userPassword = it },

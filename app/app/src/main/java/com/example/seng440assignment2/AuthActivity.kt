@@ -42,7 +42,10 @@ class AuthActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         val mainIntent = Intent(applicationContext, MainActivity::class.java)
-        val onLogin = { startActivity(mainIntent) }
+        val onLogin = {
+            startActivity(mainIntent)
+            finish()
+        }
 
         super.onCreate(savedInstanceState)
         setContent {
