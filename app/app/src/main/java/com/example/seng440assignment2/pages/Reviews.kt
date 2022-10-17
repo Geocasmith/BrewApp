@@ -26,6 +26,7 @@ import com.example.seng440assignment2.R
 
 import com.example.seng440assignment2.components.BeerReviewCard
 import com.example.seng440assignment2.model.ReviewCard
+import com.example.seng440assignment2.components.BeerReviewCard
 import kotlinx.coroutines.launch
 
 /**

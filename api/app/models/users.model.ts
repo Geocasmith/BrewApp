@@ -1,4 +1,4 @@
-import {UserCreate} from "../../@types/app/models/users.model";
+import {EditUser, UserCreate} from "../../@types/app/models/users.model";
 
 const db = require('../../config/db');
 const passwordService = require('../services/passwords.service');
@@ -78,3 +78,16 @@ exports.findById = async function (id: number) {
         return null;
     }
 };
+
+exports.edit = async function (user: EditUser, userId: number) {
+    const sql = "UPDATE User SET name = ?, photo_path = ?, favourites = ?, bio = ? WHERE id = ?";
+    const data = [user.name, user.photoUrl, user.favourites, user.bio, userId];
+    try {
+        const pool = await db.getPool();
+        await pool.query(sql, data);
+        return userId;
+    } catch (e) {
+        errorService.logSqlError(e);
+        throw e;
+    }
+}

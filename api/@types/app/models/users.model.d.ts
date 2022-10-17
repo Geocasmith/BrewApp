@@ -3,3 +3,10 @@ export type UserCreate = {
     username: string,
     password: string
 }
+
+export type EditUser = {
+    name: string,
+    photoUrl: string,
+    favourites: string,
+    bio: string
+}

@@ -91,3 +91,69 @@ fun BeerReviewCard(beerName:String, reviewContent:String, reviewerName:String, r
 
     }
 }
+
+@Composable
+fun BeerCard(beerName:String, imageLink:String, rating:Float, onNavigateToBeerPage: () -> Unit) {
+    val padding=4.dp
+    Card(
+        elevation = 4.dp, modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .clickable(onClick = onNavigateToBeerPage)
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            //box with image aligned center horizontally and height of 90 and width of 50 dp
+            Box(
+                modifier = androidx.compose.ui.Modifier
+                    .height(90.dp)
+                    .width(90.dp)
+                    .padding(4.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                //image if its a showimage
+                AsyncImage(
+                    model = imageLink,
+                    contentDescription = "Beer!",
+                    modifier = androidx.compose.ui.Modifier.fillMaxSize()
+                )
+            }
+
+
+            Column(
+                horizontalAlignment = Alignment.Start,
+                modifier = androidx.compose.ui.Modifier.padding(padding)
+            ) {
+                Text(
+                    text = beerName,
+                    color = Color.Black.copy(alpha = 0.87f),
+                    lineHeight = 16.sp,
+                    style = TextStyle(
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Medium,
+                        letterSpacing = 1.5.sp
+                    )
+                )
+
+                Spacer(modifier = androidx.compose.ui.Modifier.height(4.dp))
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = "",
+                        color = Color.Black.copy(alpha = 0.6f),
+                        lineHeight = 16.sp,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Row {
+                        //filled star for rating and unfilled for remaining out of 5
+                        RatingStarsFloat(rating)
+                    }
+                }
+
+
+            }
+        }
+
+    }
+}

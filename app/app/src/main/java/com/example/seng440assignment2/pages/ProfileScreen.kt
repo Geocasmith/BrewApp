@@ -25,6 +25,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.seng440assignment2.components.BeerReviewCard
 import com.example.seng440assignment2.model.ReviewCard
+import com.example.seng440assignment2.model.Review
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
