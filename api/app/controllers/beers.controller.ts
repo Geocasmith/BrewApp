@@ -55,3 +55,14 @@ exports.getRandom = async function (req:Request, res:Response) {
         res.status(500).send();
     }
 }
+
+exports.getByType = async function (req:Request, res:Response) {
+    const type = req.params.type;
+    try {
+        const beers = await beerModel.getByType(type);
+        res.statusMessage = "OK"
+        res.status(200).json(beers);
+    } catch (e) {
+        res.status(500).send();
+    }
+}

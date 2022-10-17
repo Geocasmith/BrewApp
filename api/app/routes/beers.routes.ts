@@ -8,6 +8,9 @@ module.exports = function (app: any) {
         .post(authentication.loginRequired, beerController.create)
         .get(authentication.loginRequired, beerController.get);
 
+    app.route(baseUrl + '/type/:type')
+        .get(authentication.loginRequired, beerController.getByType)
+
     app.route(baseUrl + '/random')
         .get(authentication.loginRequired, beerController.getRandom)
 
