@@ -1,6 +1,7 @@
 package com.example.seng440assignment2.pages
 
 import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,55 +16,81 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.seng440assignment2.MainViewModel
 import com.example.seng440assignment2.R
 import com.example.seng440assignment2.components.RatingStarsFloat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import org.json.JSONObject
+
+
+class BeerPageViewModel: ViewModel() {
+
+    var beerId by mutableStateOf(-1L)
+    var beerName by mutableStateOf("")
+    var beerType by mutableStateOf("")
+    var beerRating by mutableStateOf(0f)
+    var beerImageUrl by mutableStateOf("")
+
+    var newReview by mutableStateOf("")
+    var newRating by mutableStateOf(1)
+
+    fun canSave(): Boolean {
+        return newReview != ""
+    }
+
+    fun clearReview() {
+        newReview = ""
+        newRating = 1
+    }
+
+}
+
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BeerPage(mainViewModel: MainViewModel, barcode: String?) {
+fun BeerPage(beerViewModel: BeerPageViewModel = viewModel(), mainViewModel: MainViewModel, barcode: String?) {
     val scaffoldState = androidx.compose.material3.rememberScaffoldState()
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
 
-    var beerName by remember { mutableStateOf(context.getString(R.string.generic_loading)) }
-    var beerType by remember { mutableStateOf(context.getString(R.string.generic_loading)) }
-    var beerRating by remember { mutableStateOf(0f)}
-    var beerImageUrl by remember { mutableStateOf(context.getString(R.string.generic_loading)) }
+    beerViewModel.beerName = stringResource(id = R.string.generic_loading)
+    beerViewModel.beerType = stringResource(id = R.string.generic_loading)
+    beerViewModel.beerImageUrl = stringResource(id = R.string.generic_loading)
 
     val request = mainViewModel.getObjectRequest(context, "beer/$barcode", { jsonResponse ->
-        beerName = jsonResponse["name"].toString()
-        beerType = jsonResponse["type"].toString()
+        beerViewModel.beerId = jsonResponse["id"].toString().toLong()
+        beerViewModel.beerName = jsonResponse["name"].toString()
+        beerViewModel.beerType = jsonResponse["type"].toString()
 
         if (jsonResponse["rating"].toString() != "null") {
-            beerRating = jsonResponse["rating"].toString().toFloat()
+            beerViewModel.beerRating = jsonResponse["rating"].toString().toFloat()
         }
-
-        beerImageUrl = jsonResponse["photo_path"].toString()
+        beerViewModel.beerImageUrl = jsonResponse["photo_path"].toString()
     })
     mainViewModel.addRequestToQueue(request)
-
-
 
     androidx.compose.material3.Scaffold(
         scaffoldState = scaffoldState,
         drawerContent = {
             //put the filter settings in the drawer
-            Review(scaffoldState = scaffoldState,scope=scope,ctx=context)
+            Review(beerViewModel, mainViewModel, scaffoldState = scaffoldState,scope=scope,ctx=context)
 
         },
         content = {
             Column {
                 AsyncImage(
-                    model = beerImageUrl,
+                    model = beerViewModel.beerImageUrl,
                     contentDescription = null,
                     modifier = Modifier.height(215.dp),
                     //content scale fill width
@@ -72,14 +99,14 @@ fun BeerPage(mainViewModel: MainViewModel, barcode: String?) {
                 )
                 // Beer Name
                 Text(
-                    text = beerName,
+                    text = beerViewModel.beerName,
                     color = Color.Black.copy(alpha = 0.87f),
                     lineHeight = 40.sp,
                     style = MaterialTheme.typography.h4
                 )
                 // Beer Type
                 Text(
-                    text = beerType,
+                    text = beerViewModel.beerType,
                     color = Color.Black.copy(alpha = 0.6f),
                     lineHeight = 28.sp,
                     style = TextStyle(
@@ -100,7 +127,7 @@ fun BeerPage(mainViewModel: MainViewModel, barcode: String?) {
                 )
                 Row {
                     //filled star for rating and unfilled for remaining out of 5
-                    RatingStarsFloat(beerRating)
+                    RatingStarsFloat(beerViewModel.beerRating)
                 }
                 ReviewButton(scaffoldState = scaffoldState,scope = scope)
             }
@@ -118,6 +145,8 @@ private fun ReviewButton(scaffoldState: ScaffoldState, scope: CoroutineScope) {
             .fillMaxWidth()
             .height(height = 48.dp),
         onClick = {
+
+
             scope.launch { scaffoldState.drawerState.open() }
         },
         shape = RoundedCornerShape(4.dp)
@@ -140,16 +169,30 @@ private fun ReviewButton(scaffoldState: ScaffoldState, scope: CoroutineScope) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun SubmitReviewButton(scaffoldState: ScaffoldState, scope: CoroutineScope, ctx: Context) {
+private fun SubmitReviewButton(beerViewModel: BeerPageViewModel, mainViewModel: MainViewModel, scaffoldState: ScaffoldState, scope: CoroutineScope, context: Context) {
     androidx.compose.material3.Button(
         modifier = Modifier
             .fillMaxWidth()
             .height(height = 48.dp),
         onClick = {
-            //TODO: API CALL HERE TO SUBMIT REVIEW
-            scope.launch { scaffoldState.drawerState.close()
-//                Toast.makeText(ctx, ctx.getString(R.string.submitToast), Toast.LENGTH_SHORT).show()
+            if (beerViewModel.canSave()) {
+                val jsonRequest = JSONObject()
+                jsonRequest.put("title", beerViewModel.newReview)
+                jsonRequest.put("rating", beerViewModel.newRating)
+
+                val request = mainViewModel.postObjectRequest(context, "review/${beerViewModel.beerId}", jsonRequest, {
+                    Toast.makeText(context, context.getString(R.string.submitToast), Toast.LENGTH_SHORT).show()
+                    beerViewModel.clearReview()
+                    scope.launch { scaffoldState.drawerState.close() }
+                })
+                mainViewModel.addRequestToQueue(request)
+            } else {
+                Toast.makeText(context, context.getString(R.string.new_cant_save), Toast.LENGTH_SHORT).show()
             }
+
+
+
+
         },
         shape = RoundedCornerShape(4.dp)
     ) {
@@ -171,7 +214,7 @@ private fun SubmitReviewButton(scaffoldState: ScaffoldState, scope: CoroutineSco
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
-private fun Review(scaffoldState: ScaffoldState, scope: CoroutineScope, ctx: Context) {
+private fun Review(beerViewModel: BeerPageViewModel, mainViewModel: MainViewModel,scaffoldState: ScaffoldState, scope: CoroutineScope, ctx: Context) {
     androidx.compose.material3.Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
@@ -187,14 +230,12 @@ private fun Review(scaffoldState: ScaffoldState, scope: CoroutineScope, ctx: Con
                         )
                     }
                 },
-
                 backgroundColor = Color.White
             )
 
         },
         content = {
             // center the items and add padding
-            var text by remember { mutableStateOf<String>("") }
             LazyColumn(
                 modifier=Modifier.padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -204,11 +245,11 @@ private fun Review(scaffoldState: ScaffoldState, scope: CoroutineScope, ctx: Con
                 item {
                     //review input box
                     OutlinedTextField(
-                        value = text,
-                        onValueChange = { text = it },
+                        value = beerViewModel.newReview,
+                        onValueChange = { beerViewModel.newReview = it },
                         label = {
                             androidx.compose.material3.Text(
-                                "Review",
+                                "Review*",
                                 color = Color.Black.copy(alpha = 0.6f)
                             )
                         }
@@ -216,10 +257,8 @@ private fun Review(scaffoldState: ScaffoldState, scope: CoroutineScope, ctx: Con
                 }
                 item {
                     //rating drop down
-                    val ratingOptions =
-                        listOf("5 Stars", "4 Stars", "3 Stars", "2 Stars", "1 Star")
+                    val ratingOptions = (1..5).toList()
                     var ratingExpanded by remember { mutableStateOf(false) }
-                    var ratingSelectedOptionText by remember { mutableStateOf(ratingOptions[0]) }
                     ExposedDropdownMenuBox(
                         expanded = ratingExpanded,
                         onExpandedChange = {
@@ -228,7 +267,7 @@ private fun Review(scaffoldState: ScaffoldState, scope: CoroutineScope, ctx: Con
                     ) {
                         TextField(
                             readOnly = true,
-                            value = ratingSelectedOptionText,
+                            value = "${beerViewModel.newRating} stars",
                             onValueChange = { },
                             label = { androidx.compose.material3.Text("Rating") },
                             trailingIcon = {
@@ -247,16 +286,15 @@ private fun Review(scaffoldState: ScaffoldState, scope: CoroutineScope, ctx: Con
                             ratingOptions.forEach { selectionOption ->
                                 DropdownMenuItem(
                                     onClick = {
-                                        ratingSelectedOptionText = selectionOption
+                                        beerViewModel.newRating = selectionOption
                                         ratingExpanded = false
                                     }
                                 ) {
-                                    androidx.compose.material3.Text(text = selectionOption)
+                                    androidx.compose.material3.Text(text = "$selectionOption stars")
                                 }
                             }
                         }
                     }
                 }
-                item{SubmitReviewButton(scaffoldState = scaffoldState,scope = scope,ctx = ctx)}
-            //rating stars
+                item{SubmitReviewButton(beerViewModel, mainViewModel, scaffoldState = scaffoldState,scope = scope, context = ctx)}
 }})}
