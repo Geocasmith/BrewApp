@@ -68,12 +68,6 @@ fun Reviews(
         topBar = {
             TopAppBar(
                 title = {Text("Reviews")},
-                navigationIcon = {
-                    IconButton(onClick = {
-                        scope.launch { scaffoldState.drawerState.open() }}) {
-                        Icon(Icons.Outlined.FilterAlt, contentDescription = "Filter")
-                    }
-                },
                 backgroundColor = Color.White)
 
                  },
