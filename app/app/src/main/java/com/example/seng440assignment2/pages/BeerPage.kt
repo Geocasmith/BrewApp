@@ -1,8 +1,6 @@
 package com.example.seng440assignment2.pages
 
 import android.content.Context
-import android.widget.Toast
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -26,43 +25,59 @@ import coil.compose.AsyncImage
 import com.example.seng440assignment2.MainViewModel
 import com.example.seng440assignment2.R
 import com.example.seng440assignment2.components.RatingStars
+import com.example.seng440assignment2.components.RatingStarsLong
+import com.google.mlkit.vision.barcode.common.Barcode
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BeerPage(mainViewModel: MainViewModel, string: Any?, onNavigateToCreateReview: () -> Unit) {
+fun BeerPage(mainViewModel: MainViewModel, barcode: String?) {
     val scaffoldState = androidx.compose.material3.rememberScaffoldState()
     val scope = rememberCoroutineScope()
-    val sortBy = remember { mutableStateOf("Default") } //default,top rated ASC, top rated DESC, most recent ASC, most recent DESC
-    val ctx = LocalContext.current
+    val context = LocalContext.current
+
+    var beerName by remember { mutableStateOf(context.getString(R.string.generic_loading)) }
+    var beerType by remember { mutableStateOf(context.getString(R.string.generic_loading)) }
+    var beerRating by remember { mutableStateOf(0L)}
+    var beerImageUrl by remember { mutableStateOf(context.getString(R.string.generic_loading)) }
+
+
+    mainViewModel.getObjectRequest(context, "beer/$barcode", { jsonResponse ->
+        beerName = jsonResponse["name"].toString()
+        beerType = jsonResponse["type"].toString()
+        beerRating = jsonResponse["rating"].toString().toLong()
+        beerImageUrl = jsonResponse["photo_path"].toString()
+    })
+
 
     androidx.compose.material3.Scaffold(
         scaffoldState = scaffoldState,
         drawerContent = {
             //put the filter settings in the drawer
-            Review(scaffoldState = scaffoldState,scope=scope,ctx=ctx)
+            Review(scaffoldState = scaffoldState,scope=scope,ctx=context)
 
         },
         content = {
-            val rating = 4
             Column {
                 AsyncImage(
-                    model = "https://cdn.shopify.com/s/files/1/0178/4982/products/O_zapftis__Render_Web.png?v=1664829695",
-                    contentDescription = "Beer!",
+                    model = beerImageUrl,
+                    contentDescription = null,
                     modifier = Modifier.height(215.dp),
-                    //contentscale fill width
+                    //content scale fill width
                     contentScale = ContentScale.FillWidth,
                     alignment = Alignment.Center
                 )
+                // Beer Name
                 Text(
-                    text = "I Heart Pomegranate & Pineapple",
+                    text = beerName,
                     color = Color.Black.copy(alpha = 0.87f),
                     lineHeight = 40.sp,
                     style = MaterialTheme.typography.h4
                 )
+                // Beer Type
                 Text(
-                    text = "Hazy IPA\nGarage Project",
+                    text = beerType,
                     color = Color.Black.copy(alpha = 0.6f),
                     lineHeight = 28.sp,
                     style = TextStyle(
@@ -83,7 +98,7 @@ fun BeerPage(mainViewModel: MainViewModel, string: Any?, onNavigateToCreateRevie
                 )
                 Row {
                     //filled star for rating and unfilled for remaining out of 5
-                    RatingStars(rating)
+                    RatingStarsLong(beerRating)
                 }
                 ReviewButton(scaffoldState = scaffoldState,scope = scope)
             }
