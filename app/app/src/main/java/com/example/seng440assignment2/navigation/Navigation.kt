@@ -128,7 +128,7 @@ fun AnimatedNav(
             BeerPage(
                 mainViewModel,
                 backStackEntry.arguments?.getString("barcode")
-            ) { navController.navigate("review") }
+            )
         }
         composable(
             route = "new/{barcode}",
