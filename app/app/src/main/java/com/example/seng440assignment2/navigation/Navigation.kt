@@ -13,14 +13,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.navArgument
 import com.example.seng440assignment2.MainViewModel
 import com.example.seng440assignment2.ProfileScreen
 import com.example.seng440assignment2.camera.ScanScreen
@@ -75,11 +71,12 @@ fun AnimatedNav(
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None }
         ) { Reviews(onNavigateToBeerPage = { beerName: String -> navController.navigate("beer/$beerName") }) }
+
         composable(
             route = Screen.Search.route,
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None }
-        ) { /* TODO: Beer Catalogue */ }
+        ) { Categories(onNavigateToBeerListPage = { beerType: String -> navController.navigate("beerList/$beerType") }) }
         composable(
             route = Screen.Scan.route,
             enterTransition = { EnterTransition.None },
@@ -119,6 +116,15 @@ fun AnimatedNav(
             EditScreen(
                 mainViewModel = mainViewModel,
                 onBackButtonPress = { navController.navigate(Screen.Profile.route) })
+        }
+        composable(
+            route = "beerList/{type}",
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
+        ) { backStackEntry ->
+            BeerListPage(
+                backStackEntry.arguments?.getString("type")
+            ) { navController.navigate("beerList") }
         }
         composable(
             route = "beer/{barcode}",
