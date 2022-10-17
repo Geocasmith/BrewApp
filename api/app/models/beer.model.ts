@@ -17,13 +17,12 @@ exports.create = async function (beer: BeerCreate) {
     }
 }
 
-exports.get = async function (amount: number, page: number) {
-    const sql = 'SELECT *, (SELECT AVG(rating) from Review where beer = Beer.id) as rating FROM `Beer` LIMIT ? OFFSET ?';
-    const data = [amount, amount * page]
+exports.get = async function () {
+    const sql = 'SELECT *, (SELECT AVG(rating) from Review where beer = Beer.id) as rating FROM `Beer`';
 
     try {
         const pool = await db.getPool();
-        return await pool.query(sql, data);
+        return await pool.query(sql);
     } catch (e) {
         errorService.logSqlError(e);
         throw e;

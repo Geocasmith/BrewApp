@@ -23,11 +23,8 @@ exports.create = async function (req: Request, res: Response) {
 };
 
 exports.get = async function (req:Request, res:Response) {
-    const page = req.query.page ? parseInt(req.query.page.toString()) : 0;
-    const size = req.query.size ? parseInt(req.query.size.toString()) : 25;
-
     try {
-        const beers = await beerModel.get(size, page);
+        const beers = await beerModel.get();
         res.statusMessage = "OK"
         res.status(200).json(beers);
     } catch (e) {
