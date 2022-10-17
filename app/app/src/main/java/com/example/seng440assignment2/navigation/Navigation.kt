@@ -137,8 +137,8 @@ fun AnimatedNav(
             exitTransition = { ExitTransition.None }
         ) { backStackEntry ->
             BeerPage(
-                mainViewModel,
-                backStackEntry.arguments?.getString("barcode")
+                mainViewModel = mainViewModel,
+                barcode = backStackEntry.arguments?.getString("barcode")
             )
         }
         composable(

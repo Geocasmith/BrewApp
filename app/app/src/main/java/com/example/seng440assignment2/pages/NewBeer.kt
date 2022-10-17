@@ -92,7 +92,7 @@ private fun AddButton(viewModel: MainViewModel, editBeerViewModel: EditBeerViewM
                 viewModel.addRequestToQueue(request)
                 onBeerSaved()
             } else {
-                Toast.makeText(context, context.getText(R.string.new_beer_cant_save), Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getText(R.string.new_cant_save), Toast.LENGTH_SHORT).show()
             }
         },
         shape = RoundedCornerShape(4.dp)

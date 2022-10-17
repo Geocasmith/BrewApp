@@ -65,7 +65,6 @@ fun ProfileScreen(mainViewModel: MainViewModel, onNavigateToEdit: () -> Unit, on
     mainViewModel.addRequestToQueue(userRequest)
     mainViewModel.addRequestToQueue(reviewRequest)
 
-
     LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally,
             content = {

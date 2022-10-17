@@ -33,7 +33,7 @@
     <string name="curr_string">Current</string>
     <string name="reminder_notification_title">Review Some Beer</string>
     <string name="reminder_notification_text">Have you reviewed a craft beer today?</string>
-    <string name="new_beer_cant_save">Please Fill Required Fields</string>
+    <string name="new_cant_save">Please Fill Required Fields</string>
     <string name="generic_loading">Loading...</string>
     <string name="submitToast">Review submitted</string>
     <string name="generic_400_error">Bad Request</string>

@@ -26,8 +26,8 @@ import com.example.seng440assignment2.components.SpacerDP
 
 class EditUserViewModel: ViewModel() {
 
-    var expanded:Boolean by mutableStateOf(false)
-    var userName:String by mutableStateOf("")
+    var expanded by mutableStateOf(false)
+    var userName by mutableStateOf("")
     var userBeerTypes = mutableStateListOf<BeerType>()
     
 
