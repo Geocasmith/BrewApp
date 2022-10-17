@@ -88,7 +88,7 @@ private fun AddButton(viewModel: MainViewModel, editBeerViewModel: EditBeerViewM
                 jsonRequest.put("type", editBeerViewModel.beerType)
                 jsonRequest.put("photoUrl", editBeerViewModel.beerImageURL)
 
-                val request = viewModel.postRequest(context, "/beer", jsonRequest, {})
+                val request = viewModel.postObjectRequest(context, "/beer", jsonRequest, {})
                 viewModel.addRequestToQueue(request)
                 onBeerSaved()
             } else {
