@@ -62,7 +62,7 @@ exports.logout = async function (req: { authenticatedUserId: any; }, res: Respon
 };
 
 exports.findById = async function (req: { params: { id: any; }; authenticatedUserId: any; }, res: Response) {
-    const id = req.params.id;
+    const id = parseInt(req.params.id);
     const userData = await usersModel.findById(id);
     if (userData == null) {
         res.statusMessage = 'Not Found';

@@ -52,3 +52,14 @@ exports.getRandom = async function () {
         throw e;
     }
 }
+
+exports.getByType = async function (type: string) {
+    const sql = 'SELECT *, (SELECT AVG(rating) from Review where beer = Beer.id) as rating FROM `Beer` WHERE type = ?';
+    try {
+        const pool = db.getPool();
+        return await pool.query(sql, [type]);
+    } catch (e) {
+        errorService.logSqlError(e);
+        throw e;
+    }
+}

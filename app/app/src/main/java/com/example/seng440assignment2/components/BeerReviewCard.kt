@@ -19,7 +19,7 @@ import coil.compose.AsyncImage
  * A card that displays a beer review. Inputs are the beer name, description, reviewer name, rating, and image link.
  */
 @Composable
-fun BeerCard(beerName:String, reviewContent:String, reviewerName:String, rating:Int, imageLink:String, onClick: () -> Unit = {}, onNavigateToBeerPage: (String) -> Unit) {
+fun BeerReviewCard(beerName:String, reviewContent:String, reviewerName:String, rating:Int, imageLink:String, onClick: () -> Unit = {}, onNavigateToBeerPage: (String) -> Unit = {}) {
     val padding=16.dp
     Card(
         elevation = 4.dp, modifier = Modifier

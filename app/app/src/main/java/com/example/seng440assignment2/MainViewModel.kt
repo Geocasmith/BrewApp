@@ -1,6 +1,7 @@
 package com.example.seng440assignment2
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -10,10 +11,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.android.volley.AuthFailureError
 import com.android.volley.Request
 import com.android.volley.Response
+import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.seng440assignment2.datastore.AppSettings
 import com.example.seng440assignment2.datastore.UserData
+import org.json.JSONArray
 import org.json.JSONObject
 
 
@@ -68,15 +71,23 @@ class MainViewModel(private var settingsDataStore: DataStore<AppSettings>, priva
         queue.add(request);
     }
 
-    fun getRequest(context: Context, endpoint: String, responseHandler: Response.Listener<JSONObject>, errorHandler: Response.ErrorListener? = null): JsonObjectRequest {
-        return request(context, endpoint, Request.Method.GET, responseHandler, errorHandler)
+    fun addRequestToQueue(request: JsonArrayRequest) {
+        queue.add(request)
     }
 
-    fun postRequest(context: Context, endpoint: String, body: JSONObject?, responseHandler: Response.Listener<JSONObject>, errorHandler: Response.ErrorListener? = null): JsonObjectRequest {
-        return request(context, endpoint, Request.Method.POST, responseHandler, errorHandler, body)
+    fun getObjectRequest(context: Context, endpoint: String, responseHandler: Response.Listener<JSONObject>, errorHandler: Response.ErrorListener? = null): JsonObjectRequest {
+        return jsonObjectRequest(context, endpoint, Request.Method.GET, responseHandler, errorHandler)
     }
 
-    private fun request(context: Context, endpoint: String, requestType: Int, responseHandler: Response.Listener<JSONObject>, errorHandler: Response.ErrorListener? = null, body: JSONObject? = null): JsonObjectRequest {
+    fun getArrayRequest(context: Context, endpoint: String, responseHandler: Response.Listener<JSONArray>, errorHandler: Response.ErrorListener? = null): JsonArrayRequest {
+        return jsonArrayRequest(context, endpoint, Request.Method.GET, responseHandler, errorHandler)
+    }
+
+    fun postObjectRequest(context: Context, endpoint: String, body: JSONObject?, responseHandler: Response.Listener<JSONObject>, errorHandler: Response.ErrorListener? = null): JsonObjectRequest {
+        return jsonObjectRequest(context, endpoint, Request.Method.POST, responseHandler, errorHandler, body)
+    }
+
+    private fun jsonObjectRequest(context: Context, endpoint: String, requestType: Int, responseHandler: Response.Listener<JSONObject>, errorHandler: Response.ErrorListener? = null, body: JSONObject? = null): JsonObjectRequest {
         var url = "https://seng440-api-6ieosyuwfq-ts.a.run.app/api"
         if (endpoint.startsWith("https")) {
             url = endpoint
@@ -89,7 +100,7 @@ class MainViewModel(private var settingsDataStore: DataStore<AppSettings>, priva
         if (errorHandler == null) {
             eHandler = Response.ErrorListener { error ->
                 var message: CharSequence = "An error occurred"
-                when (error.networkResponse.statusCode) {
+                when (error.networkResponse?.statusCode ?: 0) {
                     400 -> message = context.resources.getText(R.string.generic_400_error)
                     401 -> message = context.resources.getText(R.string.generic_401_error)
                     404 -> message = context.resources.getText(R.string.generic_404_error)
@@ -110,4 +121,38 @@ class MainViewModel(private var settingsDataStore: DataStore<AppSettings>, priva
         return request
     }
 
+    private fun jsonArrayRequest(context: Context, endpoint: String, requestType: Int, responseHandler: Response.Listener<JSONArray>, errorHandler: Response.ErrorListener? = null) : JsonArrayRequest {
+        var url = "https://seng440-api-6ieosyuwfq-ts.a.run.app/api"
+        if (endpoint.startsWith("https")) {
+            url = endpoint
+        } else if (endpoint.startsWith("/")) {
+            url += endpoint
+        } else {
+            url += "/$endpoint";
+        }
+        var eHandler = errorHandler
+        if (errorHandler == null) {
+            eHandler = Response.ErrorListener { error ->
+                Log.e("ERR", error.message ?: "")
+                var message: CharSequence = "An error occurred"
+                when (error.networkResponse?.statusCode ?: 0) {
+                    400 -> message = context.resources.getText(R.string.generic_400_error)
+                    401 -> message = context.resources.getText(R.string.generic_401_error)
+                    404 -> message = context.resources.getText(R.string.generic_404_error)
+                    500 -> message = context.resources.getText(R.string.generic_500_error)
+                }
+                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        val request : JsonArrayRequest = object : JsonArrayRequest(requestType, url, null, responseHandler, eHandler) {
+            @Throws(AuthFailureError::class)
+            override fun getHeaders(): Map<String, String> {
+                val params: MutableMap<String, String> = HashMap()
+                params["X-Authorization"] = userData.authToken
+                return params
+            }
+        }
+        return request
+    }
 }
