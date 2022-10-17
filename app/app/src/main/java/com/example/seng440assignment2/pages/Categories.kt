@@ -81,11 +81,15 @@ fun BeerListPage(mainViewModel: MainViewModel, string: Any?,onNavigateToBeerPage
         beerList.clear()
         for (i in 0 until response.length()) {
             val item = response.getJSONObject(i)
+            var beerRating = 0f
+            if(item["rating"].toString() != "null") {
+                beerRating = item["rating"].toString().toFloat()
+            }
             val review = BeerListItem(
                 item["name"].toString(),
                 item["barcode"].toString(),
                 item["photo_path"].toString(),
-                item["rating"].toString().toLong()
+                beerRating,
             )
             beerList.add(review)
         }
@@ -108,7 +112,14 @@ fun BeerListPage(mainViewModel: MainViewModel, string: Any?,onNavigateToBeerPage
             //lazy column for both beer cards
             LazyColumn {
                 beerList.map { beerListItem ->
-                    item {Text(beerListItem.title)}
+                    item {
+                        BeerCard(
+                            beerName = beerListItem.title,
+                            imageLink = beerListItem.photoURL,
+                            rating = beerListItem.averageRating,
+                            onNavigateToBeerPage = { onNavigateToBeerPage(beerListItem.barcode) }
+                        )
+                    }
                     }
                 }
                 //put two categorycards in a row

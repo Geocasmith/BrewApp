@@ -17,5 +17,5 @@ data class BeerListItem(
     val title: String,
     val barcode: String,
     val photoURL: String,
-    val averageRating: Long
+    val averageRating: Float
 )

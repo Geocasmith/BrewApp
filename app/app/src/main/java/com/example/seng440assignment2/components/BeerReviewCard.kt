@@ -93,7 +93,7 @@ fun BeerReviewCard(beerName:String, reviewContent:String, reviewerName:String, r
 }
 
 @Composable
-fun BeerCard(beerName:String, imageLink:String, rating:Long, onNavigateToBeerPage: (String) -> Unit) {
+fun BeerCard(beerName:String, imageLink:String, rating:Float, onNavigateToBeerPage: (String) -> Unit) {
     val padding=4.dp
     Card(
         elevation = 4.dp, modifier = Modifier
@@ -147,7 +147,7 @@ fun BeerCard(beerName:String, imageLink:String, rating:Long, onNavigateToBeerPag
                     )
                     Row {
                         //filled star for rating and unfilled for remaining out of 5
-                        RatingStarsLong(rating)
+                        RatingStarsFloat(rating)
                     }
                 }
 
