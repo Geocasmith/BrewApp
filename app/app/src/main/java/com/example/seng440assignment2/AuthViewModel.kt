@@ -25,6 +25,7 @@ class AuthViewModelFactory(private val userDataStore: DataStore<UserData>, priva
 
 class AuthViewModel(private var userDataStore: DataStore<UserData>, context: Context): ViewModel() {
 
+    var name by mutableStateOf("")
     var userName by mutableStateOf("")
     var userPassword by mutableStateOf("")
     private var requestQueue = Volley.newRequestQueue(context)
@@ -58,8 +59,27 @@ class AuthViewModel(private var userDataStore: DataStore<UserData>, context: Con
         requestQueue.add(loginRequest)
     }
 
-    fun register() {
-        /* TODO */
+    fun signup(context: Context, onSuccess: () -> Unit) {
+        val url = "https://seng440-api-6ieosyuwfq-ts.a.run.app/api/users/register"
+
+        val jsonRequest = JSONObject()
+        jsonRequest.put("name", name)
+        jsonRequest.put("username", userName)
+        jsonRequest.put("password", userPassword)
+
+        val loginRequest = JsonObjectRequest(
+            Request.Method.POST, url, jsonRequest,
+            {
+                Toast.makeText(context, context.resources.getText(R.string.signup_success), Toast.LENGTH_SHORT).show()
+                onSuccess()
+            },
+            { error ->
+                when (error.networkResponse.statusCode) {
+                    400 -> Toast.makeText(context, context.resources.getText(R.string.signup_400_error), Toast.LENGTH_SHORT).show()
+                    else -> Toast.makeText(context, context.resources.getText(R.string.generic_500_error), Toast.LENGTH_SHORT).show()
+                }
+            })
+        requestQueue.add(loginRequest)
     }
 
     @Composable

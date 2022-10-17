@@ -3,11 +3,13 @@ package com.example.seng440assignment2.pages
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
@@ -17,11 +19,12 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.seng440assignment2.R
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.seng440assignment2.AuthViewModel
 
 @Composable
 fun Register(viewModel: AuthViewModel, onLoginLinkClicked: () -> Unit) {
+    val context = LocalContext.current
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -34,23 +37,25 @@ fun Register(viewModel: AuthViewModel, onLoginLinkClicked: () -> Unit) {
                 .width(width = 264.dp)
         ) {
             SignUpTitleText()
+            NameBox(viewModel)
+            SpacerDP(6)
             UsernameBox(viewModel)
             SpacerDP(6)
             PasswordBox(viewModel)
             SpacerDP(12)
             LoginNavigation(onLoginLinkClicked)
-            SignUpButton()
+            SignUpButton { viewModel.signup(context, onLoginLinkClicked) }
         }
     }
 }
 
 @Composable
-private fun SignUpButton() {
+private fun SignUpButton(onSignUp: () -> Unit) {
     Button(
         modifier = Modifier
             .width(width = 140.dp)
             .height(height = 48.dp),
-        onClick = { /* Do something! */ },
+        onClick = { onSignUp() },
         shape = RoundedCornerShape(4.dp)
     ) {
         Text(
@@ -67,6 +72,15 @@ private fun SignUpButton() {
                 .width(width = 96.dp)
         )
     }
+}
+
+@Composable
+private fun NameBox(viewModel: AuthViewModel) {
+    OutlinedTextField(
+        value = viewModel.name,
+        onValueChange = { viewModel.name = it },
+        label = { Text(stringResource(id = R.string.signup_name_placeholder), color = Color.Black.copy(alpha = 0.6f)) }
+    )
 }
 
 

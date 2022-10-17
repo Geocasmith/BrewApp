@@ -92,33 +92,34 @@ fun BeerPage(mainViewModel: MainViewModel, string: Any?, onNavigateToCreateRevie
         },
     )
 }
-        @OptIn(ExperimentalMaterial3Api::class)
-        @Composable
-        private fun ReviewButton(scaffoldState: ScaffoldState, scope: CoroutineScope) {
-            androidx.compose.material3.Button(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(height = 48.dp),
-                onClick = {
-                    scope.launch { scaffoldState.drawerState.open() }
-                },
-                shape = RoundedCornerShape(4.dp)
-            ) {
-                androidx.compose.material3.Text(
-                    text = "Review",
-                    color = Color.White,
-                    textAlign = TextAlign.Center,
-                    lineHeight = 16.sp,
-                    style = TextStyle(
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Medium,
-                        letterSpacing = 1.sp
-                    ),
-                    modifier = Modifier
-                        .width(width = 96.dp)
-                )
-            }
-        }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ReviewButton(scaffoldState: ScaffoldState, scope: CoroutineScope) {
+    androidx.compose.material3.Button(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(height = 48.dp),
+        onClick = {
+            scope.launch { scaffoldState.drawerState.open() }
+        },
+        shape = RoundedCornerShape(4.dp)
+    ) {
+        androidx.compose.material3.Text(
+            text = "Review",
+            color = Color.White,
+            textAlign = TextAlign.Center,
+            lineHeight = 16.sp,
+            style = TextStyle(
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Medium,
+                letterSpacing = 1.sp
+            ),
+            modifier = Modifier
+                .width(width = 96.dp)
+        )
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -175,7 +176,7 @@ private fun Review(scaffoldState: ScaffoldState, scope: CoroutineScope, ctx: Con
 
         },
         content = {
-//center the items and add padding
+            // center the items and add padding
             var text by remember { mutableStateOf<String>("") }
             LazyColumn(
                 modifier=Modifier.padding(16.dp),
@@ -185,7 +186,6 @@ private fun Review(scaffoldState: ScaffoldState, scope: CoroutineScope, ctx: Con
                 ) {
                 item {
                     //review input box
-
                     OutlinedTextField(
                         value = text,
                         onValueChange = { text = it },
@@ -241,7 +241,5 @@ private fun Review(scaffoldState: ScaffoldState, scope: CoroutineScope, ctx: Con
                     }
                 }
                 item{SubmitReviewButton(scaffoldState = scaffoldState,scope = scope,ctx = ctx)}
-
             //rating stars
-
 }})}

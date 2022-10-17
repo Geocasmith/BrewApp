@@ -8,9 +8,12 @@
     <string name="login_400_error">Invalid Username or Password</string>
     <string name="login_btn_text">LOGIN</string>
     <string name="signup_link">Don\'t have an account? Sign Up</string>
-    <string name="signup_title">Sign Up!</string>
+    <string name="signup_name_placeholder">Name</string>
     <string name="signup_description">Create an account to get started</string>
+    <string name="signup_title">Sign Up!</string>
     <string name="signup_btn_text">REGISTER</string>
+    <string name="signup_400_error">Username Already Exists</string>
+    <string name="signup_success">User Successfully Created</string>
     <string name="navbar_review_label">Review</string>
     <string name="navbar_search_label">Search</string>
     <string name="navbar_scan_label">Scan</string>

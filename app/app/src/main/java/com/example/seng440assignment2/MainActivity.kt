@@ -1,6 +1,7 @@
 package com.example.seng440assignment2
 
 import android.content.Context
+import android.content.Intent
 import android.hardware.Sensor
 import android.hardware.SensorManager
 import android.os.Bundle
@@ -48,6 +49,13 @@ class MainActivity : ComponentActivity() {
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
         mShakeDetector = ShakeDetector()
 
+        val authIntent = Intent(applicationContext, AuthActivity::class.java)
+        val onLogout = {
+            startActivity(authIntent)
+            finish()
+        }
+
+
         setContent {
             val context = LocalContext.current
 
@@ -82,7 +90,7 @@ class MainActivity : ComponentActivity() {
                     bottomBar = { AnimatedNavBar(navController = navController) }
                 ) {
                         paddingValues ->
-                    AnimatedNav(navController = navController, mainViewModel = viewModel, padding = paddingValues)
+                    AnimatedNav(navController = navController, mainViewModel = viewModel, padding = paddingValues, onLogout = onLogout)
                 }
             }
         }
