@@ -102,7 +102,7 @@
                 route = "edit",
                 enterTransition = { EnterTransition.None },
                 exitTransition = { ExitTransition.None }
-            ) { EditScreen(mainViewModel, onBackButtonPress = { navController.navigate(Screen.Profile.route) }) }
+            ) { EditScreen(mainViewModel=mainViewModel, onBackButtonPress = { navController.navigate(Screen.Profile.route) }) }
             composable(
                 route = "beer/{beerName}",
                 enterTransition = { EnterTransition.None },

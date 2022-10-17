@@ -21,7 +21,7 @@
     import androidx.compose.ui.unit.sp
     import androidx.lifecycle.ViewModel
     import androidx.lifecycle.viewmodel.compose.viewModel
-
+    import com.example.seng440assignment2.model.BeerType
 
 
     class EditBeerViewModel: ViewModel() {
@@ -156,8 +156,7 @@
     @Composable
     fun BeerTypeDropDown(viewModel: EditBeerViewModel) {
         //rating drop down
-        val beerTypeOptions =
-            listOf("Hazy", "IPA", "Lager", "Stout", "APA", "Pilsner", "Wheat", "Pale Ale", "Sour", "Porter", "Other")
+        val beerTypeOptions = BeerType.values().map { it.name }
         var expanded by remember { mutableStateOf(false) }
         ExposedDropdownMenuBox(
             expanded = expanded,
