@@ -19,3 +19,10 @@ data class ReviewCard(
     val reviewerName: String,
     val beerPhotoUrl: String
 )
+
+data class BeerPageReviewCard(
+    val id: Long,
+    val rating: Int,
+    val title: String,
+    val reviewerName: String,
+)
