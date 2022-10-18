@@ -79,6 +79,10 @@ class MainViewModel(private var settingsDataStore: DataStore<AppSettings>, priva
         return jsonObjectRequest(context, endpoint, Request.Method.GET, responseHandler, errorHandler)
     }
 
+    fun patchObjectRequest(context: Context, endpoint: String, body: JSONObject?, responseHandler: Response.Listener<JSONObject>, errorHandler: Response.ErrorListener? = null): JsonObjectRequest {
+        return jsonObjectRequest(context, endpoint, Request.Method.PATCH, responseHandler, errorHandler, body)
+    }
+
     fun getArrayRequest(context: Context, endpoint: String, responseHandler: Response.Listener<JSONArray>, errorHandler: Response.ErrorListener? = null): JsonArrayRequest {
         return jsonArrayRequest(context, endpoint, Request.Method.GET, responseHandler, errorHandler)
     }

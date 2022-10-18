@@ -178,3 +178,48 @@ fun BeerCard(beerName:String, imageLink:String, rating:Float, onNavigateToBeerPa
 
     }
 }
+
+@Composable
+fun BeerPageReviewCard(reviewContent:String, reviewerName:String, rating:Int) {
+    val padding = 16.dp
+    Card(
+        elevation = 4.dp, modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+        Column(
+            horizontalAlignment = Alignment.Start,
+            modifier = androidx.compose.ui.Modifier.padding(padding)
+        ) {
+            Spacer(modifier = androidx.compose.ui.Modifier.height(4.dp))
+            Text(
+                text = reviewContent,
+                color = Color.Black.copy(alpha = 0.87f),
+                lineHeight = 24.sp,
+                style = TextStyle(
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium
+                )
+            )
+            Spacer(modifier = androidx.compose.ui.Modifier.height(4.dp))
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+//                    TODO:Make the name clickable to go to the user's profile
+                Text(
+                    text = reviewerName,
+                    color = Color.Black.copy(alpha = 0.6f),
+                    lineHeight = 16.sp,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Row {
+                    //filled star for rating and unfilled for remaining out of 5
+                    RatingStars(rating)
+                }
+            }
+
+
+        }
+    }
+}

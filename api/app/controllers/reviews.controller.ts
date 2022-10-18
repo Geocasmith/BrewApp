@@ -24,12 +24,10 @@ exports.create = async function (req: {
 }
 
 exports.getByBeerId = async function (req:Request, res:Response) {
-    const page = req.query.page ? parseInt(req.query.page.toString()) : 0;
-    const size = req.query.size ? parseInt(req.query.size.toString()) : 25;
     const beerId = parseInt(req.params.beerId);
 
     try {
-        const reviews = await reviewModel.getByBeer(beerId, size, page);
+        const reviews = await reviewModel.getByBeer(beerId);
         res.statusMessage = "OK"
         res.status(200).json(reviews);
     } catch (e) {
