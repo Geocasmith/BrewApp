@@ -12,14 +12,21 @@ import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import com.example.seng440assignment2.MainViewModel
@@ -131,6 +138,16 @@ fun ScanScreen(viewModel: MainViewModel, onFoundBarcode: (String) -> Unit, onNot
                     modifier = Modifier
                         .fillMaxSize()
                 )
+
+                var colorFilter = ColorFilter.tint(Color.Black)
+                if (viewModel.getAppSettings().isDarkMode) {
+                    colorFilter = ColorFilter.tint(Color.White)
+                }
+                Image(modifier = Modifier
+                    .size(250.dp),
+                    painter = painterResource(id = R.drawable.scan_symbol),
+                    contentDescription = null,
+                    colorFilter = colorFilter)
             }
         }
 
