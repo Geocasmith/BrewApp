@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SENG440 Assignment 2</string>
+    <string name="app_name">Brew</string>
     <string name="login_link">Don\'t have an account? Sign up</string>
     <string name="login_title">Let\'s get started!</string>
     <string name="login_description">Login to access your reviews and profile</string>
@@ -26,7 +26,7 @@
     <string name="edit_bio">Bio</string>
     <string name="no_name">Name must be provided</string>
     <string name="profile_updated">Profile Updated</string>
-    <string name="saving_profile">Saving Profile...</string>
+    <string name="saving_profile">Saving Profile…</string>
     <string name="edit_save_btn">Save</string>
     <string name="profile_pref">Preferences</string>
     <string name="profile_logout">Logout</string>
@@ -38,7 +38,7 @@
     <string name="reminder_notification_title">Review Some Beer</string>
     <string name="reminder_notification_text">Have you reviewed a craft beer today?</string>
     <string name="new_cant_save">Please Fill Required Fields</string>
-    <string name="generic_loading">Loading...</string>
+    <string name="generic_loading">Loading…</string>
     <string name="submitToast">Review submitted</string>
     <string name="generic_400_error">Bad Request</string>
     <string name="generic_401_error">Unauthorized</string>
@@ -62,7 +62,7 @@
     <string name="new_beer_name">Beer Name*</string>
     <string name="new_beer_type">Beer Type*</string>
     <string name="new_beer_barcode">Barcode*</string>
-    <string name="loading">Loading...</string>
-    <string name="reminder_channel_description">Loading...</string>
+    <string name="loading">Loading…</string>
+    <string name="reminder_channel_description">Loading…</string>
 
 </resources>
