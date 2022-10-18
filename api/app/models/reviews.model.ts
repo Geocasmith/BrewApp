@@ -16,9 +16,9 @@ exports.create = async function (review: CreateReview, userId: number, beerId: n
     }
 }
 
-exports.getByBeer = async function (beerId: number, size: number, page: number) {
-    const sql = "SELECT * FROM `Review` WHERE beer = ? LIMIT ? OFFSET ?";
-    const data = [beerId, size, size * page];
+exports.getByBeer = async function (beerId: number) {
+    const sql = "SELECT R.id as id, rating, title, U.name as reviewerName, U.id as user FROM Review R JOIN User U on R.user = U.id WHERE beer = ?";
+    const data = [beerId];
 
     try {
         const pool = await db.getPool();
