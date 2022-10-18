@@ -153,7 +153,7 @@ fun PrefScreen(mainViewModel: MainViewModel, onBackButtonPress: () -> Unit) {
                         , contentAlignment = Alignment.CenterStart)
                     {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Column() {
+                            Column {
                                 Text(modifier = Modifier.padding(horizontal = 2.dp),
                                     color = MaterialTheme.colorScheme.primary,
                                     text = stringResource(id = R.string.pref_notification_time),

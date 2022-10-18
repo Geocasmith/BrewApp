@@ -73,7 +73,7 @@ class MainActivity : ComponentActivity() {
                     val randomBeerRequest: JsonObjectRequest = viewModel.getObjectRequest(context, "beer/random", { response ->
                         navController.navigate("beer/${response["barcode"]}")
                     })
-                    viewModel.addRequestToQueue(randomBeerRequest);
+                    viewModel.addRequestToQueue(randomBeerRequest)
                 }
             })
 

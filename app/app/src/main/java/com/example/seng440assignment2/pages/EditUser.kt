@@ -176,7 +176,7 @@ fun EditScreen(
                             expanded = editUserViewModel.expanded,
                             onExpandedChange = {}
                         ) {
-                            Row() {
+                            Row {
                                 Column {
                                     Text(
                                         text = stringResource(id = R.string.edit_fav_beer_types),

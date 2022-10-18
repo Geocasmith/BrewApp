@@ -135,8 +135,6 @@ fun BeerCard(beerName:String, imageLink:String, rating:Float, onNavigateToBeerPa
                     modifier = Modifier.fillMaxSize()
                 )
             }
-
-
             Column(
                 horizontalAlignment = Alignment.Start,
                 modifier = Modifier.padding(padding)
@@ -180,25 +178,27 @@ fun BeerCard(beerName:String, imageLink:String, rating:Float, onNavigateToBeerPa
 fun BeerPageReviewCard(reviewContent:String, reviewerName:String, rating:Int) {
     val padding = 16.dp
     Card(
-        elevation = 4.dp, modifier = Modifier
+        backgroundColor = MaterialTheme.colorScheme.background,
+        modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(16.dp),
+        border = BorderStroke(1.dp, color = MaterialTheme.colorScheme.secondaryContainer)
     ) {
         Column(
             horizontalAlignment = Alignment.Start,
-            modifier = androidx.compose.ui.Modifier.padding(padding)
+            modifier = Modifier.padding(padding)
         ) {
-            Spacer(modifier = androidx.compose.ui.Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = reviewContent,
-                color = Color.Black.copy(alpha = 0.87f),
+                color = MaterialTheme.colorScheme.primary,
                 lineHeight = 24.sp,
                 style = TextStyle(
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Medium
                 )
             )
-            Spacer(modifier = androidx.compose.ui.Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(4.dp))
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()
@@ -206,7 +206,7 @@ fun BeerPageReviewCard(reviewContent:String, reviewerName:String, rating:Int) {
 //                    TODO:Make the name clickable to go to the user's profile
                 Text(
                     text = reviewerName,
-                    color = Color.Black.copy(alpha = 0.6f),
+                    color = MaterialTheme.colorScheme.secondary,
                     lineHeight = 16.sp,
                     style = MaterialTheme.typography.bodyMedium
                 )

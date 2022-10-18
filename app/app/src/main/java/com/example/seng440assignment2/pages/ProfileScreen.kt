@@ -42,7 +42,7 @@ fun ProfileScreen(mainViewModel: MainViewModel, onNavigateToEdit: () -> Unit, on
     val userRequest = mainViewModel.getObjectRequest(LocalContext.current, "users/" + mainViewModel.getUserId(), { response ->
         name = response["name"].toString()
         bio = response["bio"].toString()
-    });
+    })
 
     val reviewRequest = mainViewModel.getArrayRequest(LocalContext.current, "review/mine", { response ->
         reviews.clear()
@@ -136,8 +136,8 @@ fun ProfileScreen(mainViewModel: MainViewModel, onNavigateToEdit: () -> Unit, on
                         .padding(bottom = 10.dp))
                     {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text(text = name.toString(), fontSize = 20.sp)
-                            Text(text = bio.toString(), color = Color.LightGray)
+                            Text(text = name.toString().trim(), fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)
+                            Text(text = bio.toString().trim(), color = MaterialTheme.colorScheme.secondary)
                         }
                     }
                 }

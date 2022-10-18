@@ -29,7 +29,7 @@ class MainViewModelFactory(private val settingsDataStore: DataStore<AppSettings>
 
 class MainViewModel(private var settingsDataStore: DataStore<AppSettings>, private var userDataStore: DataStore<UserData>, context: Context) : ViewModel() {
 
-    private val queue = Volley.newRequestQueue(context);
+    private val queue = Volley.newRequestQueue(context)
     private lateinit var userData: UserData
 
     suspend fun setIsDarkMode(darkMode: Boolean) {
@@ -69,7 +69,7 @@ class MainViewModel(private var settingsDataStore: DataStore<AppSettings>, priva
     }
 
     fun addRequestToQueue(request: JsonObjectRequest) {
-        queue.add(request);
+        queue.add(request)
     }
 
     fun addRequestToQueue(request: JsonArrayRequest) {
@@ -99,7 +99,7 @@ class MainViewModel(private var settingsDataStore: DataStore<AppSettings>, priva
         } else if (endpoint.startsWith("/")) {
             url += endpoint
         } else {
-            url += "/$endpoint";
+            url += "/$endpoint"
         }
         var eHandler = errorHandler
         if (errorHandler == null) {
@@ -133,7 +133,7 @@ class MainViewModel(private var settingsDataStore: DataStore<AppSettings>, priva
         } else if (endpoint.startsWith("/")) {
             url += endpoint
         } else {
-            url += "/$endpoint";
+            url += "/$endpoint"
         }
         var eHandler = errorHandler
         if (errorHandler == null) {
