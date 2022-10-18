@@ -1,7 +1,7 @@
 package com.example.seng440assignment2.model
 
 enum class BeerType {
-    ALE, LAGER, PORTER, STOUT, IPA, PILSNER, SOUR, DRY
+    ALE, LAGER, PORTER, STOUT, IPA, PILSNER, SOUR, HAZY
 }
 
 data class Beer(

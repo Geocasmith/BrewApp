@@ -30,7 +30,7 @@ import org.json.JSONObject
 class EditBeerViewModel : ViewModel() {
 
     var beerName: String by mutableStateOf("")
-    var beerType: String by mutableStateOf("Hazy")
+    var beerType: String by mutableStateOf(BeerType.HAZY.name)
     var beerBarcode: String by mutableStateOf("")
     var beerImageURL: String by mutableStateOf("")
 
