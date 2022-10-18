@@ -1,69 +1,69 @@
-    package com.example.seng440assignment2.pages
+package com.example.seng440assignment2.pages
 
-    import android.content.Context
-    import android.widget.Toast
-    import androidx.compose.foundation.layout.*
-    import androidx.compose.foundation.lazy.LazyColumn
-    import androidx.compose.foundation.lazy.items
-    import androidx.compose.foundation.shape.RoundedCornerShape
-    import androidx.compose.material.*
-    import androidx.compose.material.icons.Icons
-    import androidx.compose.material.icons.outlined.Close
-    import androidx.compose.material3.ExperimentalMaterial3Api
-    import androidx.compose.material3.ScaffoldState
-    import androidx.compose.runtime.*
-    import androidx.compose.ui.Alignment
-    import androidx.compose.ui.Modifier
-    import androidx.compose.ui.graphics.Color
-    import androidx.compose.ui.layout.ContentScale
-    import androidx.compose.ui.platform.LocalContext
-    import androidx.compose.ui.res.stringResource
-    import androidx.compose.ui.text.TextStyle
-    import androidx.compose.ui.text.font.FontWeight
-    import androidx.compose.ui.text.style.TextAlign
-    import androidx.compose.ui.unit.dp
-    import androidx.compose.ui.unit.sp
-    import androidx.lifecycle.ViewModel
-    import androidx.lifecycle.viewmodel.compose.viewModel
-    import coil.compose.AsyncImage
-    import com.example.seng440assignment2.MainViewModel
-    import com.example.seng440assignment2.R
-    import com.example.seng440assignment2.components.BeerPageReviewCard
-    import com.example.seng440assignment2.components.BeerReviewCard
-    import com.example.seng440assignment2.components.RatingStars
-    import com.example.seng440assignment2.components.RatingStarsFloat
-    import com.example.seng440assignment2.model.BeerPageReviewCard
-    import com.example.seng440assignment2.model.ReviewCard
-    import kotlinx.coroutines.CoroutineScope
-    import kotlinx.coroutines.launch
-    import org.json.JSONObject
+import android.content.Context
+import android.widget.Toast
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ScaffoldState
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
+import com.example.seng440assignment2.MainViewModel
+import com.example.seng440assignment2.R
+import com.example.seng440assignment2.components.BeerPageReviewCard
+import com.example.seng440assignment2.components.BeerReviewCard
+import com.example.seng440assignment2.components.RatingStars
+import com.example.seng440assignment2.components.RatingStarsFloat
+import com.example.seng440assignment2.model.BeerPageReviewCard
+import com.example.seng440assignment2.model.ReviewCard
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import org.json.JSONObject
 
 
-    class BeerPageViewModel: ViewModel() {
+class BeerPageViewModel : ViewModel() {
 
-        var beerId by mutableStateOf(-1L)
-        var beerName by mutableStateOf("")
-        var beerType by mutableStateOf("")
-        var beerRating by mutableStateOf(0f)
-        var beerImageUrl by mutableStateOf("")
+    var beerId by mutableStateOf(-1L)
+    var beerName by mutableStateOf("")
+    var beerType by mutableStateOf("")
+    var beerRating by mutableStateOf(0f)
+    var beerImageUrl by mutableStateOf("")
 
-        var newReview by mutableStateOf("")
-        var newRating by mutableStateOf(1)
+    var newReview by mutableStateOf("")
+    var newRating by mutableStateOf(1)
 
-        fun canSave(): Boolean {
-            return newReview != ""
-        }
-
-        fun clearReview() {
-            newReview = ""
-            newRating = 1
-        }
-
+    fun canSave(): Boolean {
+        return newReview != ""
     }
 
+    fun clearReview() {
+        newReview = ""
+        newRating = 1
+    }
+
+}
 
 
-    @OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun BeerPage(beerViewModel: BeerPageViewModel = viewModel(), mainViewModel: MainViewModel, barcode: String?) {
         val scaffoldState = androidx.compose.material3.rememberScaffoldState()
@@ -130,9 +130,9 @@
                         ) {
                             Text(
                                 text = beerViewModel.beerName,
-                                color = Color.Black.copy(alpha = 0.87f),
+                                color = MaterialTheme.colorScheme.primary,
                                 lineHeight = 40.sp,
-                                style = MaterialTheme.typography.h4
+                                style = MaterialTheme.typography.headlineMedium
                             )
                             Spacer(modifier = androidx.compose.ui.Modifier.height(4.dp))
                             Row(
@@ -142,9 +142,9 @@
     //                    TODO:Make the name clickable to go to the user's profile
                                 androidx.compose.material3.Text(
                                     text = beerViewModel.beerType,
-                                    color = Color.Black.copy(alpha = 0.6f),
+                                    color = MaterialTheme.colorScheme.secondary,
                                     lineHeight = 16.sp,
-                                    style = androidx.compose.material3.MaterialTheme.typography.bodyLarge
+                                    style = MaterialTheme.typography.bodyLarge
                                 )
                                 Row {
                                     //filled star for rating and unfilled for remaining out of 5
@@ -154,9 +154,7 @@
 
                         }
                     }
-
     //                    RatingStarsFloat(beerViewModel.beerRating)
-
 
                     ReviewButton(scaffoldState = scaffoldState,scope = scope)
 
@@ -190,19 +188,18 @@
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     private fun ReviewButton(scaffoldState: ScaffoldState, scope: CoroutineScope) {
-        androidx.compose.material3.Button(
+        Button(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
                 .height(height = 48.dp),
+            colors =  ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colorScheme.primaryContainer),
             onClick = {
-
-
                 scope.launch { scaffoldState.drawerState.open() }
             },
             shape = RoundedCornerShape(4.dp)
         ) {
-            androidx.compose.material3.Text(
+            Text(
                 text = "Review",
                 color = Color.White,
                 textAlign = TextAlign.Center,

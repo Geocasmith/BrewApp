@@ -135,8 +135,6 @@ fun BeerCard(beerName:String, imageLink:String, rating:Float, onNavigateToBeerPa
                     modifier = Modifier.fillMaxSize()
                 )
             }
-
-
             Column(
                 horizontalAlignment = Alignment.Start,
                 modifier = Modifier.padding(padding)
