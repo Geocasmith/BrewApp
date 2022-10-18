@@ -44,4 +44,25 @@
     <string name="generic_401_error">Unauthorized</string>
     <string name="generic_404_error">Not Found</string>
     <string name="generic_500_error">Server Error</string>
+    <string name="error_message">An error occurred</string>
+    <string name="review_title">Reviews</string>
+    <string name="review_button_title">Review</string>
+<!--    context.resources.getText(R.string.-->
+<!--     stringResource(id=R.string.   -->
+    <string name="submit_button_title">Submit</string>
+    <string name="review_drawer_title">Review</string>
+    <string name="review_drawer_input">Review*</string>
+    <string name="review_drawer_stars"> Stars</string>
+    <string name="review_drawer_rating_title">Rating</string>
+    <string name="categories_title">Beer Types</string>
+    <string name="categories_alternative_title">Beers</string>
+    <string name="new_beer_title">Create new beer!</string>
+    <string name="new_beer_body">Looks like your the first one to scan this beer, add the details to review it!</string>
+    <string name="new_beer_URL">Image URL</string>
+    <string name="new_beer_name">Beer Name*</string>
+    <string name="new_beer_type">Beer Type*</string>
+    <string name="new_beer_barcode">Barcode*</string>
+    <string name="loading">Loading...</string>
+    <string name="reminder_channel_description">Loading...</string>
+
 </resources>

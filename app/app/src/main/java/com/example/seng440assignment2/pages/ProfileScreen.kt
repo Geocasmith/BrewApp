@@ -31,12 +31,13 @@ import kotlinx.coroutines.launch
 @Composable
 fun ProfileScreen(mainViewModel: MainViewModel, onNavigateToEdit: () -> Unit, onNavigateToPref: () -> Unit, onLogout: () -> Unit)
 {
+    val context = LocalContext.current
     val reviews = remember { mutableStateListOf<ReviewCard>()}
     var options by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
 
-    var name by remember { mutableStateOf("Loading...") }
-    var bio by remember { mutableStateOf("Loading...") }
+    var name by remember { mutableStateOf(context.resources.getText(R.string.loading))}
+    var bio by remember { mutableStateOf(context.resources.getText(R.string.loading))}
 
     val userRequest = mainViewModel.getObjectRequest(LocalContext.current, "users/" + mainViewModel.getUserId(), { response ->
         name = response["name"].toString()
@@ -135,8 +136,8 @@ fun ProfileScreen(mainViewModel: MainViewModel, onNavigateToEdit: () -> Unit, on
                         .padding(bottom = 10.dp))
                     {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text(text = name, fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)
-                            Text(text = bio, color = MaterialTheme.colorScheme.secondary)
+                            Text(text = name.toString(), fontSize = 20.sp)
+                            Text(text = bio.toString(), color = Color.LightGray)
                         }
                     }
                 }

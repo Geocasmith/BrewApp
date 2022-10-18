@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.res.stringResource
 import androidx.datastore.core.DataStore
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -103,7 +104,7 @@ class MainViewModel(private var settingsDataStore: DataStore<AppSettings>, priva
         var eHandler = errorHandler
         if (errorHandler == null) {
             eHandler = Response.ErrorListener { error ->
-                var message: CharSequence = "An error occurred"
+                var message: CharSequence = context.resources.getText(R.string.error_message)
                 when (error.networkResponse?.statusCode ?: 0) {
                     400 -> message = context.resources.getText(R.string.generic_400_error)
                     401 -> message = context.resources.getText(R.string.generic_401_error)
@@ -138,7 +139,7 @@ class MainViewModel(private var settingsDataStore: DataStore<AppSettings>, priva
         if (errorHandler == null) {
             eHandler = Response.ErrorListener { error ->
                 Log.e("ERR", error.message ?: "")
-                var message: CharSequence = "An error occurred"
+                var message: CharSequence = context.resources.getText(R.string.error_message)
                 when (error.networkResponse?.statusCode ?: 0) {
                     400 -> message = context.resources.getText(R.string.generic_400_error)
                     401 -> message = context.resources.getText(R.string.generic_401_error)

@@ -52,7 +52,7 @@ fun BeerReviewCard(beerName:String, reviewContent:String, reviewerName:String, r
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current).data(imageLink).error(R.drawable.beer_icon).build(),
                     contentScale = ContentScale.Fit,
-                    contentDescription = "Beer!",
+                    contentDescription = null,
                     modifier = Modifier.fillMaxSize()
                 )
             }
@@ -131,7 +131,7 @@ fun BeerCard(beerName:String, imageLink:String, rating:Float, onNavigateToBeerPa
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current).data(imageLink).error(R.drawable.beer_icon).build(),
                     contentScale = ContentScale.Fit,
-                    contentDescription = "Beer!",
+                    contentDescription = null,
                     modifier = Modifier.fillMaxSize()
                 )
             }

@@ -13,8 +13,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.seng440assignment2.MainViewModel
+import com.example.seng440assignment2.R
 import com.example.seng440assignment2.components.BeerCard
 import com.example.seng440assignment2.model.BeerListItem
 
@@ -36,7 +38,7 @@ fun Categories(onNavigateToBeerListPage: (String) -> Unit) {
         scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
-                title = {Text("Beer Types")},
+                title = {Text(stringResource(id= R.string.categories_title))},
                 backgroundColor = Color.White)
 
         },
@@ -95,7 +97,7 @@ fun BeerListPage(mainViewModel: MainViewModel, string: Any?, onNavigateToBeerPag
         }
     })
     mainViewModel.addRequestToQueue(reviewRequest)
-    var appBarTitle:String = "Beers"
+    var appBarTitle:String = stringResource(id=R.string.categories_alternative_title)
     if(string is String){
         appBarTitle = string
     }
