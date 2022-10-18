@@ -35,7 +35,7 @@ class ShakeDetector: SensorEventListener  {
                 if (mShakeTimestamp + SHAKE_SLOP_TIME_MS > now) { return }
 
                 if (mShakeTimestamp + SHAKE_COUNT_RESET_TIME_MS < now) {
-                    mShakeCount = 0;
+                    mShakeCount = 0
                 }
 
                 mShakeTimestamp = now

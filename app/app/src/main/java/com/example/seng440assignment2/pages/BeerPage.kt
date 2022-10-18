@@ -178,7 +178,6 @@ fun BeerPage(
 
                     }
                 }
-                //                    RatingStarsFloat(beerViewModel.beerRating)
 
                 ReviewButton(scaffoldState = scaffoldState, scope = scope)
 
