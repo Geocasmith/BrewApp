@@ -1,6 +1,7 @@
 package com.example.seng440assignment2.pages
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
@@ -40,17 +41,19 @@ fun Login(viewModel: AuthViewModel, onLogin: () -> Unit, onRegisterLinkClicked: 
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .width(width = 264.dp)
         ) {
-            TitleText()
-            UsernameBox(viewModel)
-            SpacerDP(6)
-            PasswordBox(viewModel)
-            SpacerDP(12)
-            RegisterNavigation(onRegisterLinkClicked)
-            LoginButton { viewModel.login(context, scope, onLogin) }
+            item {
+                TitleText()
+                UsernameBox(viewModel)
+                SpacerDP(6)
+                PasswordBox(viewModel)
+                SpacerDP(12)
+                RegisterNavigation(onRegisterLinkClicked)
+                LoginButton { viewModel.login(context, scope, onLogin) }
+            }
         }
     }
 }

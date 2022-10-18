@@ -1,6 +1,7 @@
 package com.example.seng440assignment2.pages
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.OutlinedTextField
@@ -32,19 +33,21 @@ fun Register(viewModel: AuthViewModel, onLoginLinkClicked: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        Column(
+        LazyColumn (
             modifier = Modifier
                 .width(width = 264.dp)
         ) {
-            SignUpTitleText()
-            NameBox(viewModel)
-            SpacerDP(6)
-            UsernameBox(viewModel)
-            SpacerDP(6)
-            PasswordBox(viewModel)
-            SpacerDP(12)
-            LoginNavigation(onLoginLinkClicked)
-            SignUpButton { viewModel.signup(context, onLoginLinkClicked) }
+            item {
+                SignUpTitleText()
+                NameBox(viewModel)
+                SpacerDP(6)
+                UsernameBox(viewModel)
+                SpacerDP(6)
+                PasswordBox(viewModel)
+                SpacerDP(12)
+                LoginNavigation(onLoginLinkClicked)
+                SignUpButton { viewModel.signup(context, onLoginLinkClicked) }
+            }
         }
     }
 }
