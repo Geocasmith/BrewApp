@@ -78,7 +78,7 @@ exports.edit = async function (req: { authenticatedUserId: any; body: any; }, re
     try {
         await usersModel.edit(req.body, id)
         res.statusMessage = 'OK';
-        res.status(200).send();
+        res.status(200).json({id});
     } catch (err) {
         res.statusMessage = 'Internal Server Error';
         res.status(500).send();
