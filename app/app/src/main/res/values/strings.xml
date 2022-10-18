@@ -65,5 +65,6 @@
     <string name="loading">Loading…</string>
     <string name="reminder_channel_description">Loading…</string>
     <string name="new_beer_add_btn">ADD</string>
+    <string name="pref_allow_shake">Allow Shake Gesture</string>
 
 </resources>

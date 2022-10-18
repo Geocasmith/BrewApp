@@ -123,6 +123,30 @@ fun PrefScreen(mainViewModel: MainViewModel, onBackButtonPress: () -> Unit) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(modifier = Modifier.padding(horizontal = 2.dp),
                             color = MaterialTheme.colorScheme.primary,
+                            text = stringResource(R.string.pref_allow_shake),
+                            fontSize = 20.sp)
+                        Spacer(modifier = Modifier.weight(1f))
+                        Switch(modifier = Modifier.size(50.dp), checked = appSettings.allowShaking,
+                            onCheckedChange = {
+                                scope.launch {
+                                    mainViewModel.setAllowShaking(it)
+                                }
+                            }
+                        )
+                    }
+                }
+                Divider(color = Color.LightGray)
+            }
+
+            item {
+                Box(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .size(60.dp), contentAlignment = Alignment.CenterStart)
+                {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(modifier = Modifier.padding(horizontal = 2.dp),
+                            color = MaterialTheme.colorScheme.primary,
                             text = stringResource(id = R.string.pref_allow_notifications),
                             fontSize = 20.sp)
                         Spacer(modifier = Modifier.weight(1f))
@@ -143,7 +167,6 @@ fun PrefScreen(mainViewModel: MainViewModel, onBackButtonPress: () -> Unit) {
                 }
                 Divider(color = Color.LightGray)
             }
-
             if (appSettings.allowNotifications) {
                 item {
                     Box(modifier = Modifier

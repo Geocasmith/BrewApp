@@ -11,6 +11,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.datastore.dataStore
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
@@ -36,7 +38,6 @@ class MainActivity : ComponentActivity() {
     private lateinit var mSensorManager: SensorManager
     private lateinit var mAccelerometer: Sensor
     private lateinit var mShakeDetector: ShakeDetector
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,13 +68,17 @@ class MainActivity : ComponentActivity() {
 
             val navController = rememberAnimatedNavController()
 
+            val allowShaking = viewModel.getAppSettings().allowShaking
+
             // Shake Detection
             mShakeDetector.setOnShakeListener(object : OnShakeListener {
                 override fun onShake() {
-                    val randomBeerRequest: JsonObjectRequest = viewModel.getObjectRequest(context, "beer/random", { response ->
-                        navController.navigate("beer/${response["barcode"]}")
-                    })
-                    viewModel.addRequestToQueue(randomBeerRequest)
+                    if (allowShaking) {
+                        val randomBeerRequest: JsonObjectRequest = viewModel.getObjectRequest(context, "beer/random", { response ->
+                            navController.navigate("beer/${response["barcode"]}")
+                        })
+                        viewModel.addRequestToQueue(randomBeerRequest)
+                    }
                 }
             })
 

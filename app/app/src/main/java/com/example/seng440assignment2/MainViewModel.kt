@@ -44,6 +44,12 @@ class MainViewModel(private var settingsDataStore: DataStore<AppSettings>, priva
         }
     }
 
+    suspend fun setAllowShaking(shaking: Boolean) {
+        settingsDataStore.updateData {
+            it.copy(allowShaking = shaking)
+        }
+    }
+
     suspend fun updateNotificationTime(time: String) {
         settingsDataStore.updateData {
             it.copy(notificationTime = time)

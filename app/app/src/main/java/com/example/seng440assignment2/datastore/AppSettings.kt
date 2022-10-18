@@ -5,7 +5,8 @@ import kotlinx.serialization.Serializable
 data class AppSettings(
     val isDarkMode: Boolean = false,
     val allowNotifications: Boolean = false,
-    val notificationTime: String = "12:00"
+    val notificationTime: String = "12:00",
+    val allowShaking: Boolean = true
 )
 
 
