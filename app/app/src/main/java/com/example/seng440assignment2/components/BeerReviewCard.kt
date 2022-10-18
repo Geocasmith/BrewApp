@@ -37,7 +37,7 @@ fun BeerReviewCard(beerName:String, reviewContent:String, reviewerName:String, r
                 //image if its a showimage
                 AsyncImage(
                     model = imageLink,
-                    contentDescription = "Beer!",
+                    contentDescription = null,
                     modifier = androidx.compose.ui.Modifier.fillMaxSize()
                 )
             }
@@ -113,7 +113,7 @@ fun BeerCard(beerName:String, imageLink:String, rating:Float, onNavigateToBeerPa
                 //image if its a showimage
                 AsyncImage(
                     model = imageLink,
-                    contentDescription = "Beer!",
+                    contentDescription = null,
                     modifier = androidx.compose.ui.Modifier.fillMaxSize()
                 )
             }

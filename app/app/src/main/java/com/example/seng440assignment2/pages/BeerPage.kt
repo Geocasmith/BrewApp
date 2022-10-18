@@ -203,7 +203,7 @@
             shape = RoundedCornerShape(4.dp)
         ) {
             androidx.compose.material3.Text(
-                text = "Review",
+                text = stringResource(id = R.string.review_button_title),
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 lineHeight = 16.sp,
@@ -248,7 +248,7 @@
             shape = RoundedCornerShape(4.dp)
         ) {
             androidx.compose.material3.Text(
-                text = "Submit",
+                text = stringResource(id=R.string.submit_button_title),
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 lineHeight = 16.sp,
@@ -270,14 +270,14 @@
             scaffoldState = scaffoldState,
             topBar = {
                 TopAppBar(
-                    title = { androidx.compose.material3.Text("Review") },
+                    title = { androidx.compose.material3.Text(stringResource(id=R.string.review_drawer_title)) },
                     navigationIcon = {
                         androidx.compose.material3.IconButton(onClick = {
                             scope.launch { scaffoldState.drawerState.close() }
                         }) {
                             androidx.compose.material3.Icon(
                                 Icons.Outlined.Close,
-                                contentDescription = "Close"
+                                contentDescription = null
                             )
                         }
                     },
@@ -300,7 +300,7 @@
                             onValueChange = { beerViewModel.newReview = it },
                             label = {
                                 androidx.compose.material3.Text(
-                                    "Review*",
+                                    stringResource(id=R.string.review_drawer_input),
                                     color = Color.Black.copy(alpha = 0.6f)
                                 )
                             }
@@ -318,9 +318,9 @@
                         ) {
                             TextField(
                                 readOnly = true,
-                                value = "${beerViewModel.newRating} stars",
+                                value = "${beerViewModel.newRating} ${stringResource(id=R.string.review_drawer_stars)}",
                                 onValueChange = { },
-                                label = { androidx.compose.material3.Text("Rating") },
+                                label = { androidx.compose.material3.Text(stringResource(id=R.string.review_drawer_rating_title)) },
                                 trailingIcon = {
                                     ExposedDropdownMenuDefaults.TrailingIcon(
                                         expanded = ratingExpanded
@@ -341,7 +341,7 @@
                                             ratingExpanded = false
                                         }
                                     ) {
-                                        androidx.compose.material3.Text(text = "$selectionOption stars")
+                                        androidx.compose.material3.Text(text = "${selectionOption} ${stringResource(id=R.string.review_drawer_stars)}")
                                     }
                                 }
                             }

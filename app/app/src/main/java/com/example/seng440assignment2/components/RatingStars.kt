@@ -12,12 +12,12 @@ fun RatingStars(rating: Int) {
         if (i <= rating) {
             androidx.compose.material3.Icon(
                 Icons.Outlined.Star,
-                contentDescription = "Filled Star"
+                contentDescription = null
             )
         } else {
             androidx.compose.material3.Icon(
                 Icons.Outlined.Grade,
-                contentDescription = "Unfilled Star"
+                contentDescription = null
             )
         }
     }
@@ -46,7 +46,7 @@ fun RatingStarsFloat(rating: Float) {
         else {
             androidx.compose.material3.Icon(
                 Icons.Outlined.Grade,
-                contentDescription = "Unfilled Star"
+                contentDescription = null
             )
         }
     }

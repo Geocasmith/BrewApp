@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -117,7 +118,7 @@ private fun AddButton(viewModel: MainViewModel, editBeerViewModel: EditBeerViewM
 @Composable
 private fun HeaderText() {
     Text(
-        text = "Create new beer!",
+        text = stringResource(id=R.string.new_beer_title),
         color = Color.Black.copy(alpha = 0.87f),
         lineHeight = 40.sp,
         style = MaterialTheme.typography.headlineLarge,
@@ -127,7 +128,7 @@ private fun HeaderText() {
     )
     SpacerDP(12)
     Text(
-        text = "Looks like your the first one to scan this beer, add the details to review it!",
+        text = stringResource(id=R.string.new_beer_body),
         color = Color.Black.copy(alpha = 0.54f),
         lineHeight = 24.sp,
         style = MaterialTheme.typography.bodyMedium,
@@ -150,7 +151,7 @@ fun ImageUrlBox(viewModel: EditBeerViewModel) {
     OutlinedTextField(
         value = viewModel.beerImageURL,
         onValueChange = { viewModel.beerImageURL = it },
-        label = { Text("Image URL", color = Color.Black.copy(alpha = 0.6f)) }
+        label = { Text(stringResource(id=R.string.new_beer_URL), color = Color.Black.copy(alpha = 0.6f)) }
     )
 }
 
@@ -159,7 +160,7 @@ fun BeerNameBox(viewModel: EditBeerViewModel) {
     OutlinedTextField(
         value = viewModel.beerName,
         onValueChange = { viewModel.beerName = it },
-        label = { Text("Beer Name*", color = Color.Black.copy(alpha = 0.6f)) }
+        label = { Text(stringResource(id=R.string.new_beer_name), color = Color.Black.copy(alpha = 0.6f)) }
     )
 }
 
@@ -179,7 +180,7 @@ fun BeerTypeDropDown(viewModel: EditBeerViewModel) {
             readOnly = true,
             value = viewModel.beerType,
             onValueChange = { },
-            label = { Text("Beer Type*") },
+            label = { Text(stringResource(id=R.string.new_beer_type))},
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(
                     expanded = expanded
@@ -213,7 +214,7 @@ fun BarcodeBox(viewModel: EditBeerViewModel, isDisabled: Boolean) {
         value = viewModel.beerBarcode,
         onValueChange = { viewModel.beerBarcode = it },
         enabled = isDisabled,
-        label = { Text("Barcode*", color = Color.Black.copy(alpha = 0.6f)) }
+        label = { Text(stringResource(id=R.string.new_beer_barcode), color = Color.Black.copy(alpha = 0.6f)) }
     )
 }
 

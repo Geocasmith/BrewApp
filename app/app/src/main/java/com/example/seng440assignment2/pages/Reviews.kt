@@ -40,8 +40,6 @@ fun Reviews(
 ) {
     val reviews = remember { mutableStateListOf<ReviewCard>()}
     val scaffoldState = rememberScaffoldState()
-    val scope = rememberCoroutineScope()
-    val sortBy = remember { mutableStateOf("Default") } //default,top rated ASC, top rated DESC, most recent ASC, most recent DESC
 
     val reviewRequest = mainViewModel.getArrayRequest(LocalContext.current, "review", { response ->
         reviews.clear()
@@ -67,15 +65,11 @@ fun Reviews(
         scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
-                title = {Text("Reviews")},
+                title = {Text(stringResource(id = R.string.review_title))},
                 backgroundColor = Color.White)
 
                  },
-        drawerContent = {
-                        //put the filter settings in the drawer
-            Filter(scaffoldState)
 
-                        },
         content = {
                   //lazy column for both beer cards
                     LazyColumn {
@@ -99,129 +93,3 @@ fun Reviews(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
-@Composable
-private fun Filter(scaffoldState: ScaffoldState) {
-    val scope = rememberCoroutineScope()
-    Scaffold(
-        scaffoldState = scaffoldState,
-        topBar = {
-            TopAppBar(
-                title = { Text("Filter") },
-                navigationIcon = {
-                    IconButton(onClick = {
-                        scope.launch { scaffoldState.drawerState.close() }}) {
-                        Icon(Icons.Outlined.Close, contentDescription = "Close")
-                    }
-                },
-
-                backgroundColor = Color.White
-            )
-
-        },
-        content = {
-            //center the items and add padding
-            LazyColumn(
-                modifier=Modifier.padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-
-            ) {
-                item {
-//            default drop down from the compose documentation, credit: https://developer.android.com/reference/kotlin/androidx/compose/material/package-summary#DropdownMenu(kotlin.Boolean,kotlin.Function0,androidx.compose.ui.Modifier,androidx.compose.ui.unit.DpOffset,androidx.compose.ui.window.PopupProperties,kotlin.Function1)
-                    //sort by drop down
-                    val sortByOptions = listOf(
-                        "Default",
-                        "Most Recent",
-                        "Oldest",
-                        "Highest Rating",
-                        "Lowest Rating"
-                    )
-                    var expanded by remember { mutableStateOf(false) }
-                    var selectedOptionText by remember { mutableStateOf(sortByOptions[0]) }
-                    ExposedDropdownMenuBox(
-                        expanded = expanded,
-                        onExpandedChange = {
-                            expanded = !expanded
-                        }
-                    ) {
-                        TextField(
-                            readOnly = true,
-                            value = selectedOptionText,
-                            onValueChange = { },
-                            label = { Text("Sort By") },
-                            trailingIcon = {
-                                ExposedDropdownMenuDefaults.TrailingIcon(
-                                    expanded = expanded
-                                )
-                            },
-                            colors = ExposedDropdownMenuDefaults.textFieldColors()
-                        )
-                        ExposedDropdownMenu(
-                            expanded = expanded,
-                            onDismissRequest = {
-                                expanded = false
-                            }
-                        ) {
-                            sortByOptions.forEach { selectionOption ->
-                                DropdownMenuItem(
-                                    onClick = {
-                                        selectedOptionText = selectionOption
-                                        expanded = false
-                                    }
-                                ) {
-                                    Text(text = selectionOption)
-                                }
-                            }
-                        }
-                    }
-                }
-
-                item {
-                    //rating drop down
-                    val ratingOptions =
-                        listOf("5 Stars", "4 Stars", "3 Stars", "2 Stars", "1 Star")
-                    var ratingExpanded by remember { mutableStateOf(false) }
-                    var ratingSelectedOptionText by remember { mutableStateOf(ratingOptions[0]) }
-                    ExposedDropdownMenuBox(
-                        expanded = ratingExpanded,
-                        onExpandedChange = {
-                            ratingExpanded = !ratingExpanded
-                        }
-                    ) {
-                        TextField(
-                            readOnly = true,
-                            value = ratingSelectedOptionText,
-                            onValueChange = { },
-                            label = { Text("Rating") },
-                            trailingIcon = {
-                                ExposedDropdownMenuDefaults.TrailingIcon(
-                                    expanded = ratingExpanded
-                                )
-                            },
-                            colors = ExposedDropdownMenuDefaults.textFieldColors()
-                        )
-                        ExposedDropdownMenu(
-                            expanded = ratingExpanded,
-                            onDismissRequest = {
-                                ratingExpanded = false
-                            }
-                        ) {
-                            ratingOptions.forEach { selectionOption ->
-                                DropdownMenuItem(
-                                    onClick = {
-                                        ratingSelectedOptionText = selectionOption
-                                        ratingExpanded = false
-                                    }
-                                ) {
-                                    Text(text = selectionOption)
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-        },
-    )
-}
