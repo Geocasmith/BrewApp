@@ -67,7 +67,7 @@ fun PrefScreen(mainViewModel: MainViewModel, onBackButtonPress: () -> Unit) {
         }, hour, minute, false
     )
 
-    Column(Modifier.fillMaxWidth()) {
+    Column(Modifier.fillMaxWidth().fillMaxHeight()) {
         TopAppBar(backgroundColor = Color.Transparent, elevation = 1.dp)
         {
             IconButton(onClick = { onBackButtonPress() }) {

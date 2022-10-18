@@ -107,10 +107,11 @@ fun BeerListPage(mainViewModel: MainViewModel, string: Any?, onNavigateToBeerPag
         scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
-                title = {Text(appBarTitle)},
-                backgroundColor = Color.White)
+                title = { Text(appBarTitle, color = MaterialTheme.colorScheme.primary)},
+                backgroundColor = MaterialTheme.colorScheme.background)
 
         },
+        backgroundColor = MaterialTheme.colorScheme.background
     ) {
         //lazy column for both beer cards
         LazyColumn(modifier = Modifier.padding(it)) {

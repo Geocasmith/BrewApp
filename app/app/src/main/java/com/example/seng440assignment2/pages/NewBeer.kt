@@ -1,6 +1,7 @@
 package com.example.seng440assignment2.pages
 
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.material.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -42,7 +43,12 @@ class EditBeerViewModel : ViewModel() {
 }
 
 @Composable
-fun NewBeer(editBeerViewModel: EditBeerViewModel = viewModel(), viewModel: MainViewModel, barcode: String?, onBeerSaved: () -> Unit) {
+fun NewBeer(
+    editBeerViewModel: EditBeerViewModel = viewModel(),
+    viewModel: MainViewModel,
+    barcode: String?,
+    onBeerSaved: () -> Unit
+) {
     editBeerViewModel.beerBarcode = barcode.orEmpty()
 
     Column(
@@ -73,12 +79,17 @@ fun NewBeer(editBeerViewModel: EditBeerViewModel = viewModel(), viewModel: MainV
 }
 
 @Composable
-private fun AddButton(viewModel: MainViewModel, editBeerViewModel: EditBeerViewModel, onBeerSaved: () -> Unit) {
+private fun AddButton(
+    viewModel: MainViewModel,
+    editBeerViewModel: EditBeerViewModel,
+    onBeerSaved: () -> Unit
+) {
     val context = LocalContext.current
     Button(
         modifier = Modifier
             .width(width = 140.dp)
             .height(height = 48.dp),
+        colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colorScheme.primaryContainer),
         onClick = {
             if (editBeerViewModel.canSave()) {
                 val jsonRequest = JSONObject()
@@ -91,14 +102,15 @@ private fun AddButton(viewModel: MainViewModel, editBeerViewModel: EditBeerViewM
                 viewModel.addRequestToQueue(request)
                 onBeerSaved()
             } else {
-                Toast.makeText(context, context.getText(R.string.new_cant_save), Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getText(R.string.new_cant_save), Toast.LENGTH_SHORT)
+                    .show()
             }
         },
         shape = RoundedCornerShape(4.dp)
     ) {
         Text(
-            text = "ADD",
-            color = Color.White,
+            text = stringResource(R.string.new_beer_add_btn),
+            color = MaterialTheme.colorScheme.secondary,
             textAlign = TextAlign.Center,
             lineHeight = 16.sp,
             style = TextStyle(
@@ -116,8 +128,8 @@ private fun AddButton(viewModel: MainViewModel, editBeerViewModel: EditBeerViewM
 @Composable
 private fun HeaderText() {
     Text(
-        text = stringResource(id=R.string.new_beer_title),
-        color = Color.Black.copy(alpha = 0.87f),
+        text = stringResource(id = R.string.new_beer_title),
+        color = MaterialTheme.colorScheme.primary,
         lineHeight = 40.sp,
         style = MaterialTheme.typography.headlineLarge,
         modifier = Modifier
@@ -126,8 +138,8 @@ private fun HeaderText() {
     )
     SpacerDP(12)
     Text(
-        text = stringResource(id=R.string.new_beer_body),
-        color = Color.Black.copy(alpha = 0.54f),
+        text = stringResource(id = R.string.new_beer_body),
+        color = MaterialTheme.colorScheme.primary,
         lineHeight = 24.sp,
         style = MaterialTheme.typography.bodyMedium,
         modifier = Modifier
@@ -149,7 +161,13 @@ fun ImageUrlBox(viewModel: EditBeerViewModel) {
     OutlinedTextField(
         value = viewModel.beerImageURL,
         onValueChange = { viewModel.beerImageURL = it },
-        label = { Text(stringResource(id=R.string.new_beer_URL), color = Color.Black.copy(alpha = 0.6f)) }
+        colors = TextFieldDefaults.textFieldColors(textColor = MaterialTheme.colorScheme.secondary),
+        label = {
+            Text(
+                stringResource(id = R.string.new_beer_URL),
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
     )
 }
 
@@ -158,7 +176,13 @@ fun BeerNameBox(viewModel: EditBeerViewModel) {
     OutlinedTextField(
         value = viewModel.beerName,
         onValueChange = { viewModel.beerName = it },
-        label = { Text(stringResource(id=R.string.new_beer_name), color = Color.Black.copy(alpha = 0.6f)) }
+        colors = TextFieldDefaults.textFieldColors(textColor = MaterialTheme.colorScheme.secondary),
+        label = {
+            Text(
+                stringResource(id = R.string.new_beer_name),
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
     )
 }
 
@@ -172,25 +196,34 @@ fun BeerTypeDropDown(viewModel: EditBeerViewModel) {
         expanded = expanded,
         onExpandedChange = {
             expanded = !expanded
-        }
+        },
     ) {
         TextField(
             readOnly = true,
             value = viewModel.beerType,
             onValueChange = { },
-            label = { Text(stringResource(id=R.string.new_beer_type))},
+            label = {
+                Text(
+                    stringResource(id = R.string.new_beer_type),
+                    color = MaterialTheme.colorScheme.primary
+                )
+            },
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(
                     expanded = expanded
                 )
             },
-            colors = ExposedDropdownMenuDefaults.textFieldColors()
+            colors = TextFieldDefaults.textFieldColors(
+                textColor = MaterialTheme.colorScheme.secondary,
+                trailingIconColor = MaterialTheme.colorScheme.primary
+            )
         )
         ExposedDropdownMenu(
             expanded = expanded,
             onDismissRequest = {
                 expanded = false
-            }
+            },
+            modifier = Modifier.background(MaterialTheme.colorScheme.background)
         ) {
             beerTypeOptions.forEach { selectionOption ->
                 DropdownMenuItem(
@@ -199,7 +232,7 @@ fun BeerTypeDropDown(viewModel: EditBeerViewModel) {
                         expanded = false
                     }
                 ) {
-                    Text(text = selectionOption)
+                    Text(text = selectionOption, color = MaterialTheme.colorScheme.secondary)
                 }
             }
         }
@@ -212,7 +245,13 @@ fun BarcodeBox(viewModel: EditBeerViewModel, isDisabled: Boolean) {
         value = viewModel.beerBarcode,
         onValueChange = { viewModel.beerBarcode = it },
         enabled = isDisabled,
-        label = { Text(stringResource(id=R.string.new_beer_barcode), color = Color.Black.copy(alpha = 0.6f)) }
+        colors = TextFieldDefaults.textFieldColors(textColor = MaterialTheme.colorScheme.secondary),
+        label = {
+            Text(
+                stringResource(id = R.string.new_beer_barcode),
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
     )
 }
 

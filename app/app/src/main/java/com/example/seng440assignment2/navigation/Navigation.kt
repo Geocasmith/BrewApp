@@ -6,6 +6,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
@@ -37,7 +38,7 @@ fun AnimatedNavBar(navController: NavHostController) {
         val currentDestination = navBackStackEntry?.destination
         pages.forEach { page ->
             NavigationBarItem(
-                icon = { Icon(page.icon, contentDescription = null) },
+                icon = { Icon(page.icon, contentDescription = null, tint = MaterialTheme.colorScheme.primary) },
                 label = { Text(stringResource(id = page.screenName)) },
                 selected = currentDestination?.hierarchy?.any { it.route == page.route } == true,
                 onClick = {

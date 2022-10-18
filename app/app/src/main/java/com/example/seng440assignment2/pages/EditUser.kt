@@ -118,7 +118,8 @@ fun EditScreen(
     LazyColumn(
         Modifier
             .padding(horizontal = 10.dp)
-            .padding(top = 10.dp),
+            .padding(top = 10.dp)
+            .fillMaxHeight(),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         stickyHeader {
