@@ -54,7 +54,7 @@ class EditUserViewModel : ViewModel() {
         mainViewModel.addRequestToQueue(userRequest)
     }
 
-    fun save(mainViewModel: MainViewModel, context: Context) {
+    fun save(mainViewModel: MainViewModel, context: Context, callback: () -> Unit = {}) {
         if (userName.isEmpty()) {
             Toast.makeText(context, context.getString(R.string.no_name), Toast.LENGTH_SHORT).show()
             return
@@ -68,6 +68,7 @@ class EditUserViewModel : ViewModel() {
         val request = mainViewModel.patchObjectRequest(context, "users", requestJson, { _ ->
             Toast.makeText(context, context.getString(R.string.profile_updated), Toast.LENGTH_SHORT)
                 .show()
+            callback()
         })
 
         mainViewModel.addRequestToQueue(request)
@@ -227,7 +228,7 @@ fun EditScreen(
                     .height(height = 48.dp)
                     .padding(horizontal = 16.dp),
                 onClick = {
-                    editUserViewModel.save(mainViewModel, context)
+                    editUserViewModel.save(mainViewModel, context, callback = onBackButtonPress)
                     Toast.makeText(
                         context,
                         context.getString(R.string.saving_profile),
