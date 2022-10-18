@@ -1,8 +1,10 @@
 package com.example.seng440assignment2.navigation
 
+import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
@@ -72,19 +74,19 @@ fun AnimatedNav(
     ) {
         composable(
             route = Screen.Review.route,
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+            enterTransition = { slideIntoContainer(AnimatedContentScope.SlideDirection.Left, animationSpec = tween(700)) },
+            exitTransition = { slideOutOfContainer(AnimatedContentScope.SlideDirection.Right, animationSpec = tween(700)) }
         ) { Reviews(mainViewModel = mainViewModel, onNavigateToBeerPage = { beerName: String -> navController.navigate("beer/$beerName") }) }
 
         composable(
             route = Screen.Search.route,
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+            enterTransition = { slideIntoContainer(AnimatedContentScope.SlideDirection.Left, animationSpec = tween(700)) },
+            exitTransition = { slideOutOfContainer(AnimatedContentScope.SlideDirection.Left, animationSpec = tween(700)) }
         ) { Categories(onNavigateToBeerListPage = { beerType: String -> navController.navigate("beerList/$beerType") }) }
         composable(
             route = Screen.Scan.route,
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+            enterTransition = { slideIntoContainer(AnimatedContentScope.SlideDirection.Left, animationSpec = tween(700)) },
+            exitTransition = { slideOutOfContainer(AnimatedContentScope.SlideDirection.Right, animationSpec = tween(700)) }
         ) {
             ScanScreen(
                 mainViewModel,
@@ -93,8 +95,8 @@ fun AnimatedNav(
         }
         composable(
             route = Screen.Profile.route,
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+            enterTransition = { slideIntoContainer(AnimatedContentScope.SlideDirection.Left, animationSpec = tween(700)) },
+            exitTransition = { slideOutOfContainer(AnimatedContentScope.SlideDirection.Right, animationSpec = tween(700)) }
         ) {
             ProfileScreen(
                 mainViewModel,
@@ -105,8 +107,8 @@ fun AnimatedNav(
         }
         composable(
             route = "pref",
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+            enterTransition = { slideIntoContainer(AnimatedContentScope.SlideDirection.Left, animationSpec = tween(700)) },
+            exitTransition = { slideOutOfContainer(AnimatedContentScope.SlideDirection.Right, animationSpec = tween(700)) }
         ) {
             PrefScreen(
                 mainViewModel,
@@ -114,8 +116,8 @@ fun AnimatedNav(
         }
         composable(
             route = "edit",
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+            enterTransition = { slideIntoContainer(AnimatedContentScope.SlideDirection.Left, animationSpec = tween(700)) },
+            exitTransition = { slideOutOfContainer(AnimatedContentScope.SlideDirection.Right, animationSpec = tween(700)) }
         ) {
             EditScreen(
                 mainViewModel = mainViewModel,
@@ -123,8 +125,8 @@ fun AnimatedNav(
         }
         composable(
             route = "beerList/{type}",
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+            enterTransition = { slideIntoContainer(AnimatedContentScope.SlideDirection.Left, animationSpec = tween(700)) },
+            exitTransition = { slideOutOfContainer(AnimatedContentScope.SlideDirection.Right, animationSpec = tween(700)) }
         ) { backStackEntry ->
             BeerListPage(
                 mainViewModel,
@@ -133,8 +135,8 @@ fun AnimatedNav(
         }
         composable(
             route = "beer/{barcode}",
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+            enterTransition = { slideIntoContainer(AnimatedContentScope.SlideDirection.Up, animationSpec = tween(700)) },
+            exitTransition = { slideOutOfContainer(AnimatedContentScope.SlideDirection.Down, animationSpec = tween(700)) }
         ) { backStackEntry ->
             BeerPage(
                 mainViewModel = mainViewModel,
@@ -143,8 +145,8 @@ fun AnimatedNav(
         }
         composable(
             route = "new/{barcode}",
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+            enterTransition = { slideIntoContainer(AnimatedContentScope.SlideDirection.Up, animationSpec = tween(700))  },
+            exitTransition = { slideOutOfContainer(AnimatedContentScope.SlideDirection.Down, animationSpec = tween(700)) }
         ) { backStackEntry -> NewBeer(viewModel = mainViewModel , barcode = backStackEntry.arguments?.getString("barcode"), onBeerSaved = { navController.navigate(Screen.Scan.route) }) }
     }
 }
