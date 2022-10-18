@@ -39,9 +39,7 @@ class EditBeerViewModel : ViewModel() {
     fun canSave(): Boolean {
         return beerBarcode.isNotEmpty() && beerName.isNotEmpty() && beerBarcode.isNotEmpty()
     }
-
 }
-
 
 @Composable
 fun NewBeer(editBeerViewModel: EditBeerViewModel = viewModel(), viewModel: MainViewModel, barcode: String?, onBeerSaved: () -> Unit) {
