@@ -133,79 +133,73 @@ fun BeerPage(
 
         },
         content = {
-            Column {
-                Box(modifier = Modifier
-                    .padding(10.dp)
-                    .background(Color.White)
-                    .height(215.dp)) {
-                    AsyncImage(
-                        modifier = Modifier.fillMaxSize(),
-                        model = ImageRequest.Builder(LocalContext.current).data(beerViewModel.beerImageUrl).error(R.drawable.beer_icon).build(),
-                        contentDescription = null,
-                        //content scale fill width
-                        contentScale = ContentScale.Fit,
-                        alignment = Alignment.Center
+
+            LazyColumn {
+                item {
+                    Box(modifier = Modifier
+                        .padding(10.dp)
+                        .background(Color.White)
+                        .height(215.dp)) {
+                        AsyncImage(
+                            modifier = Modifier.fillMaxSize(),
+                            model = ImageRequest.Builder(LocalContext.current).data(beerViewModel.beerImageUrl).error(R.drawable.beer_icon).build(),
+                            contentDescription = null,
+                            //content scale fill width
+                            contentScale = ContentScale.Fit,
+                            alignment = Alignment.Center
+                        )
+                    }
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Column(
+                            horizontalAlignment = Alignment.Start,
+                            modifier = Modifier.padding(16.dp)
+                        ) {
+                            Text(
+                                text = beerViewModel.beerName,
+                                color = MaterialTheme.colorScheme.primary,
+                                lineHeight = 40.sp,
+                                style = MaterialTheme.typography.headlineMedium
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Row(
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                //                    TODO:Make the name clickable to go to the user's profile
+                                Text(
+                                    text = beerViewModel.beerType,
+                                    color = MaterialTheme.colorScheme.secondary,
+                                    lineHeight = 16.sp,
+                                    style = MaterialTheme.typography.bodyLarge
+                                )
+                                Row {
+                                    //filled star for rating and unfilled for remaining out of 5
+                                    RatingStarsFloat(beerViewModel.beerRating)
+                                }
+                            }
+
+                        }
+                    }
+                    ReviewButton(scaffoldState = scaffoldState, scope = scope)
+
+                    Divider(
+                        color = Color.Black.copy(alpha = 0.12f),
+                        thickness = 1.dp,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(height = 1.dp)
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+                items(reviews, key = { it.id }) {
+                    BeerPageReviewCard(
+                        reviewContent = it.title,
+                        reviewerName = it.reviewerName,
+                        rating = it.rating
                     )
                 }
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Column(
-                        horizontalAlignment = Alignment.Start,
-                        modifier = Modifier.padding(16.dp)
-                    ) {
-                        Text(
-                            text = beerViewModel.beerName,
-                            color = MaterialTheme.colorScheme.primary,
-                            lineHeight = 40.sp,
-                            style = MaterialTheme.typography.headlineMedium
-                        )
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            //                    TODO:Make the name clickable to go to the user's profile
-                            Text(
-                                text = beerViewModel.beerType,
-                                color = MaterialTheme.colorScheme.secondary,
-                                lineHeight = 16.sp,
-                                style = MaterialTheme.typography.bodyLarge
-                            )
-                            Row {
-                                //filled star for rating and unfilled for remaining out of 5
-                                RatingStarsFloat(beerViewModel.beerRating)
-                            }
-                        }
-
-                    }
-                }
-
-                ReviewButton(scaffoldState = scaffoldState, scope = scope)
-
-                //divider line
-                Divider(
-                    color = Color.Black.copy(alpha = 0.12f),
-                    thickness = 1.dp,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(height = 1.dp)
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-
-                LazyColumn {
-
-                    items(reviews, key = { it.id }) {
-                        BeerPageReviewCard(
-                            reviewContent = it.title,
-                            reviewerName = it.reviewerName,
-                            rating = it.rating
-                        )
-                    }
-                }
             }
-
-
         },
     )
 }
@@ -391,7 +385,7 @@ private fun Review(
                                     }
                                 ) {
                                     Text(
-                                        text = "${selectionOption} ${stringResource(id = R.string.review_drawer_stars)}",
+                                        text = "$selectionOption ${stringResource(id = R.string.review_drawer_stars)}",
                                         color = MaterialTheme.colorScheme.secondary
                                     )
                                 }
