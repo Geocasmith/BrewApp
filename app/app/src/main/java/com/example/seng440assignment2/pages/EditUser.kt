@@ -47,7 +47,15 @@ class EditUserViewModel : ViewModel() {
                 userBeerTypes.clear()
                 if (response["favourites"].toString() != "null") {
                     val beerList = response["favourites"].toString().split(",")
-                    beerList.forEach { beer -> userBeerTypes.add(BeerType.valueOf(beer.filter { !it.isWhitespace() })) }
+                    beerList.forEach { beer ->
+                        val type: BeerType
+                        try {
+                            type = BeerType.valueOf(beer.filter { !it.isWhitespace() })
+                        } catch (exception: IllegalArgumentException) {
+                            return@forEach
+                        }
+                        userBeerTypes.add(type)
+                    }
                 }
             })
 
