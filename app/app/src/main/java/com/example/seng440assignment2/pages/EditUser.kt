@@ -1,14 +1,16 @@
 package com.example.seng440assignment2.pages
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.*
+import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,8 +27,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.seng440assignment2.MainViewModel
 import com.example.seng440assignment2.R
-import com.example.seng440assignment2.model.BeerType
 import com.example.seng440assignment2.components.SpacerDP
+import com.example.seng440assignment2.model.BeerType
 import org.json.JSONObject
 
 class EditUserViewModel : ViewModel() {
@@ -83,7 +85,7 @@ class EditUserViewModel : ViewModel() {
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun EditScreen(
     editUserViewModel: EditUserViewModel = viewModel(),
@@ -94,12 +96,12 @@ fun EditScreen(
 
     val beerTypes = BeerType.values()
 
-    var selectedBeerTypes = remember { mutableStateListOf<BeerType>() }
+    val selectedBeerTypes = remember { mutableStateListOf<BeerType>() }
     LaunchedEffect(Unit) {
         editUserViewModel.getValues(mainViewModel, context)
     }
 
-    //Updates selectedBeerTypes to match the viewmodel
+    // Updates selectedBeerTypes to match the viewmodel
     for (beerType in beerTypes) {
         if (beerType in editUserViewModel.userBeerTypes) {
             if (beerType !in selectedBeerTypes) {
@@ -112,152 +114,173 @@ fun EditScreen(
         }
     }
 
-    Column(Modifier.fillMaxWidth()) {
-        TopAppBar(backgroundColor = Color.Transparent, elevation = 1.dp)
-        {
-            IconButton(onClick = { onBackButtonPress() }) {
-                Icon(Icons.Outlined.ArrowBack, contentDescription = null)
+
+    LazyColumn(
+        Modifier
+            .padding(horizontal = 10.dp)
+            .padding(top = 10.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        stickyHeader {
+            TopAppBar(backgroundColor = MaterialTheme.colorScheme.background, elevation = 1.dp)
+            {
+                IconButton(onClick = { onBackButtonPress() }) {
+                    Icon(
+                        Icons.Outlined.ArrowBack,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
+                Text(
+                    modifier = Modifier.padding(horizontal = 5.dp),
+                    text = stringResource(id = R.string.edit_title),
+                    color = MaterialTheme.colorScheme.primary
+                )
             }
-            Text(
-                modifier = Modifier.padding(horizontal = 5.dp),
-                text = stringResource(id = R.string.edit_title)
-            )
         }
 
-        LazyColumn(
-            Modifier
-                .padding(horizontal = 10.dp)
-                .padding(top = 10.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp)
-        ) {
-            item {
-                OutlinedTextField(
-                    value = editUserViewModel.userName,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    onValueChange = { editUserViewModel.userName = it },
-                    label = {
-                        androidx.compose.material3.Text(
-                            text = stringResource(id = R.string.edit_username),
-                            color = Color.Black.copy(alpha = 0.6f)
-                        )
-                    }
-                )
+        item {
+            OutlinedTextField(
+                value = editUserViewModel.userName,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                onValueChange = { editUserViewModel.userName = it },
+                label = {
+                    Text(
+                        text = stringResource(id = R.string.edit_username),
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                },
+                colors = TextFieldDefaults.textFieldColors(textColor = MaterialTheme.colorScheme.secondary),
+            )
 
-            }
-            item { SpacerDP(6) }
-            item {
-                OutlinedTextField(
-                    value = editUserViewModel.userBio,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    onValueChange = { editUserViewModel.userBio = it },
-                    label = {
-                        androidx.compose.material3.Text(
-                            text = stringResource(id = R.string.edit_bio),
-                            color = Color.Black.copy(alpha = 0.6f)
-                        )
-                    }
-                )
-
-            }
-            item { SpacerDP(6) }
-            item {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                        .size(60.dp), contentAlignment = Alignment.CenterStart
-                ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        ExposedDropdownMenuBox(
-                            expanded = editUserViewModel.expanded,
-                            onExpandedChange = {}
-                        ) {
-                            Row {
-                                Column {
-                                    Text(
-                                        text = stringResource(id = R.string.edit_fav_beer_types),
-                                        fontSize = 20.sp
-                                    )
-                                    Text(
-                                        text = stringResource(id = R.string.curr_string) + ": " + selectedBeerTypes.joinToString(
-                                            ", "
-                                        ),
-                                        color = Color.LightGray,
-                                        overflow = TextOverflow.Ellipsis,
-                                        modifier = Modifier.width(270.dp)
-                                    )
-                                    ExposedDropdownMenu(
-                                        expanded = editUserViewModel.expanded,
-                                        onDismissRequest = {
-                                            editUserViewModel.expanded = false
-                                        }
-                                    ) {
-                                        beerTypes.forEach {
-                                            DropdownMenuItem(onClick = {}, enabled = false) {
-                                                Text(text = it.toString())
-                                                Spacer(modifier = Modifier.weight(1f))
-                                                Checkbox(checked = selectedBeerTypes.contains(it),
-                                                    onCheckedChange = { checked ->
-                                                        if (checked) {
-                                                            selectedBeerTypes.add(it)
-                                                            editUserViewModel.userBeerTypes.add(it)
-                                                        } else {
-                                                            selectedBeerTypes.remove(it)
-                                                            editUserViewModel.userBeerTypes.remove(
-                                                                it
-                                                            )
-                                                        }
+        }
+        item { SpacerDP(6) }
+        item {
+            OutlinedTextField(
+                value = editUserViewModel.userBio,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                onValueChange = { editUserViewModel.userBio = it },
+                label = {
+                    Text(
+                        text = stringResource(id = R.string.edit_bio),
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                },
+                colors = TextFieldDefaults.textFieldColors(textColor = MaterialTheme.colorScheme.secondary)
+            )
+        }
+        item { SpacerDP(6) }
+        item {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .size(60.dp), contentAlignment = Alignment.CenterStart
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    ExposedDropdownMenuBox(
+                        expanded = editUserViewModel.expanded,
+                        onExpandedChange = {}
+                    ) {
+                        Row {
+                            Column {
+                                Text(
+                                    text = stringResource(id = R.string.edit_fav_beer_types),
+                                    fontSize = 20.sp,
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                                Text(
+                                    text = stringResource(id = R.string.curr_string) + ": " + selectedBeerTypes.joinToString(
+                                        ", "
+                                    ),
+                                    color = MaterialTheme.colorScheme.secondary,
+                                    overflow = TextOverflow.Ellipsis,
+                                    modifier = Modifier.width(270.dp)
+                                )
+                                ExposedDropdownMenu(
+                                    modifier = Modifier.background(color = MaterialTheme.colorScheme.background),
+                                    expanded = editUserViewModel.expanded,
+                                    onDismissRequest = {
+                                        editUserViewModel.expanded = false
+                                    }
+                                ) {
+                                    beerTypes.forEach {
+                                        DropdownMenuItem(onClick = {}, enabled = false) {
+                                            Text(
+                                                text = it.toString(),
+                                                color = MaterialTheme.colorScheme.secondary
+                                            )
+                                            Spacer(modifier = Modifier.weight(1f))
+                                            Checkbox(checked = selectedBeerTypes.contains(it),
+                                                onCheckedChange = { checked ->
+                                                    if (checked) {
+                                                        selectedBeerTypes.add(it)
+                                                        editUserViewModel.userBeerTypes.add(it)
+                                                    } else {
+                                                        selectedBeerTypes.remove(it)
+                                                        editUserViewModel.userBeerTypes.remove(
+                                                            it
+                                                        )
                                                     }
-                                                )
-                                            }
+                                                }
+                                            )
                                         }
                                     }
                                 }
-                                Spacer(modifier = Modifier.weight(1f))
-                                Button(onClick = {
+                            }
+                            Spacer(modifier = Modifier.weight(1f))
+                            Button(
+                                onClick = {
                                     editUserViewModel.expanded = !editUserViewModel.expanded
-                                }) {
-                                    Text(text = stringResource(id = R.string.pref_notification_time_btn))
-                                }
+                                },
+                                colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colorScheme.primaryContainer)
+                            ) {
+                                Text(
+                                    text = stringResource(id = R.string.pref_notification_time_btn),
+                                    color = MaterialTheme.colorScheme.secondary
+                                )
                             }
                         }
                     }
                 }
             }
         }
-        Row(Modifier.padding(16.dp)) {
-            androidx.compose.material3.Button(
-                modifier = Modifier
-                    .width(width = 140.dp)
-                    .height(height = 48.dp)
-                    .padding(horizontal = 16.dp),
-                onClick = {
-                    editUserViewModel.save(mainViewModel, context, callback = onBackButtonPress)
-                    Toast.makeText(
-                        context,
-                        context.getString(R.string.saving_profile),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                },
-                shape = RoundedCornerShape(4.dp)
-            ) {
-                androidx.compose.material3.Text(
-                    text = stringResource(id = R.string.edit_save_btn),
-                    color = Color.White,
-                    textAlign = TextAlign.Center,
-                    lineHeight = 16.sp,
-                    style = TextStyle(
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Medium,
-                        letterSpacing = 1.sp
-                    ),
+        item {
+            Row(Modifier.padding(16.dp)) {
+                Button(
                     modifier = Modifier
-                        .width(width = 96.dp)
-                )
+                        .width(width = 140.dp)
+                        .height(height = 48.dp)
+                        .padding(horizontal = 16.dp),
+                    onClick = {
+                        editUserViewModel.save(mainViewModel, context, callback = onBackButtonPress)
+                        Toast.makeText(
+                            context,
+                            context.getString(R.string.saving_profile),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    },
+                    shape = RoundedCornerShape(4.dp),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colorScheme.secondaryContainer)
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.edit_save_btn),
+                        color = MaterialTheme.colorScheme.secondary,
+                        textAlign = TextAlign.Center,
+                        lineHeight = 16.sp,
+                        style = TextStyle(
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Medium,
+                            letterSpacing = 1.sp
+                        ),
+                        modifier = Modifier
+                            .width(width = 96.dp)
+                    )
+                }
             }
         }
     }

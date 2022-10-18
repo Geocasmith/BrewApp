@@ -1,20 +1,17 @@
 package com.example.seng440assignment2.pages
-import androidx.compose.foundation.layout.Arrangement
+
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.*
-import androidx.compose.material3.*
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.ScaffoldState
+import androidx.compose.material.Scaffold
+import androidx.compose.material.TopAppBar
+import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -23,22 +20,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.seng440assignment2.MainViewModel
 import com.example.seng440assignment2.R
-
 import com.example.seng440assignment2.components.BeerReviewCard
 import com.example.seng440assignment2.model.ReviewCard
-import com.example.seng440assignment2.components.BeerReviewCard
-import kotlinx.coroutines.launch
 
 /**
  * This is the reviews page
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Reviews(
-    mainViewModel: MainViewModel,
-    onNavigateToBeerPage: (String) -> Unit
+    mainViewModel: MainViewModel
 ) {
-    val reviews = remember { mutableStateListOf<ReviewCard>()}
+    val reviews = remember { mutableStateListOf<ReviewCard>() }
     val scaffoldState = rememberScaffoldState()
 
     val reviewRequest = mainViewModel.getArrayRequest(LocalContext.current, "review", { response ->
@@ -65,31 +57,39 @@ fun Reviews(
         scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
-                title = {Text(stringResource(id = R.string.review_title))},
-                backgroundColor = Color.White)
+                title = { Text(stringResource(id = R.string.review_title), color = MaterialTheme.colorScheme.primary) },
+                backgroundColor = MaterialTheme.colorScheme.background
+            )
 
-                 },
-
+        },
+        backgroundColor = MaterialTheme.colorScheme.background,
         content = {
-                  //lazy column for both beer cards
-                    LazyColumn {
-                        if (reviews.isEmpty()) {
-                            item {
-                                Box(modifier = Modifier.padding(10.dp))
-                                {
-                                    androidx.compose.material.Text(
-                                        text = LocalContext.current.getString(R.string.no_review_text),
-                                        fontSize = 20.sp,
-                                        color = Color.LightGray
-                                    )
-                                }
-                            }
-                        } else {
-                            items(reviews, key = { it.id }) {
-                                BeerReviewCard(beerName = it.beerName, reviewContent = it.title, reviewerName = it.reviewerName, rating = it.rating, imageLink = it.beerPhotoUrl)
-                            }
+            //lazy column for both beer cards
+            LazyColumn (modifier = Modifier.padding(it)) {
+                if (reviews.isEmpty()) {
+                    item {
+                        Box(modifier = Modifier.padding(10.dp))
+                        {
+                            androidx.compose.material.Text(
+                                text = LocalContext.current.getString(R.string.no_review_text),
+                                fontSize = 20.sp,
+                                color = Color.LightGray
+                            )
                         }
-                  }},
+                    }
+                } else {
+                    items(reviews, key = { it.id }) {
+                        BeerReviewCard(
+                            beerName = it.beerName,
+                            reviewContent = it.title,
+                            reviewerName = it.reviewerName,
+                            rating = it.rating,
+                            imageLink = it.beerPhotoUrl
+                        )
+                    }
+                }
+            }
+        },
     )
 }
 

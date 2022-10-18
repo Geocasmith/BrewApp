@@ -5,8 +5,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
+import androidx.compose.material.Scaffold
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.*
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -27,7 +29,6 @@ import kotlin.random.Random
 /**
  * This is the reviews page
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Categories(onNavigateToBeerListPage: (String) -> Unit) {
     val beerTypeOptions = BeerType.values().map { it.name }
@@ -38,14 +39,15 @@ fun Categories(onNavigateToBeerListPage: (String) -> Unit) {
         scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
-                title = {Text(stringResource(id= R.string.categories_title))},
-                backgroundColor = Color.White)
+                title = {Text(stringResource(id= R.string.categories_title), color = MaterialTheme.colorScheme.primary)},
+                backgroundColor = MaterialTheme.colorScheme.background)
 
         },
+        backgroundColor = MaterialTheme.colorScheme.background,
         content = {
             //lazy column for both beer cards
-            LazyColumn {
-                //put two categorycards in a row
+            LazyColumn(modifier = Modifier.padding(it)) {
+                //put two category cards in a row
                 items(beerTypeOptions.size / 2) { index ->
                     Row(
                         modifier = Modifier
@@ -69,10 +71,8 @@ fun Categories(onNavigateToBeerListPage: (String) -> Unit) {
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BeerListPage(mainViewModel: MainViewModel, string: Any?, onNavigateToBeerPage: (String) -> Unit){
-    val beerTypeOptions = BeerType.values().map { it.name }
     val scaffoldState = rememberScaffoldState()
     //convert string to all uppercase
     val beerType = string.toString().uppercase()
@@ -97,7 +97,8 @@ fun BeerListPage(mainViewModel: MainViewModel, string: Any?, onNavigateToBeerPag
         }
     })
     mainViewModel.addRequestToQueue(reviewRequest)
-    var appBarTitle:String = stringResource(id=R.string.categories_alternative_title)
+
+    var appBarTitle = stringResource(id=R.string.categories_alternative_title)
     if(string is String){
         appBarTitle = string
     }
@@ -112,7 +113,7 @@ fun BeerListPage(mainViewModel: MainViewModel, string: Any?, onNavigateToBeerPag
         },
     ) {
         //lazy column for both beer cards
-        LazyColumn {
+        LazyColumn(modifier = Modifier.padding(it)) {
             beerList.map { beerListItem ->
                 item {
                     BeerCard(
@@ -124,8 +125,6 @@ fun BeerListPage(mainViewModel: MainViewModel, string: Any?, onNavigateToBeerPag
                 }
             }
         }
-        //put two categorycards in a row
-
     }
 }
 
@@ -145,6 +144,6 @@ fun CategoryCard(category:String,onNavigateToBeerListPage: (String) -> Unit){
             .clickable(onClick = { onNavigateToBeerListPage(category) })
         )
         //text on inside of square
-        Text(text = category, modifier = Modifier.align(Alignment.Center))
+        Text(text = category, modifier = Modifier.align(Alignment.Center), color = MaterialTheme.colorScheme.contentColorFor(randomColor.value))
     }
 }
