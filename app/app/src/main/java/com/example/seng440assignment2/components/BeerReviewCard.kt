@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -41,14 +42,13 @@ fun BeerReviewCard(beerName:String, reviewContent:String, reviewerName:String, r
             //box with image aligned center horizontally and height of 90 and width of 50 dp
             Box(
                 modifier = Modifier
-                    .padding(10.dp)
+                    .padding(5.dp)
                     .height(90.dp)
                     .width(90.dp)
                     .background(Color.White),
                 contentAlignment = Alignment.Center
             ) {
-                //image if its a showimage
-
+                //image if its a show image
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current).data(imageLink).error(R.drawable.beer_icon).build(),
                     contentScale = ContentScale.Fit,
@@ -121,7 +121,7 @@ fun BeerCard(beerName:String, imageLink:String, rating:Float, onNavigateToBeerPa
         Row(verticalAlignment = Alignment.CenterVertically) {
             //box with image aligned center horizontally and height of 90 and width of 50 dp
             Box(modifier = Modifier
-                    .padding(10.dp)
+                    .padding(5.dp)
                     .height(90.dp)
                     .width(90.dp)
                     .background(Color.White),
@@ -132,10 +132,7 @@ fun BeerCard(beerName:String, imageLink:String, rating:Float, onNavigateToBeerPa
                     model = ImageRequest.Builder(LocalContext.current).data(imageLink).error(R.drawable.beer_icon).build(),
                     contentScale = ContentScale.Fit,
                     contentDescription = "Beer!",
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clip(CircleShape)
-                        .size(100.dp)
+                    modifier = Modifier.fillMaxSize()
                 )
             }
 
