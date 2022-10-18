@@ -22,7 +22,11 @@
     <string name="profile_edit">Edit</string>
     <string name="edit_title">Edit Account</string>
     <string name="edit_fav_beer_types">Fav Types</string>
-    <string name="edit_username">User Name</string>
+    <string name="edit_username">Name</string>
+    <string name="edit_bio">Bio</string>
+    <string name="no_name">Name must be provided</string>
+    <string name="profile_updated">Profile Updated</string>
+    <string name="saving_profile">Saving Profile...</string>
     <string name="edit_save_btn">Save</string>
     <string name="profile_pref">Preferences</string>
     <string name="profile_logout">Logout</string>
