@@ -1,16 +1,16 @@
 package com.example.seng440assignment2
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.*
+import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.runtime.*
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,14 +25,12 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.seng440assignment2.components.BeerReviewCard
 import com.example.seng440assignment2.model.ReviewCard
-import com.example.seng440assignment2.model.Review
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ProfileScreen(mainViewModel: MainViewModel, onNavigateToEdit: () -> Unit, onNavigateToPref: () -> Unit, onLogout: () -> Unit)
 {
-    /* TODO: Add Reviews */
     val reviews = remember { mutableStateListOf<ReviewCard>()}
     var options by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
@@ -65,61 +63,84 @@ fun ProfileScreen(mainViewModel: MainViewModel, onNavigateToEdit: () -> Unit, on
     mainViewModel.addRequestToQueue(userRequest)
     mainViewModel.addRequestToQueue(reviewRequest)
 
+
+
+
     LazyColumn(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            content = {
-            stickyHeader { TopAppBar(backgroundColor = Color.Transparent, elevation = 0.dp ){
-                Spacer(Modifier.weight(1f))
-
-                // Options
-                Box(
-                    Modifier
-                        .fillMaxSize()
-                        .wrapContentSize(Alignment.TopEnd)) {
-                    IconButton(onClick = { options = true }) {
-                        Icon(Icons.Outlined.MoreVert, contentDescription = null )
-                    }
-                    DropdownMenu(expanded = options, onDismissRequest = { options = false }) {
-                        DropdownMenuItem(onClick = {
-                            options = false
-                            onNavigateToEdit()
-                        }) {
-                            Text(text = stringResource(id = R.string.profile_edit))
+        horizontalAlignment = Alignment.CenterHorizontally,
+        content = {
+            stickyHeader {
+                TopAppBar(backgroundColor = MaterialTheme.colorScheme.background, elevation = 0.dp ) {
+                    Spacer(Modifier.weight(1f))
+                    // Options
+                    Box(
+                        Modifier
+                            .fillMaxSize()
+                            .wrapContentSize(Alignment.TopEnd)
+                    ) {
+                        IconButton(onClick = { options = true }) {
+                            Icon(
+                                Icons.Outlined.MoreVert,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary
+                            )
                         }
-                        DropdownMenuItem(onClick = {
-                            options = false
-                            onNavigateToPref()
-                        }) {
-                            Text(text = stringResource(id = R.string.profile_pref))
-                        }
-                        DropdownMenuItem(onClick = {
-                            options = false
-                            scope.launch {
-                                mainViewModel.clearUserData()
-                                onLogout()
+                        DropdownMenu(
+                            expanded = options,
+                            onDismissRequest = { options = false },
+                            modifier = Modifier.background(MaterialTheme.colorScheme.background)
+                        ) {
+                            DropdownMenuItem(onClick = {
+                                options = false
+                                onNavigateToEdit()
+                            }) {
+                                Text(
+                                    text = stringResource(id = R.string.profile_edit),
+                                    color = MaterialTheme.colorScheme.primary
+                                )
                             }
-                        }) {
-                            Text(text = stringResource(id = R.string.profile_logout))
+                            DropdownMenuItem(onClick = {
+                                options = false
+                                onNavigateToPref()
+                            }) {
+                                Text(
+                                    text = stringResource(id = R.string.profile_pref),
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                            }
+                            DropdownMenuItem(onClick = {
+                                options = false
+                                scope.launch {
+                                    mainViewModel.clearUserData()
+                                    onLogout()
+                                }
+                            }) {
+                                Text(
+                                    text = stringResource(id = R.string.profile_logout),
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                            }
                         }
                     }
                 }
-
-                }
+            }
+            item {
                 Column(Modifier.fillMaxWidth()) {
                     ProfileImage(modifier = Modifier
                         .align(Alignment.CenterHorizontally)
                         .padding(10.dp))
 
-                    Box(modifier = Modifier.align(Alignment.CenterHorizontally).padding(bottom = 10.dp))
+                    Box(modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(bottom = 10.dp))
                     {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text(text = name, fontSize = 20.sp)
-                            Text(text = bio, color = Color.LightGray)
+                            Text(text = name, fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)
+                            Text(text = bio, color = MaterialTheme.colorScheme.secondary)
                         }
                     }
                 }
             }
-
             if (reviews.isEmpty()) {
                 item {
                     Box(modifier = Modifier.padding(10.dp))
@@ -132,7 +153,7 @@ fun ProfileScreen(mainViewModel: MainViewModel, onNavigateToEdit: () -> Unit, on
                     }
                 }
             } else {
-                items(reviews, key = { it.id }) {
+                items (reviews, key = { it.id }) {
                     BeerReviewCard(beerName = it.beerName, reviewContent = it.title, reviewerName = it.reviewerName, rating = it.rating, imageLink = it.beerPhotoUrl)
                 }
             }
@@ -140,6 +161,7 @@ fun ProfileScreen(mainViewModel: MainViewModel, onNavigateToEdit: () -> Unit, on
         }
     )
 }
+
 
 
 @Composable

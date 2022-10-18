@@ -1,19 +1,21 @@
 package com.example.seng440assignment2.pages
 
 import android.app.TimePickerDialog
-import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.material.icons.outlined.LightMode
-import androidx.compose.runtime.*
+import androidx.compose.material3.ButtonColors
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -69,9 +71,9 @@ fun PrefScreen(mainViewModel: MainViewModel, onBackButtonPress: () -> Unit) {
         TopAppBar(backgroundColor = Color.Transparent, elevation = 1.dp)
         {
             IconButton(onClick = { onBackButtonPress() }) {
-                Icon(Icons.Outlined.ArrowBack, contentDescription = null)
+                Icon(Icons.Outlined.ArrowBack, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
             }
-            Text(modifier = Modifier.padding(horizontal = 5.dp), text = stringResource(id = R.string.profile_pref))
+            Text(modifier = Modifier.padding(horizontal = 5.dp), color = MaterialTheme.colorScheme.primary, text = stringResource(id = R.string.profile_pref))
         }
         LazyColumn(Modifier.padding(horizontal = 10.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
             item {
@@ -83,6 +85,7 @@ fun PrefScreen(mainViewModel: MainViewModel, onBackButtonPress: () -> Unit) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
                             modifier = Modifier.padding(horizontal = 2.dp),
+                            color = MaterialTheme.colorScheme.primary,
                             text = stringResource(id = R.string.pref_darkmode),
                             fontSize = 20.sp
                         )
@@ -119,6 +122,7 @@ fun PrefScreen(mainViewModel: MainViewModel, onBackButtonPress: () -> Unit) {
                 {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(modifier = Modifier.padding(horizontal = 2.dp),
+                            color = MaterialTheme.colorScheme.primary,
                             text = stringResource(id = R.string.pref_allow_notifications),
                             fontSize = 20.sp)
                         Spacer(modifier = Modifier.weight(1f))
@@ -151,16 +155,17 @@ fun PrefScreen(mainViewModel: MainViewModel, onBackButtonPress: () -> Unit) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Column() {
                                 Text(modifier = Modifier.padding(horizontal = 2.dp),
+                                    color = MaterialTheme.colorScheme.primary,
                                     text = stringResource(id = R.string.pref_notification_time),
                                     fontSize = 20.sp)
                                 Text(modifier = Modifier.padding(horizontal = 2.dp),
+                                    color = MaterialTheme.colorScheme.secondary,
                                     text = stringResource(id = R.string.curr_string) + ": $notifyTime",
-                                    fontSize = 15.sp,
-                                    color = Color.Gray)
+                                    fontSize = 15.sp)
                             }
                             Spacer(modifier = Modifier.weight(1f))
-                            Button(onClick = { timePickerDialog.show() }) {
-                                Text(stringResource(id = R.string.pref_notification_time_btn))
+                            Button(onClick = { timePickerDialog.show() }, colors =  ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colorScheme.primaryContainer)) {
+                                Text(stringResource(id = R.string.pref_notification_time_btn), color = MaterialTheme.colorScheme.secondary)
                             }
                         }
                     }
