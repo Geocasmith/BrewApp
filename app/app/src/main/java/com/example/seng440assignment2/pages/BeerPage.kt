@@ -47,11 +47,13 @@ import org.json.JSONObject
 
 class BeerPageViewModel : ViewModel() {
 
+
     var beerId by mutableStateOf(-1L)
     var beerName by mutableStateOf("")
     var beerType by mutableStateOf("")
     var beerRating by mutableStateOf(0f)
     var beerImageUrl by mutableStateOf("")
+    val reviews = mutableStateListOf<BeerPageReviewCard>()
 
     var newReview by mutableStateOf("")
     var newRating by mutableStateOf(1)
@@ -74,38 +76,41 @@ fun BeerPage(
     mainViewModel: MainViewModel,
     barcode: String?
 ) {
-    val reviews = remember { mutableStateListOf<BeerPageReviewCard>() }
+
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
 
 
-    //    Get the beer info from the API
-    beerViewModel.beerName = stringResource(id = R.string.generic_loading)
-    beerViewModel.beerType = stringResource(id = R.string.generic_loading)
-    beerViewModel.beerImageUrl = stringResource(id = R.string.generic_loading)
-
-    val request = mainViewModel.getObjectRequest(context, "beer/$barcode", { jsonResponse ->
-        beerViewModel.beerId = jsonResponse["id"].toString().toLong()
-        beerViewModel.beerName = jsonResponse["name"].toString()
-        beerViewModel.beerType = jsonResponse["type"].toString()
-
-        if (jsonResponse["rating"].toString() != "null") {
-            beerViewModel.beerRating = jsonResponse["rating"].toString().toFloat()
-        }
-        beerViewModel.beerImageUrl = jsonResponse["photo_path"].toString()
-    })
-    mainViewModel.addRequestToQueue(request)
-
     //Get the review data from the API
+    LaunchedEffect(Unit) {
+        //    Get the beer info from the API
+        beerViewModel.beerName = context.getString(R.string.generic_loading)
+        beerViewModel.beerType = context.getString(R.string.generic_loading)
+        beerViewModel.beerImageUrl = context.getString(R.string.generic_loading)
+
+
+        val request = mainViewModel.getObjectRequest(context, "beer/$barcode", { jsonResponse ->
+            beerViewModel.beerId = jsonResponse["id"].toString().toLong()
+            beerViewModel.beerName = jsonResponse["name"].toString()
+            beerViewModel.beerType = jsonResponse["type"].toString()
+
+            if (jsonResponse["rating"].toString() != "null") {
+                beerViewModel.beerRating = jsonResponse["rating"].toString().toFloat()
+            }
+            beerViewModel.beerImageUrl = jsonResponse["photo_path"].toString()
+        })
+        mainViewModel.addRequestToQueue(request)
+
+    }
 
     val reviewRequest = mainViewModel.getArrayRequest(
-        LocalContext.current,
+        context,
         "review/${beerViewModel.beerId}",
         { response ->
             if (response.length() != 0) {
-                reviews.clear()
                 for (i in 0 until response.length()) {
+                    beerViewModel.reviews.clear()
                     val item = response.getJSONObject(i)
                     val review = BeerPageReviewCard(
                         item["id"].toString().toLong(),
@@ -113,11 +118,12 @@ fun BeerPage(
                         item["title"].toString(),
                         item["reviewerName"].toString(),
                     )
-                    reviews.add(review)
+                    beerViewModel.reviews.add(review)
                 }
             }
         })
     mainViewModel.addRequestToQueue(reviewRequest)
+
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -192,7 +198,7 @@ fun BeerPage(
 
                     Spacer(modifier = Modifier.height(8.dp))
                 }
-                items(reviews, key = { it.id }) {
+                items(beerViewModel.reviews, key = { it.id }) {
                     BeerPageReviewCard(
                         reviewContent = it.title,
                         reviewerName = it.reviewerName,
