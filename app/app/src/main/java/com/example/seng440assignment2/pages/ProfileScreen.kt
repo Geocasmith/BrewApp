@@ -138,7 +138,10 @@ fun ProfileScreen(mainViewModel: MainViewModel, onNavigateToEdit: () -> Unit, on
                     {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(text = name.toString().trim(), fontSize = 20.sp, color = MaterialTheme.colorScheme.primary)
-                            Text(text = bio.toString().trim(), color = MaterialTheme.colorScheme.secondary)
+
+                            if (!(bio.isBlank() || bio.toString() == "null")) {
+                                Text(text = bio.toString().trim(), color = MaterialTheme.colorScheme.secondary)
+                            }
                         }
                     }
                 }
